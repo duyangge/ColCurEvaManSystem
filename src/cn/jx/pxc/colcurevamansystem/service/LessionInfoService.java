@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
+import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 
 /**
  *<p> Title:  LessionInfoService.java</p>
@@ -24,7 +25,23 @@ public interface LessionInfoService {
 	 * @throws Exception
 	 */
 	List<LessionInfo> selectByNameList(BeanQueryVo beanQueryVo) throws Exception;
-    
+	
+	
+	/**通过班级id查询所有课程
+	 * @param classId
+	 * @return
+	 * @throws Exception
+	 */
+	List<LessionInfo> selectByClassList(BeanQueryVo  beanQueryVo) throws Exception;
+	
+	
+	/**通过班级id查询所有课程,存放到临时类中
+	 * @param beanQueryVo
+	 * @return
+	 * @throws Exception
+	 */
+	List<LessionInfoTemp> selectLessionInfoTempByClassList(BeanQueryVo beanQueryVo) throws Exception;
+	
 	/**批量删除
 	 * @param beanQueryVo
 	 * @return

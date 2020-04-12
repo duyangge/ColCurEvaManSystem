@@ -62,7 +62,6 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 	 */
 	@Override
 	public int deleteByPrimaryKey(Integer classId) {
-		// TODO Auto-generated method stub
 		return classInfoMapper.deleteByPrimaryKey(classId);
 	}
 
@@ -71,7 +70,6 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 	 */
 	@Override
 	public int insert(ClassInfo record) {
-		// TODO Auto-generated method stub
 		return classInfoMapper.insert(record);
 	}
 
@@ -93,7 +91,6 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 	 */
 	@Override
 	public ClassInfo selectByPrimaryKey(Integer classId) {
-		// TODO Auto-generated method stub
 		return classInfoMapper.selectByPrimaryKey(classId);
 	}
 
@@ -102,7 +99,6 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 	 */
 	@Override
 	public int updateByPrimaryKeySelective(ClassInfo record) {
-		// TODO Auto-generated method stub
 		return classInfoMapper.updateByPrimaryKeySelective(record);
 	}
 
@@ -111,7 +107,6 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 	 */
 	@Override
 	public int updateByPrimaryKey(ClassInfo record) {
-		// TODO Auto-generated method stub
 		return classInfoMapper.updateByPrimaryKey(record);
 	}
 
@@ -123,13 +118,13 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 		List<ClassInfo>  claList = classInfoMapper.selectByNameList(beanQueryVo);
 		List<ClassInfoCustom> claCuList = new ArrayList<ClassInfoCustom>();
 		for (ClassInfo classInfo : claList) {
-			if(classInfo.getClassName() != null) {
-				ClassInfoCustom cla = new ClassInfoCustom();
-				BeanUtils.copyProperties(classInfo, cla);
+			//if(classInfo.getClassName() != null) {
+				ClassInfoCustom claCus = new ClassInfoCustom();
+				BeanUtils.copyProperties(claCus, classInfo);
 				ProfessionInfo pro = professionMapper.selectByPrimaryKey(classInfo.getProfessionId());
-				cla.setProfessionName(pro.getProfessionName());
-				claCuList.add(cla);
-			}
+				claCus.setProfessionName(pro.getProfessionName());
+				claCuList.add(claCus);
+			//}
 		}
 		return claCuList;
 	}
@@ -142,7 +137,7 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 		ClassInfo cla =  classInfoMapper.selectByPrimaryKey(classId);
 		ClassInfoCustom claCu = new ClassInfoCustom();
 		try {
-			BeanUtils.copyProperties(cla, claCu);
+			BeanUtils.copyProperties(claCu,cla );
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {

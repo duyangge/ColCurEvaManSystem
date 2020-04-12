@@ -146,8 +146,14 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 	@Override
 	public List<LessionEvaTemp> selectLessionEva(BeanQueryVo beanQueryVo) {
 		List<LessionEvaTemp> lesEvaList = new ArrayList<LessionEvaTemp>();
+		List<ClassSubInfo> claSubList = null;
 		try {
-			List<ClassSubInfo> claSubList = classSubInfoMapper.selectByAllList();
+			if(beanQueryVo.getStudentId() != null) {
+				claSubList = classSubInfoMapper.selectByStudentList(beanQueryVo);
+			}else {
+				claSubList = classSubInfoMapper.selectByAllList();
+			}
+			
 			//得到需要的字段存入临时类中显示
 			for (ClassSubInfo claSub : claSubList) {
 				List<StudentInfo>  stuList = claSub.getStudentInfoList();

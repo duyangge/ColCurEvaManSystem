@@ -80,7 +80,7 @@
 									<td  class="hidden-xs">${lesEva.className }</td>
 									<td  class="hidden-xs">${lesEva.teacherName }</td>
 									<td  class="hidden-xs">${lesEva.score }</td>
-									<td ><textarea>${lesEva.subInfo }</textarea></td>
+									<td ><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${lesEva.subInfo }</textarea></td>
 									<td class="hidden-xs">${lesEva.subUserName }</td>
 									<td class="hidden-xs" ><fmt:formatDate value="${lesEva.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
 									<td>

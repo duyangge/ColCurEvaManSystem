@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
+import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
+import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
+import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
 import cn.jx.pxc.colcurevamansystem.service.TeacherInfoService;
@@ -56,6 +59,10 @@ public class UserInfoController {
 	@Resource
 	public ClassInfoService classInfoService;
 	
+	@Resource
+	public LessionInfoService lessionInfoService;
+	
+	
 	/**进入登录页面
 	 * @return
 	 */
@@ -64,13 +71,14 @@ public class UserInfoController {
 		return "login";
 	}
 	
-	/**跳转个人基本信息
+	/**跳转管理员个人基本信息
 	 * @return
 	 */
-	@RequestMapping(value="/goUpdateAdminInfo.do")
+	@RequestMapping("/goUpdateAdminInfo.do")
 	public String  goUpdateAdminInfo(HttpSession session,Model model) {
 		TeacherInfo tea = (TeacherInfo) session.getAttribute("admin");
-		model.addAttribute("tea", teacherInfoService.selectByPrimaryKey(tea.getTeacherId()));
+		TeacherInfo teacherInfo = teacherInfoService.selectByPrimaryKey(tea.getTeacherId());
+		model.addAttribute("tea",teacherInfo );
 		return "admin_info";
 	}
 	
@@ -81,13 +89,14 @@ public class UserInfoController {
 	 * @return
 	 */
 	@RequestMapping("/updateAdminInfo.do" )
-	public String  updateAdminInfo(Model model,TeacherInfo tea) {
+	public String  updateAdminInfo(Model model,TeacherInfo tea,Integer id) {
 		try {
+			tea.setTeacherId(id);
+			teacherInfoService.updateByPrimaryKeySelective(tea);//由于更新后，tea.id变成影响行数
 			if(tea.getPassword() != null) {//修改密码成功后，返回登录页面
-				teacherInfoService.updateByPrimaryKeySelective(tea);
 				model.addAttribute("message", "退出登录");
 			}else {//修改基本信息后，返回基本信息页面
-				TeacherInfo teacherInfo = teacherInfoService.selectByPrimaryKey(tea.getTeacherId());
+				TeacherInfo teacherInfo = teacherInfoService.selectByPrimaryKey(id);
 				model.addAttribute("tea", teacherInfo);
 			}
 			
@@ -97,6 +106,49 @@ public class UserInfoController {
 		
 		return "admin_info";
 	}
+	
+	
+	/**跳转学生基本信息
+	 * @return
+	 */
+	@RequestMapping(value="/goUpdateStudentInfo.do")
+	public String  goUpdateStudentInfo(HttpSession session,Model model) {
+		StudentInfo stu = (StudentInfo) session.getAttribute("student");
+		StudentInfoCustom stuCus = studentInfoService.selectCustomByKey(stu.getStudentId());
+		model.addAttribute("stu",stuCus );
+		return "stu_info";
+	}
+	
+	
+	
+	/**修改学生个人基本信息+修改密码
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/updateStudentInfo.do" )
+	public String  updateStudentInfo(Model model,StudentInfo stu,Integer id) {
+		try {
+			stu.setStudentId(id);
+			studentInfoService.updateByPrimaryKeySelective(stu);//由于更新后，tea.id变成影响行数
+			if(stu.getPassword() != null) {//修改密码成功后，返回登录页面
+				model.addAttribute("message", "密码修改成功，重新登录");
+			}else {//修改基本信息后，返回基本信息页面
+				StudentInfoCustom stuCus = studentInfoService.selectCustomByKey(id);
+				model.addAttribute("stu", stuCus);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "stu_info";
+	}
+	
+	
+	
+
+	
+	
 	
 	
 	
@@ -115,13 +167,23 @@ public class UserInfoController {
 	@RequestMapping("/login.do")
 	public String login(Model model,BeanQueryVo beanQueryVo,HttpSession session) {
 		try {
+			String message="账号异常，请通知管理员处理！";
 			StudentInfo stu = studentInfoService.selectByAccountList(beanQueryVo);
 			TeacherInfo  tea = teacherInfoService.selectByAccountList(beanQueryVo);
 			if ( stu != null ) {
+				if(stu.getStatus().equals("1")) { 
+					model.addAttribute("message", message);
+					return "login";
+				}
 				session.setAttribute("student",stu);
+				model.addAttribute("stu", stu);
 				return "stu_index";//学生页面
 				
 			}else if( tea != null && tea.getRoleId() != 1 ) {
+				if(tea.getStatus().equals("1")) { 
+					model.addAttribute("message", message);
+					return "login";
+				}
 				session.setAttribute("teacher",tea);
 				return "tea_index";//教师页面
 			}else { 

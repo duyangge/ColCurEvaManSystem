@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
+import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
+import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
 
@@ -39,6 +42,27 @@ public class LessionInfoController {
 	
 	@Resource
 	public ProfessionInfoService professionInfoService;
+	
+	/**学生查询所在班级所有课程
+	 * @param model
+	 * @param beanQueryVo：classId
+	 * @return
+	 */
+	@RequestMapping("/findLessionByClass.do")
+	public String findLessionByClass(Model model,HttpSession session,BeanQueryVo beanQueryVo) {
+		//得到班级id
+		StudentInfo stu = (StudentInfo) session.getAttribute("student");
+		beanQueryVo.setClassId(stu.getClassId());
+		beanQueryVo.setProfessionId(stu.getProfessionId());
+		try {
+			List<LessionInfoTemp>  lesList = lessionInfoService.selectLessionInfoTempByClassList(beanQueryVo);
+			model.addAttribute("lesList", lesList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "stu_lession";
+	}
+	
 	
 	/**分页+模糊查询
 	 * @param model

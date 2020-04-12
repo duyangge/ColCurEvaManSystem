@@ -17,8 +17,8 @@
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 var message = "${message}";
-if(message != null && message != ""){	
-	alert("23534");
+if(message != null && message != ""){	//密码修改后，退出登录
+	//alert("23534");
 	top.location.href="../user/loginOut.do";
  }
 //Demo
@@ -53,6 +53,7 @@ layui.use(['form','element'], function(){
 				    <label class="layui-form-label">ID：</label>
 				    <div class="layui-input-block">
 				      <input type="text" name="teacherId" disabled autocomplete="off" class="layui-input layui-disabled" value="${tea.teacherId }">
+				      <input type="hidden" name="id" value="${tea.teacherId }">
 				    </div>
 				  </div>
 				  

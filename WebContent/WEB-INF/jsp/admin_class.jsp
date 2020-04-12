@@ -49,6 +49,7 @@
 								<col >
 								<col >
 								<col >	
+								<col >	
 								<col class="hidden-xs" width="160">
 								<col class="hidden-xs" width="150">
 								<col width="150">
@@ -59,6 +60,7 @@
 									<th class="hidden-xs">ID</th>
 									<th >班级名称</th>
 									<th >所属学院</th>
+									<th >备注信息</th>
 									<th >创建者</th>
 									<th class="hidden-xs">创建时间</th>
 									<th class="hidden-xs">修改时间</th>
@@ -72,6 +74,7 @@
 									<td class="hidden-xs">${cla.classId }</td>
 									<td >${cla.className }</td>
 									<td >${cla.professionName }</td>
+									<td ><textarea  readonly="readonly" style="border:none;resize:none;">${cla.classInfo }</textarea></td>
 									<td >${cla.createdUser }</td>
 									<td class="hidden-xs" ><fmt:formatDate value="${cla.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
 									<td class="hidden-xs"><fmt:formatDate value="${cla.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>

@@ -10,6 +10,14 @@
 	<link rel="stylesheet" type="text/css" href="../css/login.css" />
 <title>高校课程评价管理系统</title>
 </head>
+<script type="text/javascript">
+var message = "${message}";
+if(message != null && message != ""){	//密码修改后，退出登录
+	alert(message);
+ }
+
+</script>
+
 <body>
 		<div class="m-login-bg">
 			<div class="m-login">
