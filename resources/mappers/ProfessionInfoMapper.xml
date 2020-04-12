@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.ProfessionInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+    <id column="profession_id" jdbcType="INTEGER" property="professionId" />
+    <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <result column="profession_info" jdbcType="VARCHAR" property="professionInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    profession_id, profession_name, created_user, created_time, modified_user, modified_time, 
+    profession_info
+  </sql>
+  
+  <!--主键查询  -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from profession_tb
+    where profession_id = #{professionId,jdbcType=INTEGER}
+  </select>
+  
+  <!--模糊查询  -->
+  <select id="selectByName" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from profession_tb
+   	 <if test="keyWords != null and keyWords != ''">
+  		where  instr(profession_name,#{keyWords}) > 0
+  	</if>
+  
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from profession_tb
+    where profession_id = #{professionId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="professionId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into profession_tb (profession_id, profession_name, created_user, 
+      created_time, modified_user, modified_time, 
+      profession_info)
+    values (#{professionId,jdbcType=INTEGER}, #{professionName,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, 
+      #{professionInfo,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="professionId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into profession_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="professionId != null">
+        profession_id,
+      </if>
+      <if test="professionName != null">
+        profession_name,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+      <if test="professionInfo != null">
+        profession_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="professionId != null">
+        #{professionId,jdbcType=INTEGER},
+      </if>
+      <if test="professionName != null">
+        #{professionName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="professionInfo != null">
+        #{professionInfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+    update profession_tb
+    <set>
+      <if test="professionName != null">
+        profession_name = #{professionName,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="professionInfo != null">
+        profession_info = #{professionInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where profession_id = #{professionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+    update profession_tb
+    set profession_name = #{professionName,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      profession_info = #{professionInfo,jdbcType=VARCHAR}
+    where profession_id = #{professionId,jdbcType=INTEGER}
+  </update>
+</mapper>

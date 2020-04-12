@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.LessionInfoMapper">
+
+
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
+    <id column="lession_id" jdbcType="INTEGER" property="lessionId" />
+    <result column="lession_name" jdbcType="VARCHAR" property="lessionName" />
+    <result column="lession_img" jdbcType="VARCHAR" property="lessionImg" />
+    <result column="lession_info" jdbcType="VARCHAR" property="lessionInfo" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+     <!--课程和班级 多对多  -->
+     <collection property="classInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+         <id column="classId" property="classId"/>
+         <result column="profession_id" property="professionId"/>
+         <result column="class_name" property="className"/>
+         <result column="class_info" property="classInfo"/>
+         <!--班级和学院 一对一  -->
+         <association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+         <id column="profession_id"  property="professionId"/>
+         <result column="profession_name" property="professionName"/>
+         <result column="profession_info" property="professionInfo"/>
+         </association>
+     </collection>
+    
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List">
+    lession_id, lession_name, lession_img, lession_info, created_user, created_time, 
+    modified_user, modified_time
+  </sql>
+  <!--按主键查询  -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lession_tb
+    where lession_id = #{lessionId,jdbcType=INTEGER}
+  </select>
+  
+  <!--模糊查询  -->
+    <select id="selectByNameList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lession_tb
+   <if test="keyWords != null and keyWords != ''">
+     where instr(lession_name, #{keyWords}) > 0
+    </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lession_tb
+    where lession_id = #{lessionId,jdbcType=INTEGER}
+  </delete>
+  
+  <!--批量删除  -->
+    <delete id="deleteByIdList" parameterType="java.lang.Integer">
+    delete from lession_tb
+    where lession_id in
+     <foreach collection="ids" item="item" separator="," open="(" close=")">
+       #{item}
+    </foreach>
+  </delete>
+  
+  <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="lessionId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into lession_tb (lession_id, lession_name, lession_img, 
+      lession_info, created_user, created_time, 
+      modified_user, modified_time)
+    values (#{lessionId,jdbcType=INTEGER}, #{lessionName,jdbcType=VARCHAR}, #{lessionImg,jdbcType=VARCHAR}, 
+      #{lessionInfo,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="lessionId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into lession_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lessionId != null">
+        lession_id,
+      </if>
+      <if test="lessionName != null">
+        lession_name,
+      </if>
+      <if test="lessionImg != null">
+        lession_img,
+      </if>
+      <if test="lessionInfo != null">
+        lession_info,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lessionId != null">
+        #{lessionId,jdbcType=INTEGER},
+      </if>
+      <if test="lessionName != null">
+        #{lessionName,jdbcType=VARCHAR},
+      </if>
+      <if test="lessionImg != null">
+        #{lessionImg,jdbcType=VARCHAR},
+      </if>
+      <if test="lessionInfo != null">
+        #{lessionInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
+    update lession_tb
+    <set>
+      <if test="lessionName != null">
+        lession_name = #{lessionName,jdbcType=VARCHAR},
+      </if>
+      <if test="lessionImg != null">
+        lession_img = #{lessionImg,jdbcType=VARCHAR},
+      </if>
+      <if test="lessionInfo != null">
+        lession_info = #{lessionInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where lession_id = #{lessionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
+    update lession_tb
+    set lession_name = #{lessionName,jdbcType=VARCHAR},
+      lession_img = #{lessionImg,jdbcType=VARCHAR},
+      lession_info = #{lessionInfo,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where lession_id = #{lessionId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.ClassInfoMapper">
+
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+    <id column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="profession_id" jdbcType="INTEGER" property="professionId" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+     <result column="class_info" jdbcType="VARCHAR" property="classInfo" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+  
+  <!--模糊查询  -->
+  <select id="selectByNameList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class_tb
+	   <if test="keyWords != null and keyWords != ''">
+	     where instr(class_name,#{keyWords}) > 0
+	   </if>
+  </select>
+  
+  <sql id="Base_Column_List">
+    class_id, profession_id, class_name, created_user, created_time, modified_user, modified_time, 
+    class_info
+  </sql>
+  
+  <!--主键查询下  -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class_tb
+    where class_id = #{classId,jdbcType=INTEGER}
+  </select>
+  
+  <!--学院ID查询下  -->
+  <select id="selectByProfessionList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class_tb
+    where profession_id = #{professionId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from class_tb
+    where class_id = #{classId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="classId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into class_tb (class_id, profession_id, class_name, 
+      created_user, created_time, modified_user, 
+      modified_time, class_info)
+    values (#{classId,jdbcType=INTEGER}, #{professionId,jdbcType=INTEGER}, #{className,jdbcType=VARCHAR}, 
+      #{createdUser,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{modifiedUser,jdbcType=VARCHAR}, 
+      #{modifiedTime,jdbcType=TIMESTAMP}, #{classInfo,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="classId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into class_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="professionId != null">
+        profession_id,
+      </if>
+      <if test="className != null">
+        class_name,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+      <if test="classInfo != null">
+        class_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="professionId != null">
+        #{professionId,jdbcType=INTEGER},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="classInfo != null">
+        #{classInfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+    update class_tb
+    <set>
+      <if test="professionId != null">
+        profession_id = #{professionId,jdbcType=INTEGER},
+      </if>
+      <if test="className != null">
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="classInfo != null">
+        class_info = #{classInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+    update class_tb
+    set profession_id = #{professionId,jdbcType=INTEGER},
+      class_name = #{className,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      class_info = #{classInfo,jdbcType=VARCHAR}
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+</mapper>

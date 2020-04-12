@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.TeacherInfoMapper">
+
+
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.TeacherInfo">
+    <id column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="profession_id" jdbcType="INTEGER" property="professionId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="head_image" jdbcType="VARCHAR" property="headImage" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <!--一对一 学院  -->
+    	<association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+    	  <id column="profession_id" property="professionId"/>
+    	  <result column="profession_name" property="professionName"/>
+    	  <result column="profession_info" property="professionInfo"/>
+    	</association>
+    	<!--一对一 角色  -->
+    	<association property="roleInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.RoleInfo">
+    	  <id column="role_id" property="roleId"/>
+    	  <result column="role_name" property="roleName"/>
+    	  <result column="role_info" property="roleInfo"/>
+    	  <result column="role_status" property="roleStatus"/>
+    	</association>
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    teacher_id, profession_id, role_id, account, username, password, telphone, head_image, 
+    mail, status, created_time, created_user, modified_time, modified_user
+  </sql>
+  
+  
+  <!--按住键查询  -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teacher_tb
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <!--模糊查询  -->
+   <select id="selectByNameList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teacher_tb
+    <where>
+      <if test="keyWords != null and keyWords != ''">
+       instr(username, #{keyWords}) > 0
+      </if>
+    
+      <if test="status != null and status != ''">
+      and  status=#{status}
+      </if>
+    </where>
+   
+    
+  </select>
+  
+  <!--通过教师账号查询  -->
+   <select id="selectByAccountList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teacher_tb
+     
+     where account=#{account}
+ 
+  </select>
+
+<!--通过主键删除  -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teacher_tb
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </delete>
+  
+  <!--批量删除教师  -->
+  <delete id="deleteList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo">
+    delete from teacher_tb
+    where teacher_id in
+    <foreach collection="ids" separator="," item="id" open="(" close=")">
+     #{id}
+    </foreach>
+  </delete>
+  
+  <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.TeacherInfo">
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="teacherId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into teacher_tb (teacher_id, profession_id, role_id, 
+      account, username, password, 
+      telphone, head_image, mail, 
+      status, created_time, created_user, 
+      modified_time, modified_user)
+    values (#{teacherId,jdbcType=INTEGER}, #{professionId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 
+      #{account,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{telphone,jdbcType=VARCHAR}, #{headImage,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{createdUser,jdbcType=VARCHAR}, 
+      #{modifiedTime,jdbcType=TIMESTAMP}, #{modifiedUser,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.TeacherInfo">
+   <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="teacherId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into teacher_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="teacherId != null">
+        teacher_id,
+      </if>
+      <if test="professionId != null">
+        profession_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="telphone != null">
+        telphone,
+      </if>
+      <if test="headImage != null">
+        head_image,
+      </if>
+      <if test="mail != null">
+        mail,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="professionId != null">
+        #{professionId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="headImage != null">
+        #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.TeacherInfo">
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="teacherId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    update teacher_tb
+    <set>
+      <if test="professionId != null">
+        profession_id = #{professionId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="headImage != null">
+        head_image = #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        mail = #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.TeacherInfo">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="teacherId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    update teacher_tb
+    set profession_id = #{professionId,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      account = #{account,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      head_image = #{headImage,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR}
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </update>
+</mapper>

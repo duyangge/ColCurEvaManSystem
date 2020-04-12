@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">   
+	
+	<!-- 使用注解，开启配置组件扫描，使用了注解开发，就需要开启组件扫描 -->
+	<context:component-scan base-package="cn.jx.pxc.colcurevamansystem.controller"/>
+	
+	<!-- 注解驱动 （处理器映射器和处理器解析器）-->
+	<mvc:annotation-driven/>
+	
+	<!-- 处理静态资源处理器 (解除对静态资源的访问)-->
+	<mvc:default-servlet-handler/>
+
+<!-- 	<mvc:view-controller path="/" view-name="redirect:login" /> -->
+
+	 <!--自定义拦截器  
+	  	1.多个拦截器，顺序执行
+	  	2./**表示所有url包括子url路径，/*表示根url
+	  -->
+<!-- 	<mvc:interceptors>
+		登录拦截器 
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="cn.jx.pxc.otsystem.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	
+	</mvc:interceptors> -->
+	
+	<!-- 配置视图解析器ViewResovler -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+</beans>

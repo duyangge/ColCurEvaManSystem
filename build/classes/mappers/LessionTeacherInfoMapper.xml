@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.LessionTeacherInfoMapper">
+
+
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo">
+    <id column="lession_teacher_id" jdbcType="INTEGER" property="lessionTeacherId" />
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="lession_id" jdbcType="INTEGER" property="lessionId" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <!--一个老师  -->
+   <association property="teacherInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.TeacherInfo">
+    <id column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="profession_id" jdbcType="INTEGER" property="professionId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="head_image" jdbcType="VARCHAR" property="headImage" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+     <!--一对一 学院  -->
+    	<association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+    	  <id column="profession_id" property="professionId"/>
+    	  <result column="profession_name" property="professionName"/>
+    	  <result column="profession_info" property="professionInfo"/>
+    	</association>
+    	<!--一对一 角色  -->
+    	<association property="roleInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.RoleInfo">
+    	  <id column="role_id" property="roleId"/>
+    	  <result column="role_name" property="roleName"/>
+    	  <result column="role_info" property="roleInfo"/>
+    	  <result column="role_status" property="roleStatus"/>
+    	</association>
+   </association>
+   
+    <!--多门课程 -->
+      <collection property="lessionInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
+    		 <id column="lession_id"  property="lessionId" />
+    		 <result column="lession_name"  property="lessionName" />
+   			 <result column="lession_img"  property="lessionImg" />
+   			 <result column="lession_info"  property="lessionInfo" />
+		   	  <collection property="classInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+		         <id column="classId" property="classId"/>
+		         <result column="profession_id" property="professionId"/>
+		         <result column="class_name" property="className"/>
+		         <result column="class_info" property="classInfo"/>
+		         <!--班级和学院 一对一  -->
+		         <association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+			         <id column="profession_id"  property="professionId"/>
+			         <result column="profession_name" property="professionName"/>
+			         <result column="profession_info" property="professionInfo"/>
+		         </association>
+		     </collection>
+      </collection>
+    <!-- 多个班级 -->
+      <collection property="classInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+         <id column="class_id" jdbcType="INTEGER" property="classId" />
+    	<result column="profession_id" jdbcType="INTEGER" property="professionId" />
+   	 	<result column="class_name" jdbcType="VARCHAR" property="className" />
+    	 <result column="class_info" jdbcType="VARCHAR" property="classInfo" />
+      </collection>
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List">
+    lession_teacher_id, teacher_id, class_id, lession_id, created_user, created_time, 
+    modified_user, modified_time
+  </sql>
+  
+  <!--主键查询  -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lession_teacher_tb
+    where lession_teacher_id = #{lessionTeacherId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <!--通过课程id查询班级和教师  -->
+  <select id="selectByLessionList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lession_teacher_tb
+    where lession_id = #{lessionId}
+  </select>
+  
+  
+  <!--通过教师id查询班级和课程  -->
+  <select id="selectByTeacherList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lession_teacher_tb
+    where teacher_id = #{teacherId}
+  </select>
+  
+  
+    <!--通过班级id+课程id确定教师id  -->
+   <select id="selectByLessionAndClass" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lession_teacher_tb
+     where  lession_id = #{lessionId} and class_id=#{classId}
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lession_teacher_tb
+    where lession_teacher_id = #{lessionTeacherId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  
+  <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="lessionTeacherId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into lession_teacher_tb (lession_teacher_id, teacher_id, class_id, 
+      lession_id, created_user, created_time, 
+      modified_user, modified_time)
+    values (#{lessionTeacherId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, 
+      #{lessionId,jdbcType=INTEGER}, #{createdUser,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="lessionTeacherId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into lession_teacher_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lessionTeacherId != null">
+        lession_teacher_id,
+      </if>
+      <if test="teacherId != null">
+        teacher_id,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="lessionId != null">
+        lession_id,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lessionTeacherId != null">
+        #{lessionTeacherId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="lessionId != null">
+        #{lessionId,jdbcType=INTEGER},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo">
+    update lession_teacher_tb
+    <set>
+      <if test="teacherId != null">
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="lessionId != null">
+        lession_id = #{lessionId,jdbcType=INTEGER},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where lession_teacher_id = #{lessionTeacherId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo">
+    update lession_teacher_tb
+    set teacher_id = #{teacherId,jdbcType=INTEGER},
+      class_id = #{classId,jdbcType=INTEGER},
+      lession_id = #{lessionId,jdbcType=INTEGER},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where lession_teacher_id = #{lessionTeacherId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.ClassSubInfoMapper">
+
+
+
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo">
+    <id column="sub_eva_id" jdbcType="INTEGER" property="subEvaId" />
+    <result column="sub_student_id" jdbcType="INTEGER" property="subStudentId" />
+     <result column="sub_lession_id" jdbcType="INTEGER" property="subLessionId" />
+    <result column="sub_score" jdbcType="INTEGER" property="subScore" />
+    <result column="sub_info" jdbcType="VARCHAR" property="subInfo" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <result column="sub_status" jdbcType="INTEGER" property="subStatus" />
+    <!--多个学生  -->
+    <!-- <collection property="studentInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.StudentInfo">
+	    <id column="sub_student_id" jdbcType="INTEGER" property="studentId" />
+	    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+	    <result column="account" jdbcType="VARCHAR" property="account" />
+	    <result column="password" jdbcType="VARCHAR" property="password" />
+	    <result column="class_id" jdbcType="INTEGER" property="classId" />
+	    <result column="username" jdbcType="VARCHAR" property="username" />
+	    <result column="profession_id" jdbcType="INTEGER" property="professionId" />
+	    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+	    <result column="head_image" jdbcType="VARCHAR" property="headImage" />
+	    <result column="mail" jdbcType="VARCHAR" property="mail" />
+	    <result column="status" jdbcType="CHAR" property="status" />
+	    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+	    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+	    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+	    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+       一对一 班级 
+    	<association property="classInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+    	  <id column="class_id" property="classId"/>
+    	  <result column="class_name" property="className"/>
+    	  <result column="class_info" property="classInfo"/>
+    	</association>
+    	一对一 学院 
+    	<association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+    	  <id column="profession_id" property="professionId"/>
+    	  <result column="profession_name" property="professionName"/>
+    	  <result column="profession_info" property="professionInfo"/>
+    	</association>
+    </collection>
+    
+    多门课程 
+    <collection property="lessionInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
+        <id column="sub_lession_id" jdbcType="INTEGER" property="lessionId" />
+	    <result column="lession_name" jdbcType="VARCHAR" property="lessionName" />
+	    <result column="lession_img" jdbcType="VARCHAR" property="lessionImg" />
+	    <result column="lession_info" jdbcType="VARCHAR" property="lessionInfo" />
+	    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+	    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+	    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+	    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+     	课程和班级 多对多 
+	     <collection property="classInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
+	         <id column="class_id" property="classId"/>
+	         <result column="profession_id" property="professionId"/>
+	         <result column="class_name" property="className"/>
+	         <result column="class_info" property="classInfo"/>
+	         班级和学院 一对一 
+	         <association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
+		         <id column="profession_id"  property="professionId"/>
+		         <result column="profession_name" property="professionName"/>
+		         <result column="profession_info" property="professionInfo"/>
+	         </association>
+	     </collection>
+    </collection> -->
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List">
+    sub_eva_id, sub_student_id, sub_score, sub_info, created_user, created_time, modified_user, 
+    modified_time, sub_status, sub_lession_id
+  </sql>
+  
+  
+  <!--主键查询  -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class_sub_tb
+    where sub_eva_id = #{subEvaId,jdbcType=INTEGER}
+  </select>
+  
+  <!--模糊+分类查询  -->
+  <select id="selectByAllList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class_sub_tb
+  </select>
+  
+  <!--按课程id查询查询  -->
+  <select id="selectByLessionList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>
+    from class_sub_tb
+    where sub_lession_id = #{lessionId}
+    
+  </select>
+  
+  <!--按课程id和学生id共同查询课程评价id  -->
+  <select id="selectByLessionAndStudentList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>
+    from class_sub_tb
+    where sub_lession_id = #{lessionId} and sub_student_id=#{studentId}   
+  </select>
+  
+  <!--按学生id共同查询课程评价id  -->
+  <select id="selectByStudentList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>
+    from class_sub_tb
+    where sub_student_id = #{studentId} 
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from class_sub_tb
+    where sub_eva_id = #{subEvaId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo" flushCache="true"> 
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="subEvaId">
+          SELECT LAST_INSERT_ID()
+  </selectKey>
+    insert into class_sub_tb (sub_eva_id, sub_student_id, sub_score, 
+      sub_info, created_user, created_time, 
+      modified_user, modified_time, sub_status, 
+      sub_lession_id)
+    values (#{subEvaId,jdbcType=INTEGER}, #{subStudentId,jdbcType=INTEGER}, #{subScore,jdbcType=INTEGER}, 
+      #{subInfo,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{subStatus,jdbcType=INTEGER}, 
+      #{subLessionId,jdbcType=INTEGER})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo" flushCache="true">
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="subEvaId">
+          SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into class_sub_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="subEvaId != null">
+        sub_eva_id,
+      </if>
+      <if test="subStudentId != null">
+        sub_student_id,
+      </if>
+      <if test="subScore != null">
+        sub_score,
+      </if>
+      <if test="subInfo != null">
+        sub_info,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+      <if test="subStatus != null">
+        sub_status,
+      </if>
+      <if test="subLessionId != null">
+        sub_lession_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="subEvaId != null">
+        #{subEvaId,jdbcType=INTEGER},
+      </if>
+      <if test="subStudentId != null">
+        #{subStudentId,jdbcType=INTEGER},
+      </if>
+      <if test="subScore != null">
+        #{subScore,jdbcType=INTEGER},
+      </if>
+      <if test="subInfo != null">
+        #{subInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subStatus != null">
+        #{subStatus,jdbcType=INTEGER},
+      </if>
+      <if test="subLessionId != null">
+        #{subLessionId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo">
+    update class_sub_tb
+    <set>
+      <if test="subStudentId != null">
+        sub_student_id = #{subStudentId,jdbcType=INTEGER},
+      </if>
+      <if test="subScore != null">
+        sub_score = #{subScore,jdbcType=INTEGER},
+      </if>
+      <if test="subInfo != null">
+        sub_info = #{subInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subStatus != null">
+        sub_status = #{subStatus,jdbcType=INTEGER},
+      </if>
+      <if test="subLessionId != null">
+        sub_lession_id = #{subLessionId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sub_eva_id = #{subEvaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo">
+    update class_sub_tb
+    set sub_student_id = #{subStudentId,jdbcType=INTEGER},
+      sub_score = #{subScore,jdbcType=INTEGER},
+      sub_info = #{subInfo,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      sub_status = #{subStatus,jdbcType=INTEGER},
+      sub_lession_id = #{subLessionId,jdbcType=INTEGER}
+    where sub_eva_id = #{subEvaId,jdbcType=INTEGER}
+  </update>
+</mapper>
