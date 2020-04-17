@@ -10,7 +10,7 @@
 <meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>添加课程</title>
+		<title>编辑课程信息</title>
 		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
 		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 	</head>
@@ -29,6 +29,7 @@
 								</c:forEach>							
 							</select>
 						</div>
+					</div>
 			        <input type="hidden" name="lessionId" value="${les.lessionId }">
 					<div class="layui-form-item">
 						<label class="layui-form-label">课程名称：</label>

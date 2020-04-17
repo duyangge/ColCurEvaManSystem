@@ -65,10 +65,10 @@
 									<td><input type="checkbox" name="lessionId" lay-skin="primary" data-id="1" value="${les.lessionId  }"></td>
 									<td class="hidden-xs">${les.lessionId  }</td>
 									<td class="hidden-xs">${les.lessionName }</td>
-									<td><textarea>${les.lessionInfo }</textarea></td>
+									<td><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${les.lessionInfo }</textarea></td>
 									<td>${les.createdUser }</td>
-									<td class="hidden-xs" ><fmt:formatDate value="${les.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
-									<td class="hidden-xs"><fmt:formatDate value="${les.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
+									<td class="hidden-xs" ><fmt:formatDate value="${les.createdTime }" pattern="yyyy-MM-dd:HH:mm:ss" /></td>
+									<td class="hidden-xs"><fmt:formatDate value="${les.modifiedTime }" pattern="yyyy-MM-dd:HH:mm:ss" /></td>
 								
 									<td>
 										<div class="layui-inline">

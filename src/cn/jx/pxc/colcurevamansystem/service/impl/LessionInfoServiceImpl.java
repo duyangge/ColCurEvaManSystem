@@ -20,12 +20,14 @@ import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 import cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
+import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
 import cn.jx.pxc.colcurevamansystem.mapper.ClassInfoMapper;
 import cn.jx.pxc.colcurevamansystem.mapper.ClassLessionInfoMapper;
 import cn.jx.pxc.colcurevamansystem.mapper.LessionInfoMapper;
 import cn.jx.pxc.colcurevamansystem.mapper.LessionTeacherInfoMapper;
 import cn.jx.pxc.colcurevamansystem.mapper.ProfessionInfoMapper;
+import cn.jx.pxc.colcurevamansystem.mapper.StudentInfoMapper;
 import cn.jx.pxc.colcurevamansystem.mapper.TeacherInfoMapper;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 
@@ -47,21 +49,23 @@ public class LessionInfoServiceImpl implements LessionInfoService {
 	
 	@Resource
 	public ClassLessionInfoMapper classLessionInfoMapper;
-	
-	
+		
 	@Resource
-	public ClassInfoMapper classInfoMapper;
-	
+	public ClassInfoMapper classInfoMapper;	
 	
 	@Resource
 	public ProfessionInfoMapper professionInfoMapper;
 
 	@Resource
-	public TeacherInfoMapper teacherInfoMapper;  
-	
+	public TeacherInfoMapper teacherInfoMapper;  	
 	
 	@Resource
 	public LessionTeacherInfoMapper lessionTeacherInfoMapper;
+	
+	@Resource
+	public StudentInfoMapper studentInfoMapper;
+	
+	
 	/* (non-Javadoc)
 	 * @see cn.jx.pxc.colcurevamansystem.service.LessionInfoService#selectByNameList(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
 	 */
@@ -184,7 +188,6 @@ public class LessionInfoServiceImpl implements LessionInfoService {
 		
 		ProfessionInfo pro = professionInfoMapper.selectByPrimaryKey(beanQueryVo.getProfessionId());
 		
-		
 		//课程id
 		for (ClassLessionInfo claLes : claLesList) {
 			LessionInfo les = lessionInfoMapper.selectByPrimaryKey(claLes.getLessionId());
@@ -221,6 +224,80 @@ public class LessionInfoServiceImpl implements LessionInfoService {
 		}		
 		return lesList;
 
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.jx.pxc.colcurevamansystem.service.LessionInfoService#selectByIdLessionTemp(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
+	 */
+	@Override
+	public LessionInfoTemp selectByIdLessionTemp(BeanQueryVo beanQueryVo) throws Exception {
+		//已知班级id，课程id，学生ID，求得教师id
+		LessionInfoTemp lesTemp = new LessionInfoTemp();
+		
+		LessionTeacherInfo lesTea = lessionTeacherInfoMapper.selectByLessionAndClass(beanQueryVo);
+		
+		TeacherInfo tea = teacherInfoMapper.selectByPrimaryKey(lesTea.getTeacherId());
+		lesTemp.setTeacherId(tea.getTeacherId());
+		lesTemp.setTeacherName(tea.getUsername());
+		
+		ClassInfo cla = classInfoMapper.selectByPrimaryKey(beanQueryVo.getClassId());
+		lesTemp.setClassId(cla.getClassId());
+		lesTemp.setClassName(cla.getClassName());
+		
+		LessionInfo les = lessionInfoMapper.selectByPrimaryKey(beanQueryVo.getLessionId());
+		lesTemp.setLessionId(les.getLessionId());
+		lesTemp.setLessionName(les.getLessionName());
+		
+		StudentInfo stu = studentInfoMapper.selectByPrimaryKey(beanQueryVo.getStudentId());
+		lesTemp.setStudentId(stu.getStudentId());
+		lesTemp.setStudentName(stu.getUsername());
+		
+		return lesTemp;
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.jx.pxc.colcurevamansystem.service.LessionInfoService#selectByTeacher(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
+	 */
+	@Override
+	public List<LessionInfoTemp> selectByTeacher(BeanQueryVo beanQueryVo) throws Exception {
+		List<LessionInfoTemp> lesTempList  = new ArrayList<LessionInfoTemp>();
+		List<LessionTeacherInfo>  lesTeaList = lessionTeacherInfoMapper.selectByTeacherList(beanQueryVo);
+		for (LessionTeacherInfo lesTea : lesTeaList) {//查询所有教授课程信息
+			LessionInfoTemp lesTemp = new LessionInfoTemp();
+			ClassInfo cla = classInfoMapper.selectByPrimaryKey(lesTea.getClassId());//班级
+			ProfessionInfo pro = professionInfoMapper.selectByPrimaryKey(cla.getProfessionId());//学院
+			LessionInfo les = lessionInfoMapper.selectByPrimaryKey(lesTea.getLessionId());//课程
+			TeacherInfo tea = teacherInfoMapper.selectByPrimaryKey(beanQueryVo.getTeacherId());//教师
+			lesTemp.setProfessionId(pro.getProfessionId());
+			lesTemp.setProfessionName(pro.getProfessionName());
+			lesTemp.setClassId(cla.getClassId());
+			lesTemp.setClassName(cla.getClassName());
+			lesTemp.setLessionId(les.getLessionId());
+			lesTemp.setLessionName(les.getLessionName());
+			lesTempList.add(lesTemp);
+		}
+		//进行模糊查询操作
+		String word = beanQueryVo.getKeyWords();
+		if( word != null && !word.equals("")) {
+			Iterator<LessionInfoTemp> it = lesTempList.iterator();
+			while(it.hasNext()) {
+				LessionInfoTemp lesTemp = it.next();
+				if(lesTemp.getLessionName().indexOf(word) == -1) {
+					it.remove();
+				}
+			}
+		}
+		
+		return lesTempList;
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.jx.pxc.colcurevamansystem.service.LessionInfoService#selectByLession(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
+	 */
+	@Override
+	public LessionInfoTemp selectByLession(BeanQueryVo beanQueryVo) throws Exception {
+		
+		return null;
 	}
 	
 	

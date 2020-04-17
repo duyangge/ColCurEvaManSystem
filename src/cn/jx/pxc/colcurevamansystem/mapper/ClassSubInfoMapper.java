@@ -15,7 +15,12 @@ import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo;
  */
 public interface ClassSubInfoMapper {
 	
-	
+	/**通过教师id查询所有课程评价记录
+	 * @param beanQueryVo
+	 * @return
+	 * @throws Exception
+	 */
+	List<ClassSubInfo> selectByteacher(BeanQueryVo beanQueryVo) throws Exception;
 	
 	/**通过课程,教师,班级,学生查询所有评价
 	 * @return

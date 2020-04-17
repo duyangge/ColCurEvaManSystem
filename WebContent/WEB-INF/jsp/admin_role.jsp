@@ -63,42 +63,6 @@
 								</tr>
 							</thead>
 							<tbody>
-							
-
-								<!-- <tr>
-									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>
-									<td class="hidden-xs">1</td>
-									<td >超级管理员</td>	
-									<th >权限最高</th>								
-									<td >admin</td>
-									<td class="hidden-xs">2020-03-14</td>
-									<td class="hidden-xs">2020-03-14</td>
-									<td><button class="layui-btn layui-btn-mini layui-btn-normal">正常</button></td>
-									<td>
-										<div class="layui-inline">
-											<button class="layui-btn layui-btn-small layui-btn-normal go-btn" data-id="1" data-url="article-detail.html"><i class="layui-icon">&#xe642;</i></button>
-											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="1" data-url="article-detail.html"><i class="layui-icon">&#xe640;</i></button>
-										</div>
-									</td>
-								</tr>
-								
-								<tr>
-									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>
-									<td class="hidden-xs">2</td>
-									<td >普通管理员</td>
-									<th >教师权限</th>											
-									<td >admin</td>
-									<td class="hidden-xs">2020-03-14</td>
-									<td class="hidden-xs">2020-03-14</td>
-									<td><button class="layui-btn layui-btn-mini layui-btn-normal">正常</button></td>
-									<td>
-										<div class="layui-inline">
-											<button class="layui-btn layui-btn-small layui-btn-normal go-btn" data-id="1" data-url="article-detail.html"><i class="layui-icon">&#xe642;</i></button>
-											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="1" data-url="article-detail.html"><i class="layui-icon">&#xe640;</i></button>
-										</div>
-									</td>
-								</tr>
-								 -->
 								<tr>
 									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>
 									<td class="hidden-xs">3</td>

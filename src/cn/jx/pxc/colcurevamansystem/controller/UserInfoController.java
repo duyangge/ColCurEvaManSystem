@@ -184,10 +184,12 @@ public class UserInfoController {
 					model.addAttribute("message", message);
 					return "login";
 				}
-				session.setAttribute("teacher",tea);
+				session.setAttribute("admin",tea);
+				model.addAttribute("tea", tea);
 				return "tea_index";//教师页面
 			}else { 
 				session.setAttribute("admin",tea);
+				model.addAttribute("admin", tea);
 				return "admin_index";//管理员界面
 			}
 		} catch (Exception e) {

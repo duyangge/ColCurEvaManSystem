@@ -22,25 +22,28 @@
 				<!-- form表单，将搜索按钮变为提交按按钮 -->
 					<form class="layui-form" action="../classSub/findClassSub.do" method="post">
 						<div class="layui-form-item">
-							<div class="layui-inline tool-btn">
-								<button class="layui-btn layui-btn-small layui-btn-normal tea_go-btn hidden-xs" data-url=""><i class="layui-icon">&#xe654;</i></button>
-								<button class="layui-btn layui-btn-small layui-btn-danger delBtn"  data-url=""><i class="layui-icon">&#xe640;</i></button>
-						        <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs" data-url=""><i class="iconfont">&#xe656;</i></button>
-							</div>
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords"  placeholder="请输入关键字" autocomplete="off" class="layui-input">
 							</div>
 							<div class="layui-inline">
-								<select name="status" lay-filter="status" id="status">
-									<option value="" selected="selected">请选择一个状态</option>
+							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
+							</div>
+							<div class="layui-inline">
+								<select name="category" lay-filter="status" id="status">
+									<option value="0" selected="selected">请选择类别</option>
 									<option value="1">班级</option>
 									<option value="2">教师</option>
 									<option value="3">课程</option>
 								</select>
 							</div>
 							<div class="layui-inline">
-							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
+								<select name="status" lay-filter="status" id="status">
+									<option value="0" selected="selected">请选择一个状态</option>
+									<option value="1">可见</option>
+									<option value="2">不可见</option>
+								</select>
 							</div>
+							
 						</div>
 					</form>
 					<div class="layui-form" id="table-list">
@@ -53,8 +56,9 @@
 								<col class="hidden-xs" width="130">
 								<col class="hidden-xs" width="80">
 								<col>
-								<col class="hidden-xs" width="100">
+								<col class="hidden-xs" width="120">
 								<col class="hidden-xs" width="150">
+								<col>
 								<col width="150">
 							</colgroup>
 							<thead>
@@ -66,8 +70,9 @@
 									<th class="hidden-xs">授课教师</th>
 									<th class="hidden-xs">评分</th>
 									<th>评价</th>
-									<th class="hidden-xs">评价者</th>
+									<th class="hidden-xs">评价学生</th>
 									<th class="hidden-xs">创建时间</th>
+									<th>状态</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -82,11 +87,25 @@
 									<td  class="hidden-xs">${lesEva.score }</td>
 									<td ><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${lesEva.subInfo }</textarea></td>
 									<td class="hidden-xs">${lesEva.subUserName }</td>
-									<td class="hidden-xs" ><fmt:formatDate value="${lesEva.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
+									<td class="hidden-xs" ><fmt:formatDate value="${lesEva.createdTime }" pattern="yyyy-MM-dd" /></td>
+									<td>
+										<c:if test="${lesEva.status eq '0' }">
+											<button class="layui-btn layui-btn-mini layui-btn-normal">
+												可见
+											</button>
+										</c:if>
+										<c:if test="${lesEva.status eq '1' }">
+											<button class="layui-btn layui-btn-mini layui-btn-normal" style="background:red;">
+												不可见
+											</button>
+										</c:if>
+									
+									</td>
 									<td>
 										<div class="layui-inline">
-										<button class="layui-btn layui-btn-small layui-btn-normal tea_edit-btn" data-id="${lesEva.id }" data-url=""><i class="layui-icon">&#xe642;</i></button>
-										<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${lesEva.id }" data-url=""><i class="layui-icon">&#xe640;</i></button></div>
+											<button class="layui-btn layui-btn-small layui-btn-normal tea_see_eva_edit-btn" data-id="${lesEva.id }" data-url="../classSub/goTeacherSeeLessionEva.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${lesEva.id }" data-url=""><i class="layui-icon">&#xe640;</i></button>
+										</div>
 									</td>
 								</tr>
 							</c:forEach>

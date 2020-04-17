@@ -16,7 +16,7 @@ import java.util.Date;
 @SuppressWarnings("all")
 public class LessionEvaTemp {
 	
-	private Integer id;
+	private Integer id;//课程评价id
 	private String lessionName;
 	private String className;
 	private String teacherName;
@@ -24,6 +24,14 @@ public class LessionEvaTemp {
 	private String subInfo;
 	private String subUserName;
 	private Date createdTime;
+	private Integer status;
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
 	public Integer getId() {
 		return id;

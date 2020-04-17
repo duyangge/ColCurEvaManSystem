@@ -20,11 +20,37 @@ import cn.jx.pxc.colcurevamansystem.bean.LessionEvaTemp;
 public interface ClassSubInfoService {
 	
 	
-	/**查询所有
+	
+	/**教师查看评价详细信息
+	 * @param beanQueryVo
+	 * @return
+	 * @throws Exception
+	 */
+	LessionEvaTemp  selectClassSubById(BeanQueryVo beanQueryVo) throws Exception;
+	
+	
+	
+	
+	/**通过教师id查询所有课程评价记录
+	 * @param beanQueryVo
+	 * @return
+	 * @throws Exception
+	 */
+	List<LessionEvaTemp> selectByteacher(BeanQueryVo beanQueryVo) throws Exception;
+	
+	/**查询某条记录并转换为临时类输出
+	 * @param beanQueryVo
+	 * @return
+	 */
+	LessionEvaTemp selectLessionEvaById(BeanQueryVo beanQueryVo);	
+	
+	/**查询所有+查询某个特定学生
 	 * @param beanQueryVo
 	 * @return
 	 */
 	List<LessionEvaTemp> selectLessionEva(BeanQueryVo beanQueryVo);
+	
+	
 	
 	
 	/**通过课程查询所有评价
@@ -54,7 +80,7 @@ public interface ClassSubInfoService {
 
     int insert(ClassSubInfo record);
 
-    int insertSelective(ClassSubInfo record);
+    int insertSelective(ClassSubInfo record) throws Exception;
 
     ClassSubInfo selectByPrimaryKey(Integer subEvaId);
 

@@ -47,8 +47,8 @@
 							<colgroup>
 								<col width="50">
 								<col class="hidden-xs" width="50">
-								<col class="hidden-xs" width="100">
-								<col>
+								<col class="hidden-xs" width="80">
+								<col class="hidden-xs" width="90">
 								<col>
 								<col>
 								<col class="hidden-xs" width="160">
@@ -79,8 +79,8 @@
 									<td class="hidden-xs">${tea.username }</td>
                                     <td class="hidden-xs">${tea.telphone }</td>
                                     <td class="hidden-xs">${tea.mail }</td>
-									<td class="hidden-xs" ><fmt:formatDate value="${tea.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
-									<td class="hidden-xs"><fmt:formatDate value="${tea.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
+									<td class="hidden-xs" ><fmt:formatDate value="${tea.createdTime }" pattern="yyyy-MM-dd" /></td>
+									<td class="hidden-xs"><fmt:formatDate value="${tea.modifiedTime }" pattern="yyyy-MM-dd" /></td>
 									<td>
 									<c:if test="${tea.status eq '0' }">
 										<button class="layui-btn layui-btn-mini layui-btn-normal">
@@ -95,8 +95,9 @@
 									</td>
 									<td>
 										<div class="layui-inline">
-										<button class="layui-btn layui-btn-small layui-btn-normal tea_edit-btn" data-id="${tea.teacherId }" data-url="../user/goUpdateTeacher.do"><i class="layui-icon">&#xe642;</i></button>
-										<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${tea.teacherId  }" data-url="../user/deleteTeacher.do"><i class="layui-icon">&#xe640;</i></button></div>
+											<button class="layui-btn layui-btn-small layui-btn-normal tea_edit-btn" data-id="${tea.teacherId }" data-url="../user/goUpdateTeacher.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${tea.teacherId  }" data-url="../user/deleteTeacher.do"><i class="layui-icon">&#xe640;</i></button>
+										</div>
 									</td>
 								</tr>
 							</c:forEach>

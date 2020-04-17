@@ -63,7 +63,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return false;
 	})
 
-	//列表编辑学生
+	//管理员编辑学生
 	 $('#table-list,.tool-btn').on('click', '.stu_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
@@ -71,7 +71,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return false;
 	})	
 	
-	//列表编辑教师
+	//管理员编辑教师
 	$('#table-list,.tool-btn').on('click', '.tea_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
@@ -79,7 +79,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return false;
 	})	
 	
-	//列表编辑学院
+	//管理员编辑学院
 	$('#table-list,.tool-btn').on('click', '.pro_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
@@ -87,7 +87,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return false;
 	})
 	
-	//列表编辑班级
+	//管理员编辑班级
 	$('#table-list,.tool-btn').on('click', '.cla_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
@@ -95,7 +95,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return false;
 	})	
 	
-	//列表编辑课程
+	//管理员编辑课程
 	$('#table-list,.tool-btn').on('click', '.les_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
@@ -103,6 +103,50 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return false;
 	})	
 		
+	//学生添加课程评价
+	$('#table-list,.tool-btn').on('click', '.eva_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?lessionId="+id;
+		return true;
+	})	
+	
+	//管理员具体查看课程评价
+	$('#table-list,.tool-btn').on('click', '.see_eva_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?lessionId="+id;
+		return true;
+	})	
+	
+	//教师具体查看课程评价
+	$('#table-list,.tool-btn').on('click', '.tea_see_eva_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return true;
+	})	
+	
+	//学生具体查看课程评价
+	$('#table-list,.tool-btn').on('click', '.stu_see_eva_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return true;
+	})	
+	
+	
+	//教师查看课程
+	$('#table-list,.tool-btn').on('click', '.see_les_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?lessionId="+id;
+		return true;
+	})	
+	
+	
+	
+	
 	
 	
 	

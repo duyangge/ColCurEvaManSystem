@@ -8,6 +8,8 @@
     <id column="sub_eva_id" jdbcType="INTEGER" property="subEvaId" />
     <result column="sub_student_id" jdbcType="INTEGER" property="subStudentId" />
      <result column="sub_lession_id" jdbcType="INTEGER" property="subLessionId" />
+     <result column="sub_class_id" jdbcType="INTEGER" property="subClassId" />
+     <result column="sub_teacher_id" jdbcType="INTEGER" property="subTeacherId" />
     <result column="sub_score" jdbcType="INTEGER" property="subScore" />
     <result column="sub_info" jdbcType="VARCHAR" property="subInfo" />
     <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
@@ -34,7 +36,7 @@
 	    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
        一对一 班级 
     	<association property="classInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
-    	  <id column="class_id" property="classId"/>
+    	  <id column="sub_class_id" property="classId"/>
     	  <result column="class_name" property="className"/>
     	  <result column="class_info" property="classInfo"/>
     	</association>
@@ -75,7 +77,7 @@
   
   
   <sql id="Base_Column_List">
-    sub_eva_id, sub_student_id, sub_score, sub_info, created_user, created_time, modified_user, 
+    sub_eva_id, sub_student_id,sub_class_id,sub_teacher_id, sub_score, sub_info, created_user, created_time, modified_user, 
     modified_time, sub_status, sub_lession_id
   </sql>
   
@@ -121,6 +123,15 @@
   </select>
   
   
+  <!--按教师id  -->
+  <select id="selectByteacher" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>
+    from class_sub_tb
+    where sub_teacher_id = #{teacherId} 
+  </select>
+  
+  
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from class_sub_tb
@@ -132,11 +143,11 @@
   <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="subEvaId">
           SELECT LAST_INSERT_ID()
   </selectKey>
-    insert into class_sub_tb (sub_eva_id, sub_student_id, sub_score, 
+    insert into class_sub_tb (sub_eva_id, sub_student_id, sub_class_id,sub_teacher_id,sub_score, 
       sub_info, created_user, created_time, 
       modified_user, modified_time, sub_status, 
       sub_lession_id)
-    values (#{subEvaId,jdbcType=INTEGER}, #{subStudentId,jdbcType=INTEGER}, #{subScore,jdbcType=INTEGER}, 
+    values (#{subEvaId,jdbcType=INTEGER}, #{subStudentId,jdbcType=INTEGER}, #{subClassId,jdbcType=INTEGER},#{subTeacherId,jdbcType=INTEGER},#{subScore,jdbcType=INTEGER}, 
       #{subInfo,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, #{subStatus,jdbcType=INTEGER}, 
       #{subLessionId,jdbcType=INTEGER})
@@ -153,6 +164,12 @@
       </if>
       <if test="subStudentId != null">
         sub_student_id,
+      </if>
+      <if test="subClassId != null">
+        sub_class_id,
+      </if>
+       <if test="subTeacherId != null">
+        sub_teacher_id,
       </if>
       <if test="subScore != null">
         sub_score,
@@ -178,6 +195,7 @@
       <if test="subLessionId != null">
         sub_lession_id,
       </if>
+      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="subEvaId != null">
@@ -185,6 +203,12 @@
       </if>
       <if test="subStudentId != null">
         #{subStudentId,jdbcType=INTEGER},
+      </if>
+      <if test="subClassId != null">
+        #{subClassId,jdbcType=INTEGER},
+      </if>
+         <if test="subTeacherId != null">
+        #{subTeacherId,jdbcType=INTEGER},
       </if>
       <if test="subScore != null">
         #{subScore,jdbcType=INTEGER},
@@ -218,6 +242,12 @@
       <if test="subStudentId != null">
         sub_student_id = #{subStudentId,jdbcType=INTEGER},
       </if>
+      <if test="subClassId != null">
+        sub_class_id = #{subClassId,jdbcType=INTEGER},
+      </if>
+         <if test="subTeacherId != null">
+        sub_teacher_id = #{subTeacherId,jdbcType=INTEGER},
+      </if>
       <if test="subScore != null">
         sub_score = #{subScore,jdbcType=INTEGER},
       </if>
@@ -248,6 +278,8 @@
   <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo">
     update class_sub_tb
     set sub_student_id = #{subStudentId,jdbcType=INTEGER},
+    sub_class_id = #{subClassId,jdbcType=INTEGER},
+     sub_teacher_id = #{subTeacherId,jdbcType=INTEGER},
       sub_score = #{subScore,jdbcType=INTEGER},
       sub_info = #{subInfo,jdbcType=VARCHAR},
       created_user = #{createdUser,jdbcType=VARCHAR},

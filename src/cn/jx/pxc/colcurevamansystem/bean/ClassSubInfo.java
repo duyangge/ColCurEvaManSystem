@@ -14,10 +14,14 @@ import java.util.List;
 @SuppressWarnings("all")
 public class ClassSubInfo {
     private Integer subEvaId;
+    
+    private Integer subClassId;
 
     private Integer subStudentId;//学生ID
     
     private Integer subLessionId;//评价课程id
+    
+    private Integer subTeacherId;
 
     private Integer subScore;
 
@@ -37,8 +41,25 @@ public class ClassSubInfo {
     
     private List<LessionInfo> lessionInfoList;//课程评价和课程 多对多
     
+    
+    
+    public Integer getSubTeacherId() {
+		return subTeacherId;
+	}
 
-    public List<StudentInfo> getStudentInfoList() {
+	public void setSubTeacherId(Integer subTeacherId) {
+		this.subTeacherId = subTeacherId;
+	}
+
+	public Integer getSubClassId() {
+		return subClassId;
+	}
+
+	public void setSubClassId(Integer subClassId) {
+		this.subClassId = subClassId;
+	}
+
+	public List<StudentInfo> getStudentInfoList() {
 		return studentInfoList;
 	}
 
@@ -136,11 +157,11 @@ public class ClassSubInfo {
 
 	@Override
 	public String toString() {
-		return "ClassSubInfo [subEvaId=" + subEvaId + ", subStudentId=" + subStudentId + ", subLessionId="
-				+ subLessionId + ", subScore=" + subScore + ", subInfo=" + subInfo + ", createdUser=" + createdUser
-				+ ", createdTime=" + createdTime + ", modifiedUser=" + modifiedUser + ", modifiedTime=" + modifiedTime
-				+ ", subStatus=" + subStatus + ", studentInfoList=" + studentInfoList + ", lessionInfoList="
-				+ lessionInfoList + "]";
+		return "ClassSubInfo [subEvaId=" + subEvaId + ", subClassId=" + subClassId + ", subStudentId=" + subStudentId
+				+ ", subLessionId=" + subLessionId + ", subTeacherId=" + subTeacherId + ", subScore=" + subScore
+				+ ", subInfo=" + subInfo + ", createdUser=" + createdUser + ", createdTime=" + createdTime
+				+ ", modifiedUser=" + modifiedUser + ", modifiedTime=" + modifiedTime + ", subStatus=" + subStatus
+				+ ", studentInfoList=" + studentInfoList + ", lessionInfoList=" + lessionInfoList + "]";
 	}
-    
+
 }

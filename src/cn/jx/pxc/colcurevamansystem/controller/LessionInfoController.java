@@ -20,8 +20,10 @@ import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
+import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
+import cn.jx.pxc.colcurevamansystem.service.TeacherInfoService;
 
 /**
  *<p> Title:  LessionInfoController.java</p>
@@ -42,6 +44,64 @@ public class LessionInfoController {
 	
 	@Resource
 	public ProfessionInfoService professionInfoService;
+	
+	@Resource
+	public TeacherInfoService teacherInfoService;
+	
+	/**查看教师所教课程列表
+	 * @param model
+	 * @param session
+	 * @param beanQueryVo
+	 * @return
+	 */
+	@RequestMapping("/findLessionByTeacher.do")
+	public String findLessionByTeacher(Model model,HttpSession session, BeanQueryVo beanQueryVo) {
+		TeacherInfo teacherInfo  = (TeacherInfo) session.getAttribute("admin");
+		TeacherInfo tea = teacherInfoService.selectByPrimaryKey(teacherInfo.getTeacherId());
+		beanQueryVo.setTeacherId(tea.getTeacherId());
+		try {
+			List<LessionInfoTemp>  lesTempList = lessionInfoService.selectByTeacher(beanQueryVo);
+			model.addAttribute("lesTempList", lesTempList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "tea_lession";
+	}
+	
+	
+	
+	
+	
+	/**查看教师所教课程
+	 * @param model
+	 * @param session
+	 * @param beanQueryVo
+	 * @return
+	 */
+	@RequestMapping("/findLessionByTeacherDetail.do")
+	public String findLessionByTeacherDetail(Model model,Integer lessionId) {
+		try {
+			LessionInfo les = lessionInfoService.selectByPrimaryKey(lessionId);
+			model.addAttribute("les", les);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "tea_lession_see";
+	}
+	
+	
+	
+	
+	
+	
+	
+	public String findLessionEvaByTeacher(Model model,HttpSession session, BeanQueryVo beanQueryVo) {
+		
+		return "";
+	}
+	
+	
 	
 	/**学生查询所在班级所有课程
 	 * @param model
@@ -176,5 +236,8 @@ public class LessionInfoController {
 		}
 	   return "redirect:lessionAdmin.do";
 	}
+	
+	
+	
 
 }

@@ -87,14 +87,13 @@ layui.use(['form','element'], function(){
 
 					</div>
 			
-					<%-- <div class="layui-form-item">
+					 <div class="layui-form-item">
 						<label class="layui-form-label">状态：</label>
 						<div class="layui-input-block">
-							<input type="radio" name="status" value="0" title="正常" <c:if test="${tea.status eq '0' }">checked="checked"</c:if>/>
-							<input type="radio" name="status" value="1" title="异常" <c:if test="${tea.status eq '1' }">checked="checked"</c:if>/>
+							<input type="radio" name="status" value="0" title="正常"  readonly="readonly" checked="checked"/>
 						</div>
 
-					</div> --%>
+					</div> 
 				  
 				  <div class="layui-form-item">
 				    <div class="layui-input-block">
@@ -110,6 +109,7 @@ layui.use(['form','element'], function(){
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">用户名：</label>
 				    <div class="layui-input-block">
+				     <input type="hidden" name="id" value="${tea.teacherId }">
 				      <input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled" value="${tea.username }">
 				    </div>
 				  </div>

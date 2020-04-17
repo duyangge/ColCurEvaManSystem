@@ -18,6 +18,23 @@ import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
  * @version 版本号
  */
 public interface LessionInfoService {
+	
+	
+	/**详细查看课程信息
+	 * @param beanQueryVo
+	 * @return
+	 * @throws Exception
+	 */
+	LessionInfoTemp selectByLession(BeanQueryVo beanQueryVo) throws Exception;
+	
+	
+	/**通过教师id查询所有教授课程信息
+	 * @param beanQueyVo
+	 * @return
+	 * @throws Exception
+	 */
+	List<LessionInfoTemp> selectByTeacher(BeanQueryVo beanQueyVo) throws Exception;
+	
 
 	/**模糊查询：全局查询
 	 * @param beanQueryVo
@@ -41,6 +58,13 @@ public interface LessionInfoService {
 	 * @throws Exception
 	 */
 	List<LessionInfoTemp> selectLessionInfoTempByClassList(BeanQueryVo beanQueryVo) throws Exception;
+	
+	/**跳转学生评价页面所需信息
+	 * @param beanQueryVo:班级id，学生ID，课程id--》教师id
+	 * @return
+	 * @throws Exception
+	 */
+	LessionInfoTemp selectByIdLessionTemp(BeanQueryVo beanQueryVo) throws Exception;
 	
 	/**批量删除
 	 * @param beanQueryVo

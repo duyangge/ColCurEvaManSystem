@@ -14,6 +14,10 @@ package cn.jx.pxc.colcurevamansystem.bean;
 @SuppressWarnings("all")
 public class BeanQueryVo {
 	
+	private Integer category;
+	
+	private Integer id;
+	
 	private int [] ids;//id数组
 	
 	private Integer lessionId;//课程id
@@ -38,6 +42,26 @@ public class BeanQueryVo {
 	
 	private StudentInfo studentInfo;
 	
+	private  ClassSubInfo classSubInfo;
+	
+	public Integer getCategory() {
+		return category;
+	}
+	public void setCategory(Integer category) {
+		this.category = category;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public ClassSubInfo getClassSubInfo() {
+		return classSubInfo;
+	}
+	public void setClassSubInfo(ClassSubInfo classSubInfo) {
+		this.classSubInfo = classSubInfo;
+	}
 	public int[] getIds() {
 		return ids;
 	}

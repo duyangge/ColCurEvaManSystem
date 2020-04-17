@@ -47,8 +47,8 @@
 							<colgroup>
 								<col width="50">
 								<col class="hidden-xs" width="50">
-								<col class="hidden-xs" width="100">
-								<col >
+								<col class="hidden-xs" width="80">
+								<col class="hidden-xs" width="90">
 								<col >
 								<col >
 								<col class="hidden-xs" width="150">
@@ -61,7 +61,7 @@
 									<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
 									<th class="hidden-xs">ID</th>
 									<th class="hidden-xs">学号</th>
-									<th>姓名</th>
+									<th class="hidden-xs">姓名</th>
 									<th>班级</th>
 									<th>学院</th>
 									<th class="hidden-xs" >创建时间</th>
@@ -76,11 +76,11 @@
 									<td><input type="checkbox" name="studentId"  value="${stu.studentId }" lay-skin="primary" data-id="1"></td>
 									<td class="hidden-xs">${stu.studentId }</td>
 									<td class="hidden-xs">${stu.account }</td>
-									<td>${stu.username }</td>
+									<td class="hidden-xs" >${stu.username }</td>
 									<td>${stu.className }</td>
 									<td>${stu.professionName }</td>
-									<td class="hidden-xs"><fmt:formatDate value="${stu.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
-									<td class="hidden-xs"><fmt:formatDate value="${stu.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
+									<td class="hidden-xs"><fmt:formatDate value="${stu.createdTime }" pattern="yyyy-MM-dd" /></td>
+									<td class="hidden-xs"><fmt:formatDate value="${stu.modifiedTime }" pattern="yyyy-MM-dd" /></td>
 									<td>
 										<c:if test="${stu.status eq '0' }">
 											<button class="layui-btn layui-btn-mini layui-btn-normal">

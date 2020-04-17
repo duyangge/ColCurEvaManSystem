@@ -74,10 +74,10 @@
 									<td class="hidden-xs">${cla.classId }</td>
 									<td >${cla.className }</td>
 									<td >${cla.professionName }</td>
-									<td ><textarea  readonly="readonly" style="border:none;resize:none;">${cla.classInfo }</textarea></td>
+									<td ><textarea  readonly="readonly" style="background:transparent;border:none; resize:none;">${cla.classInfo }</textarea></td>
 									<td >${cla.createdUser }</td>
-									<td class="hidden-xs" ><fmt:formatDate value="${cla.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
-									<td class="hidden-xs"><fmt:formatDate value="${cla.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
+									<td class="hidden-xs" ><fmt:formatDate value="${cla.createdTime }" pattern="yyyy-MM-dd:HH:mm:ss"/></td>
+									<td class="hidden-xs"><fmt:formatDate value="${cla.modifiedTime }" pattern="yyyy-MM-dd:HH:mm:ss" /></td>
 									<td>
 										<div class="layui-inline">
 										<button class="layui-btn layui-btn-small layui-btn-normal cla_edit-btn" data-id="${cla.classId }" data-url="../class/goUpdateClass.do"><i class="layui-icon">&#xe642;</i></button>
