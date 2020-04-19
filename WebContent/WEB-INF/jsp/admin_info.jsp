@@ -15,6 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 var message = "${message}";
 if(message != null && message != ""){	//密码修改后，退出登录
@@ -28,13 +29,24 @@ layui.use(['form','element'], function(){
   form.render();
   //监听信息提交
   form.on('submit(adminInfo)', function(data){
-    layer.msg(JSON.stringify(data.field));
-    return true;
+    JSON.stringify(data.field);
+    var tel=document.getElementById('tel').value;
+    var mail=document.getElementById('mail').value;
+    if( isPoneAvailable(tel) &&  isEmailAvailable(mail)){
+ 	   return true;
+    }else {
+     	return false;
+     }
   });
   //监听密码提交
    form.on('submit(adminPassword)', function(data){
-    layer.msg(JSON.stringify(data.field));
-    return true;
+    JSON.stringify(data.field);
+    var passwd = document.getElementById('passwd').value;
+	var repasswd = document.getElementById('repasswd').value;
+    if(checkpasswd(passwd,repasswd))
+        return true;
+    else 
+    	return false;
   });
 });
 
@@ -60,7 +72,7 @@ layui.use(['form','element'], function(){
 				 	<div class="layui-form-item">
 						<label class="layui-form-label">账号：</label>
 						<div class="layui-input-block">
-							<input type="text" name="account" required lay-verify="required" value="${tea.account }" placeholder="请输入帐号" autocomplete="off" class="layui-input">
+							<input type="text" name="account" required lay-verify="required" value="${tea.account }" readonly="readonly" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
@@ -75,15 +87,17 @@ layui.use(['form','element'], function(){
 					<div class="layui-form-item">
 						<label class="layui-form-label">电话号码：</label>
 						<div class="layui-input-block">
-							<input type="text" name="telphone" required lay-verify="required"  value="${tea.telphone }" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+							<input type="text" id="tel" name="telphone" required lay-verify="required"  value="${tea.telphone }" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="telmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">email：</label>
 						<div class="layui-input-block">
-							<input type="text" name="mail" required lay-verify="required" value="${tea.mail }" placeholder="请输入email" autocomplete="off" class="layui-input">
+							<input type="text" id="mail" name="mail" required lay-verify="required" value="${tea.mail }" placeholder="请输入email" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="mailmes"></span>
 
 					</div>
 			
@@ -123,13 +137,14 @@ layui.use(['form','element'], function(){
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">新密码：</label>
 				    <div class="layui-input-block">
-				      <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				      <input type="password" id="passwd" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
 				    </div>
+				     <span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
 				  </div>
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">重复密码：</label>
 				    <div class="layui-input-block">
-				      <input type="password" name="repassword" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				      <input type="password" id="repasswd" name="repassword" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
 				    </div>
 				  </div>
 				  <div class="layui-form-item">

@@ -18,7 +18,7 @@
     <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
     <result column="sub_status" jdbcType="INTEGER" property="subStatus" />
     <!--多个学生  -->
-    <!-- <collection property="studentInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.StudentInfo">
+    <collection property="studentInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.StudentInfo">
 	    <id column="sub_student_id" jdbcType="INTEGER" property="studentId" />
 	    <result column="role_id" jdbcType="INTEGER" property="roleId" />
 	    <result column="account" jdbcType="VARCHAR" property="account" />
@@ -34,13 +34,13 @@
 	    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
 	    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
 	    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
-       一对一 班级 
+  <!--      一对一 班级  -->
     	<association property="classInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
     	  <id column="sub_class_id" property="classId"/>
     	  <result column="class_name" property="className"/>
     	  <result column="class_info" property="classInfo"/>
     	</association>
-    	一对一 学院 
+    	<!-- 一对一 学院  -->
     	<association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
     	  <id column="profession_id" property="professionId"/>
     	  <result column="profession_name" property="professionName"/>
@@ -48,7 +48,7 @@
     	</association>
     </collection>
     
-    多门课程 
+<!--     多门课程  -->
     <collection property="lessionInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.LessionInfo">
         <id column="sub_lession_id" jdbcType="INTEGER" property="lessionId" />
 	    <result column="lession_name" jdbcType="VARCHAR" property="lessionName" />
@@ -58,20 +58,20 @@
 	    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
 	    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
 	    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
-     	课程和班级 多对多 
+     	<!-- 课程和班级 多对多  -->
 	     <collection property="classInfoList" ofType="cn.jx.pxc.colcurevamansystem.bean.ClassInfo">
 	         <id column="class_id" property="classId"/>
 	         <result column="profession_id" property="professionId"/>
 	         <result column="class_name" property="className"/>
 	         <result column="class_info" property="classInfo"/>
-	         班级和学院 一对一 
+	       <!--   班级和学院 一对一  -->
 	         <association property="professionInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo">
 		         <id column="profession_id"  property="professionId"/>
 		         <result column="profession_name" property="professionName"/>
 		         <result column="profession_info" property="professionInfo"/>
 	         </association>
 	     </collection>
-    </collection> -->
+    </collection>
   </resultMap>
   
   
@@ -130,6 +130,11 @@
     from class_sub_tb
     where sub_teacher_id = #{teacherId} 
   </select>
+  
+  <!-- 查询状态 -->
+  
+  
+  
   
   
   

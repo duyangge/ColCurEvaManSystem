@@ -74,6 +74,23 @@ public class ClassSubInfoController {
 	
 	
 	
+	/**管理员查看详细评价内容
+	 * @param model
+	 * @param beanQueryVo
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/goAdminSeeLessionEva.do")
+	public String goAdminSeeLessionEva(Model model,BeanQueryVo beanQueryVo,HttpSession session) {
+	try {
+			LessionEvaTemp lesTemp =classSubInfoService.selectClassSubById(beanQueryVo);
+			model.addAttribute("lesTemp", lesTemp);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "admin_lession_eva_see";
+	}
+	
 	/**教师查看详细评价内容
 	 * @param model
 	 * @param beanQueryVo
@@ -82,7 +99,7 @@ public class ClassSubInfoController {
 	 */
 	@RequestMapping("/goTeacherSeeLessionEva.do")
 	public String goTeacherSeeLessionEva(Model model,BeanQueryVo beanQueryVo,HttpSession session) {
-	try {
+		try {
 			LessionEvaTemp lesTemp =classSubInfoService.selectClassSubById(beanQueryVo);
 			model.addAttribute("lesTemp", lesTemp);
 		} catch (Exception e) {
@@ -94,14 +111,24 @@ public class ClassSubInfoController {
 	
 	
 	
-	/**分页+分类+模糊查询
+	/**管理员：分页+分类+模糊查询
 	 * @param model
 	 * @param beanQueryVo
 	 * @return
 	 */
 	@RequestMapping("/findClassSub.do")
-	public String findClassSub(Model model,BeanQueryVo beanQueryVo) {
-		List<LessionEvaTemp>  lesEvaList = classSubInfoService.selectLessionEva(beanQueryVo);
+	public String findClassSub(Model model,BeanQueryVo beanQueryVo,@RequestParam(value="evaId",required=false)Integer id) {
+		List<LessionEvaTemp>  lesEvaList = null;
+		if(id != null) {
+			lesEvaList = new ArrayList<LessionEvaTemp>();
+			BeanQueryVo bean  = new BeanQueryVo();
+			bean.setId(id);
+			LessionEvaTemp lesEva = classSubInfoService.selectLessionEvaById(bean);
+			lesEvaList.add(lesEva);
+		}else {
+			  lesEvaList = classSubInfoService.selectLessionEva(beanQueryVo);
+		}
+		
 		model.addAttribute("lesEvaList", lesEvaList);
 		return "admin_lession_eva";
 	}
@@ -194,6 +221,17 @@ public class ClassSubInfoController {
 			e.printStackTrace();
 		}
 		return "redirect:../lession/findLessionByClass.do";
+	}
+	
+	/**
+	 * @param model
+	 * @param claSub
+	 * @return
+	 */
+	@RequestMapping("/updateLessionEva.do")
+	public String updateLessionEva(Model model,ClassSubInfo claSub) {
+		classSubInfoService.updateByPrimaryKeySelective(claSub);
+		return "forward:findClassSub.do?evaId="+claSub.getSubEvaId();
 	}
 	
 }

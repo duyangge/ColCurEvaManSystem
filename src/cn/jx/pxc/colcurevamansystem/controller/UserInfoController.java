@@ -6,6 +6,7 @@ package cn.jx.pxc.colcurevamansystem.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
-import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
-import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
@@ -170,7 +169,7 @@ public class UserInfoController {
 			String message="账号异常，请通知管理员处理！";
 			StudentInfo stu = studentInfoService.selectByAccountList(beanQueryVo);
 			TeacherInfo  tea = teacherInfoService.selectByAccountList(beanQueryVo);
-			if ( stu != null ) {
+			if ( stu != null ) {//学生登录
 				if(stu.getStatus().equals("1")) { 
 					model.addAttribute("message", message);
 					return "login";
@@ -179,7 +178,7 @@ public class UserInfoController {
 				model.addAttribute("stu", stu);
 				return "stu_index";//学生页面
 				
-			}else if( tea != null && tea.getRoleId() != 1 ) {
+			}else if( tea != null && tea.getRoleId() != 1 ) {//教师登录
 				if(tea.getStatus().equals("1")) { 
 					model.addAttribute("message", message);
 					return "login";
@@ -187,10 +186,14 @@ public class UserInfoController {
 				session.setAttribute("admin",tea);
 				model.addAttribute("tea", tea);
 				return "tea_index";//教师页面
-			}else { 
+			}else if(tea != null && tea.getRoleId() == 1){ //管理员登录
 				session.setAttribute("admin",tea);
 				model.addAttribute("admin", tea);
 				return "admin_index";//管理员界面
+			}else {//登录错误
+				String error="用户名或密码错误，请重新登录！";
+				model.addAttribute("error", error);
+				return "forward:goLogin.do";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -254,10 +257,25 @@ public class UserInfoController {
 		BeanQueryVo beanQueryVo = new BeanQueryVo();
 		List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
 		model.addAttribute("proList", proList);
+		//系统自动生成随机账号（8位）
+		model.addAttribute("account",this.getNum(8));
 		return "admin_user_student_add";
 	}
 	
-
+	/**
+	 * @param digit 位数zd
+	 * @return 随机生成digit位数的数字
+	 */
+	public static String getNum(int digit) {
+	    StringBuilder str = new StringBuilder();
+	    for (int i = 0; i < digit; i++) {
+	        if (i == 0 && digit > 1)
+	            str.append(new Random().nextInt(9) + 1);
+	        else
+	            str.append(new Random().nextInt(10));
+	    }
+	    return str.toString();
+	}
 	
 	/**自动刷新班级二级联动://每个班级(二级联动)
 	 * 通过学院id查询所有班级id
@@ -374,6 +392,8 @@ public class UserInfoController {
 		//保存每个学院
 		List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
 		model.addAttribute("proList", proList);
+		//系统自动生成随机账号（8位）
+		model.addAttribute("account",this.getNum(8));
 		return "admin_user_teacher_add";
 	}
 	

@@ -153,13 +153,10 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 	public List<LessionEvaTemp> selectLessionEva(BeanQueryVo beanQueryVo) {
 		List<LessionEvaTemp> lesEvaList = new ArrayList<LessionEvaTemp>();
 		List<ClassSubInfo> claSubList = null;
+		String keyWords =beanQueryVo.getKeyWords();
 		try {
 			if(beanQueryVo.getStudentId() != null) {//通过学生ID查询
-				
-				
-					 String keyWords =beanQueryVo.getKeyWords();
-					 claSubList = classSubInfoMapper.selectByStudentList(beanQueryVo);
-					 
+				claSubList = classSubInfoMapper.selectByStudentList(beanQueryVo);
 					 if( keyWords != null && !keyWords.equals("")) {//学生模糊查询
 						 Iterator<ClassSubInfo> it = claSubList.iterator();
 						 while(it.hasNext()) {
@@ -172,45 +169,49 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 								it.remove();
 							}//
 						 }
-					}else {//学生默认查询所有
-						claSubList = classSubInfoMapper.selectByStudentList(beanQueryVo);
-				    }
-				
+					}
 				
 			}else {//管理员查询所有(班级，教师，课程+状态)
-				Integer cate = beanQueryVo.getCategory();
-				String status = beanQueryVo.getStatus();
-				if(status == null && cate == null) {//默认查询所有
-					claSubList = classSubInfoMapper.selectByAllList();
-					
-				}else {
-					if(status.equals("1")) {//正常
+				
+				Integer cate = beanQueryVo.getCategory();//查询类别
+				String status = beanQueryVo.getStatus();//查询状态
+				claSubList = classSubInfoMapper.selectByAllList();//默认查询所有
+				
+				if(status != null && cate != null) {//条件查询（双重条件）
+					Iterator<ClassSubInfo> it = claSubList.iterator();
+					while(it.hasNext()) {
+						ClassSubInfo claSub = it.next();
+						//实现分类查询
 						if(cate == 1) {//班级
-							
+						    //对班级进行模糊查询
+							List<ClassInfo>  claList = classInfoMapper.selectByNameList(beanQueryVo);
+							for (ClassInfo cla : claList) 
+								if(cla.getClassId() != claSub.getSubClassId()) it.remove();
 						}else if(cate == 2){//教师
-							
+							//对教师名称进行模糊查询
+							List<TeacherInfo>  teaList = teacherInfoMapper.selectByNameList(beanQueryVo);
+							for (TeacherInfo tea : teaList) 
+								if(tea.getTeacherId() != claSub.getSubTeacherId()) it.remove();
 						}else if(cate == 3){//课程
-							
-						}else{
-							
+							//对课程进行模糊查询
+							List<LessionInfo> lesList = 	lessionInfoMapper.selectByNameList(beanQueryVo);
+							for (LessionInfo les : lesList) 
+								if(les.getLessionId() != claSub.getSubLessionId()) it.remove();
+						}else{//默认查询所有不分类查询查询所有可见
+						}	
+						
+						//实现状态查询没有执行这段代码
+						Integer flag = claSub.getSubStatus();
+						if(status.equals("1")) {//查询可见0
+							if(claSub.getSubStatus().equals("1")) it.remove();
+						}else if(status.equals("2")) {//查询不可见1
+							if(claSub.getSubStatus().equals("0")) it.remove();
+						}else {//可见不可见
 						}
 						
-					}else if(status.equals("2")){//异常
-						
-						
-					}else {//正常异常
-						
-						
-					}
-					
-					
-					
-				}
-				
-				
-				
-				
-				
+					}//while
+				}//条件查询
+
 			}
 			
 			//得到需要的字段存入临时类中显示
@@ -268,7 +269,7 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 		lesEva.setLessionName(les.getLessionName());//课程名称
 		lesEva.setScore(claSub.getSubScore());//课程评价分
 		lesEva.setSubInfo(claSub.getSubInfo());//评价
-		
+		lesEva.setStatus(claSub.getSubStatus());
 		return lesEva;
 	}
 
@@ -282,16 +283,12 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 		
 		for (ClassSubInfo claSub: claSubList) {
 			LessionEvaTemp lesEva = new LessionEvaTemp();
-			
 			//得到教师名称
 			TeacherInfo tea = teacherInfoMapper.selectByPrimaryKey(claSub.getSubTeacherId());
-			
 			//班级名称
 			ClassInfo cla = classInfoMapper.selectByPrimaryKey(claSub.getSubClassId());
-			
 			//课程名称
 			LessionInfo les  = lessionInfoMapper.selectByPrimaryKey(claSub.getSubLessionId());
-			
 			lesEva.setId(claSub.getSubEvaId());//id
 			lesEva.setCreatedTime(claSub.getCreatedTime());//评价时间
 			lesEva.setSubUserName(claSub.getCreatedUser());//评价人
@@ -300,20 +297,20 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 			lesEva.setLessionName(les.getLessionName());//课程名称
 			lesEva.setScore(claSub.getSubScore());//课程评价分
 			lesEva.setSubInfo(claSub.getSubInfo());//评价
-			
 			lesEvaList.add(lesEva);
-			
 		}
 		//从所有课程中选择具有关键字段的课程:利用迭代器删除对象(模糊查询)
+			Iterator<LessionEvaTemp> it = lesEvaList.iterator();
+			while(it.hasNext()) {
+				LessionEvaTemp lesInfo = it.next();
+				if(lesInfo.getStatus().equals("1")) it.remove();//删除不可见留言
 				if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().trim().equals("")) {
-					Iterator<LessionEvaTemp> it = lesEvaList.iterator();
-					while(it.hasNext()) {
-						LessionEvaTemp lesInfo = it.next();
-						if(lesInfo.getLessionName().trim().indexOf(beanQueryVo.getKeyWords()) == -1) {
-							it.remove();
-						}
+					if(lesInfo.getLessionName().trim().indexOf(beanQueryVo.getKeyWords()) == -1) {
+						it.remove();
 					}
-				}		
+				}
+				
+				}
 		
 		return lesEvaList;
 	}
@@ -340,7 +337,7 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 				lesEva.setLessionName(les.getLessionName());//课程名称
 				lesEva.setScore(claSub.getSubScore());//课程评价分
 				lesEva.setSubInfo(claSub.getSubInfo());//评价
-				
+				lesEva.setStatus(claSub.getSubStatus());
 				return lesEva;
 	}
 

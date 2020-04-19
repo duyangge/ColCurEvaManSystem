@@ -49,28 +49,31 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">电话号码：</label>
 						<div class="layui-input-block">
-							<input type="text" name="telphone" required lay-verify="required"  value="${tea.telphone }" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+							<input type="text" id="tel"  name="telphone" required lay-verify="required"  value="${tea.telphone }" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="telmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">email：</label>
 						<div class="layui-input-block">
-							<input type="text" name="mail" required lay-verify="required" value="${tea.mail }" placeholder="请输入email" autocomplete="off" class="layui-input">
+							<input type="text"  id="mail"  name="mail" required lay-verify="required" value="${tea.mail }" placeholder="请输入email" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="mailmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码：</label>
 						<div class="layui-input-block">
-							<input type="password" name="passwrod" required lay-verify="required" value="${tea.password }"   autocomplete="off" class="layui-input">
+							<input type="password" id="passwd" name="passwrod" required lay-verify="required" value="${tea.password }"   autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">确认密码：</label>
 						<div class="layui-input-block">
-							<input type="password" name="repassword" required lay-verify="required"  value="${tea.password }" autocomplete="off" class="layui-input">
+							<input type="password" id="repasswd"  name="repassword" required lay-verify="required"  value="${tea.password }" autocomplete="off" class="layui-input">
 						</div>
 
 					</div>
@@ -85,12 +88,15 @@
 					<div class="layui-form-item">
 						<div class="layui-input-block">
 						   <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button> 
-							<button type="reset" class="layui-btn layui-btn-primary">重置</button> </div>
+							<input type="reset" class="layui-btn layui-btn-primary" value="重置">
+						 </div>
 					</div>
 				</form>
 		</div>
 
 		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			//Demo
 			layui.use(['form'], function() {
@@ -98,8 +104,16 @@
 				form.render();
 				//监听提交
 				form.on('submit(formDemo)', function(data) {
-					layer.msg(JSON.stringify(data.field));
-					return true;
+					   JSON.stringify(data.field);
+						var passwd = document.getElementById('passwd').value;
+						var repasswd = document.getElementById('repasswd').value;
+				       var tel=document.getElementById('tel').value;
+				       var mail=document.getElementById('mail').value;
+				       if( isPoneAvailable(tel) &&  isEmailAvailable(mail)&&checkpasswd(passwd,repasswd)){
+				    	   return true;
+				       }else {
+				        	return false;
+				        }
 				});
 			});
 		</script>

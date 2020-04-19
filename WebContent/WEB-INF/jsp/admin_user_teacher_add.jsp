@@ -31,7 +31,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">账号：</label>
 						<div class="layui-input-block">
-							<input type="text" name="account" required lay-verify="required" placeholder="请输入帐号" autocomplete="off" class="layui-input">
+							<input type="text" name="account" required lay-verify="required" value="${account }" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
@@ -46,28 +46,31 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">电话号码：</label>
 						<div class="layui-input-block">
-							<input type="text" name="telphone" required lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+							<input type="text" id="tel"  name="telphone" required lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="telmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">email：</label>
 						<div class="layui-input-block">
-							<input type="text" name="mail" required lay-verify="required" placeholder="请输入email" autocomplete="off" class="layui-input">
+							<input type="text" id="mail" name="mail" required lay-verify="required" placeholder="请输入email" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="mailmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码：</label>
 						<div class="layui-input-block">
-							<input type="text" name="password" required lay-verify="required"  value="00000000" autocomplete="off" class="layui-input">
+							<input type="text" id="passwd" name="password" required lay-verify="required"  value="pxxy${account }" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">确认密码：</label>
 						<div class="layui-input-block">
-							<input type="text" name="repassword" required lay-verify="required" value="00000000" autocomplete="off" class="layui-input">
+							<input type="text" id="repasswd" name="repassword" required lay-verify="required" value="pxxy${account }" autocomplete="off" class="layui-input">
 						</div>
 
 					</div>
@@ -87,7 +90,7 @@
 					</div>
 				</form>
 		</div>
-
+<script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			//Demo
@@ -96,8 +99,16 @@
 				form.render();
 				//监听提交
 				form.on('submit(formDemo)', function(data) {
-					layer.msg(JSON.stringify(data.field));
-					return true;
+					JSON.stringify(data.field);
+					var passwd = document.getElementById('passwd').value;
+					var repasswd = document.getElementById('repasswd').value;
+			       var tel=document.getElementById('tel').value;
+			       var mail=document.getElementById('mail').value;
+			       if( isPoneAvailable(tel) &&  isEmailAvailable(mail)&&checkpasswd(passwd,repasswd)){
+			    	   return true;
+			       }else {
+			        	return false;
+			        }
 				});
 			});
 		</script>

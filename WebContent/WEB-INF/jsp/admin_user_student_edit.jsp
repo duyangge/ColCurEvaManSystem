@@ -48,10 +48,10 @@
 
 
 					<div class="layui-form-item">
-						<label class="layui-form-label">学号：</label>
+						<label class="layui-form-label">账号：</label>
 						<div class="layui-input-block">
 						   <input type="hidden" name="studentId" value="${stu.studentId }" class="layui-input">
-							<input type="text" name="account" value="${stu.account }" required lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input">
+							<input type="text" name="account" value="${stu.account }" required lay-verify="required" readonly="readonly"  autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
@@ -66,28 +66,31 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">电话号码：</label>
 						<div class="layui-input-block">
-							<input type="text" name="telphone" value="${stu.telphone }" required lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+							<input type="text" id="tel" name="telphone" value="${stu.telphone }" required lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="telmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">email：</label>
 						<div class="layui-input-block">
-							<input type="text" name="mail" value="${stu.mail }" required lay-verify="required" placeholder="请输入email" autocomplete="off" class="layui-input">
+							<input type="text" id="mail" name="mail" value="${stu.mail }" required lay-verify="required" placeholder="请输入email" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="mailmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码：</label>
 						<div class="layui-input-block">
-							<input type="password" name="password"  value="${stu.password }" required lay-verify="required" placeholder="00000000" autocomplete="off" class="layui-input">
+							<input type="password" id="passwd" name="password"  value="${stu.password }" required lay-verify="required" placeholder="00000000" autocomplete="off" class="layui-input">
 						</div>
+						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
 
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">确认密码：</label>
 						<div class="layui-input-block">
-							<input type="password" name="repassword" value="${stu.password }" required lay-verify="required" placeholder="00000000" autocomplete="off" class="layui-input">
+							<input type="password" id="repasswd" name="repassword" value="${stu.password }" required lay-verify="required" placeholder="00000000" autocomplete="off" class="layui-input">
 						</div>
 
 					</div>
@@ -108,6 +111,7 @@
 		</div>
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 <script>
 
 //选中一级产品类别后，获取并刷新二级产品类别列表
@@ -138,9 +142,16 @@ layui.use(['form'], function() {
 	form.render();
 	//监听提交
 	form.on('submit(formDemo)', function(data) {
-		layer.msg(JSON.stringify(data.field));
-		alert("json:"+JSON.stringify(data.field));
-		return true;
+		JSON.stringify(data.field);
+		       	var passwd = document.getElementById('passwd').value;
+				var repasswd = document.getElementById('repasswd').value;
+		       var tel=document.getElementById('tel').value;
+		       var mail=document.getElementById('mail').value;
+		       if( isPoneAvailable(tel) &&  isEmailAvailable(mail)&&checkpasswd(passwd,repasswd)){
+		    	   return true;
+		       }else {
+		        	return false;
+		        }
 	});
 });
 
