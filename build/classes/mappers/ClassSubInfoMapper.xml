@@ -90,12 +90,89 @@
     where sub_eva_id = #{subEvaId,jdbcType=INTEGER}
   </select>
   
-  <!--模糊+分类查询  -->
+  <!--查询所有  -->
   <select id="selectByAllList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from class_sub_tb
+     select distinct
+   <include refid="selectLikeId" />
+    from class_sub_tb,class_tb,lession_tb,teacher_tb,student_tb
+   <where>
+   		class_tb.class_id = sub_class_id
+   		and
+   		lession_id = sub_lession_id
+   		and 
+   		teacher_id = sub_teacher_id
+   		and 
+   		sub_student_id = student_id
+   		<if test="lessionName != null and lessionName != ''">
+   		 and instr(lession_name,#{lessionName}) > 0
+   		</if>
+   		<if test="teacherName != null and teacherName != ''">
+   		 or teacher_tb.username like '%${teacherName}%'
+   		</if>
+   		<if test="className != null and className != ''">
+   		 or instr(class_name,#{className}) > 0
+   		</if>  	
+   		<if test="studentName != null and studentName != ''">
+   		 or student_tb.username like '%${studentName}%'
+   		</if> 	
+   		<if test="status != null and status != ''">
+   		  and	sub_status=#{status}
+   		</if>
+   	</where>
   </select>
+  
+  
+  <sql id="selectLikeId">
+    sub_eva_id, 
+    sub_student_id,
+    sub_class_id,
+    sub_teacher_id, 
+    sub_status, 
+    sub_lession_id,
+    sub_score,
+    sub_info, 
+    class_sub_tb.created_user, 
+    class_sub_tb.created_time, 
+    class_sub_tb.modified_user, 
+    class_sub_tb.modified_time
+  </sql>
+  
+  <!--模糊+分类查询  -->
+  <select id="selectByName" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select distinct
+   <include refid="selectLikeId" />
+    from class_sub_tb,class_tb,lession_tb,teacher_tb,student_tb
+   <where>
+   	   class_tb.class_id = sub_class_id
+   		and
+   		lession_tb.lession_id = sub_lession_id
+   		and 
+   		teacher_tb.teacher_id = sub_teacher_id
+   		and 
+   		sub_student_id = student_tb.student_id
+   		<if test="lessionName != null and lessionName != ''">
+   		 and instr(lession_name,#{lessionName}) > 0
+   		</if>
+   		<if test="teacherName != null and teacherName != ''">
+   		 and teacher_tb.username like '%${teacherName}%'
+   		</if>
+   		<if test="className != null and className != ''">
+   		 and instr(class_name,#{className}) > 0
+   		</if>  		
+   		<if test="studentName != null and studentName != ''">
+   		 and student_tb.username like '%${studentName}%'
+   		</if>  		
+   		<if test="status != null and status != ''">
+   		and	sub_status=#{status}
+   		</if>
+   </where>
+        
+  </select>
+  
+  
+  
+  
+  
   
   <!--按课程id查询查询  -->
   <select id="selectByLessionList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">

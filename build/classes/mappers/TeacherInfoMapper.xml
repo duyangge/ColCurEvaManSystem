@@ -74,7 +74,9 @@
     from teacher_tb
      
      where account=#{account}
- 
+    <if test="password != null and password != ''">
+     and password=#{password}
+     </if>
   </select>
 
 <!--通过主键删除  -->

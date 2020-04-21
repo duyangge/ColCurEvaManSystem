@@ -62,12 +62,16 @@ public class UserInfoController {
 	public LessionInfoService lessionInfoService;
 	
 	
+
 	/**进入登录页面
+	 * @param model
+	 * @param mes
 	 * @return
 	 */
-	@RequestMapping("/goLogin.do" )
-	public String goLogin() {
-		return "login";
+	@RequestMapping("/goLogin.do")
+	public String goLogin(Model model,@RequestParam(value="message",required=false)String mes) {
+		model.addAttribute("message", mes);
+		return "logins";
 	}
 	
 	/**跳转管理员个人基本信息
@@ -171,8 +175,7 @@ public class UserInfoController {
 			TeacherInfo  tea = teacherInfoService.selectByAccountList(beanQueryVo);
 			if ( stu != null ) {//学生登录
 				if(stu.getStatus().equals("1")) { 
-					model.addAttribute("message", message);
-					return "login";
+					return "forward:goLogin.do?message="+message;
 				}
 				session.setAttribute("student",stu);
 				model.addAttribute("stu", stu);
@@ -180,8 +183,7 @@ public class UserInfoController {
 				
 			}else if( tea != null && tea.getRoleId() != 1 ) {//教师登录
 				if(tea.getStatus().equals("1")) { 
-					model.addAttribute("message", message);
-					return "login";
+					return "forward:goLogin.do?message="+message;
 				}
 				session.setAttribute("admin",tea);
 				model.addAttribute("tea", tea);
@@ -191,9 +193,8 @@ public class UserInfoController {
 				model.addAttribute("admin", tea);
 				return "admin_index";//管理员界面
 			}else {//登录错误
-				String error="用户名或密码错误，请重新登录！";
-				model.addAttribute("error", error);
-				return "forward:goLogin.do";
+				 message="用户名或密码错误，请重新登录！";
+				 return "forward:goLogin.do?message="+message;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -496,7 +497,7 @@ public class UserInfoController {
 	@RequestMapping("/loginOut.do")
 	public String loginOut(HttpSession session) {
 		session.invalidate();
-		return "login";
+		return "redirect:goLogin.do";
 	}
 	/**自动刷新学院
 	 * @param model

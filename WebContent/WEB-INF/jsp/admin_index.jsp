@@ -17,8 +17,7 @@
 
 			<!--侧边栏-->
 			<div class="main-layout-side">
-				<div class="m-logo">
-				</div>
+				<div class="m-logo"></div>
 				
 				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
 				
@@ -54,10 +53,10 @@
 				    	<i class="iconfont">&#xe60d;</i>学院管理</a>
 				  </li> 
 
-                 <!--   <li class="layui-nav-item">
+                   <li class="layui-nav-item">
 				    <a href="javascript:;"data-url="admin_role.html" data-id='10' data-text="角色管理">
 				    	<i class="iconfont">&#xe60d;</i>角色管理</a>
-				  </li>  -->
+				  </li> 
 
 				  <li class="layui-nav-item">
 				    <a href="javascript:;" data-url="../user/goUpdateAdminInfo.do" data-id='8' data-text="个人信息">
@@ -90,7 +89,7 @@
 					<ul class="layui-nav" lay-filter="rightNav">
 					  <li class="layui-nav-item"><a href="javascript:;" data-url="" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
 					  <li class="layui-nav-item">
-					    <a href="javascript:;" data-url="../user/goUpdateAdminInfo.do" data-id='5' data-text="个人信息">${tea.username }</a>
+					    <a href="javascript:;" data-url="../user/goUpdateAdminInfo.do" data-id='5' data-text="个人信息">${admin.username }</a>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:if(confirm('您是否要退出系统?')){location='../user/loginOut.do'};">退出</a></li>
 					</ul>

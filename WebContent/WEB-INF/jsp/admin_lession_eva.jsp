@@ -34,6 +34,7 @@
 									<option value="1">班级</option>
 									<option value="2">教师</option>
 									<option value="3">课程</option>
+									<option value="4">学生</option>
 								</select>
 							</div>
 							<div class="layui-inline">

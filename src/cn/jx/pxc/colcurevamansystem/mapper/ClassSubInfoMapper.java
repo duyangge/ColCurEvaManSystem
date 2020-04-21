@@ -15,6 +15,16 @@ import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo;
  */
 public interface ClassSubInfoMapper {
 	
+	
+	
+	/**通过模糊查询多表
+	 * @param beanQueryVo
+	 * @return
+	 * @throws Exception
+	 */
+	List<ClassSubInfo> selectByName(BeanQueryVo beanQueryVo) throws Exception;
+	
+	
 	/**通过教师id查询所有课程评价记录
 	 * @param beanQueryVo
 	 * @return
@@ -26,7 +36,7 @@ public interface ClassSubInfoMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	List<ClassSubInfo>  selectByAllList() throws Exception;
+	List<ClassSubInfo>  selectByAllList(BeanQueryVo beanQueryVo) throws Exception;
 	
 	/**通过课程id和学生id共同确定评价id
 	 * @param beanQueryVo

@@ -119,7 +119,7 @@ public class ClassSubInfoController {
 	@RequestMapping("/findClassSub.do")
 	public String findClassSub(Model model,BeanQueryVo beanQueryVo,@RequestParam(value="evaId",required=false)Integer id) {
 		List<LessionEvaTemp>  lesEvaList = null;
-		if(id != null) {
+		if(id != null) {//修改评价是否可见(默认都可见)
 			lesEvaList = new ArrayList<LessionEvaTemp>();
 			BeanQueryVo bean  = new BeanQueryVo();
 			bean.setId(id);

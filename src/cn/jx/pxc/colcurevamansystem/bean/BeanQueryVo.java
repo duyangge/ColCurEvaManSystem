@@ -40,10 +40,42 @@ public class BeanQueryVo {
 	
 	private String status;//状态
 	
+	private String className;
+	
+	private String teacherName;
+	
+	private String lessionName;
+	
+	private String studentName;
+	
 	private StudentInfo studentInfo;
 	
 	private  ClassSubInfo classSubInfo;
 	
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public String getClassName() {
+		return className;
+	}
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	public String getTeacherName() {
+		return teacherName;
+	}
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
+	}
+	public String getLessionName() {
+		return lessionName;
+	}
+	public void setLessionName(String lessionName) {
+		this.lessionName = lessionName;
+	}
 	public Integer getCategory() {
 		return category;
 	}

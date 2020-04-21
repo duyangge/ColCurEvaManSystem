@@ -67,7 +67,7 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 	@Override
 	public List<ClassSubInfo> selectByLessionList(BeanQueryVo beanQueryVo) throws Exception {
 		// TODO Auto-generated method stub
-		return classSubInfoMapper.selectByAllList();
+		return classSubInfoMapper.selectByAllList(beanQueryVo);
 	}
 
 	/* (non-Javadoc)
@@ -172,58 +172,55 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 					}
 				
 			}else {//管理员查询所有(班级，教师，课程+状态)
-				
 				Integer cate = beanQueryVo.getCategory();//查询类别
 				String status = beanQueryVo.getStatus();//查询状态
-				claSubList = classSubInfoMapper.selectByAllList();//默认查询所有
-				
-				if(status != null && cate != null) {//条件查询（双重条件）
-					Iterator<ClassSubInfo> it = claSubList.iterator();
-					while(it.hasNext()) {
-						ClassSubInfo claSub = it.next();
-						//实现分类查询
+				 if(status != null &&cate != null) {//避免空指针异常
+					//状态查询
+	                    if(status.equals("1")) {//可见
+	                    	beanQueryVo.setStatus("0");
+	                    }else if(status.equals("2")) {//不可见
+	                    	beanQueryVo.setStatus("1");
+	                    }else {
+	                    	beanQueryVo.setStatus(null);//为空
+	                    }  
+	                    
+	                    //分类查询
 						if(cate == 1) {//班级
-						    //对班级进行模糊查询
-							List<ClassInfo>  claList = classInfoMapper.selectByNameList(beanQueryVo);
-							for (ClassInfo cla : claList) 
-								if(cla.getClassId() != claSub.getSubClassId()) it.remove();
+						     beanQueryVo.setClassName(beanQueryVo.getKeyWords());
+						     claSubList = classSubInfoMapper.selectByName(beanQueryVo);
 						}else if(cate == 2){//教师
-							//对教师名称进行模糊查询
-							List<TeacherInfo>  teaList = teacherInfoMapper.selectByNameList(beanQueryVo);
-							for (TeacherInfo tea : teaList) 
-								if(tea.getTeacherId() != claSub.getSubTeacherId()) it.remove();
+							  beanQueryVo.setTeacherName(beanQueryVo.getKeyWords());
+							  claSubList = classSubInfoMapper.selectByName(beanQueryVo);
 						}else if(cate == 3){//课程
-							//对课程进行模糊查询
-							List<LessionInfo> lesList = 	lessionInfoMapper.selectByNameList(beanQueryVo);
-							for (LessionInfo les : lesList) 
-								if(les.getLessionId() != claSub.getSubLessionId()) it.remove();
-						}else{//默认查询所有不分类查询查询所有可见
+							  beanQueryVo.setLessionName(beanQueryVo.getKeyWords());
+							  claSubList = classSubInfoMapper.selectByName(beanQueryVo);
+						}else if(cate == 4){//默认查询所有不分类查询查询所有可见
+							  beanQueryVo.setStudentName(beanQueryVo.getKeyWords());
+							  claSubList = classSubInfoMapper.selectByName(beanQueryVo);
+						}else {
+							  beanQueryVo.setClassName(beanQueryVo.getKeyWords());
+							  beanQueryVo.setTeacherName(beanQueryVo.getKeyWords());
+							  beanQueryVo.setLessionName(beanQueryVo.getKeyWords());
+							  beanQueryVo.setStudentName(beanQueryVo.getKeyWords());
+							  claSubList = classSubInfoMapper.selectByAllList(beanQueryVo);//默认查询所有
 						}	
 						
-						//实现状态查询没有执行这段代码
-						Integer flag = claSub.getSubStatus();
-						if(status.equals("1")) {//查询可见0
-							if(claSub.getSubStatus().equals("1")) it.remove();
-						}else if(status.equals("2")) {//查询不可见1
-							if(claSub.getSubStatus().equals("0")) it.remove();
-						}else {//可见不可见
-						}
-						
-					}//while
-				}//条件查询
+				 }else {
+					 claSubList = classSubInfoMapper.selectByAllList(beanQueryVo);//默认查询所有
+				 }
 
 			}
 			
 			//得到需要的字段存入临时类中显示
 			for (ClassSubInfo claSub : claSubList) {
-				List<StudentInfo>  stuList = claSub.getStudentInfoList();
+				//List<StudentInfo>  stuList = claSub.getStudentInfoList();
 				LessionInfo les = lessionInfoMapper.selectByPrimaryKey(claSub.getSubLessionId());//由课程id得课程名称
 				StudentInfo stu = studentInfoMapper.selectByPrimaryKey(claSub.getSubStudentId());//由学生id得班级id
 				beanQueryVo.setLessionId(claSub.getSubLessionId());
 				beanQueryVo.setClassId(stu.getClassId());
-				LessionTeacherInfo lestea = lessionTeacherInfoMapper.selectByLessionAndClass(beanQueryVo);//得到教师id
+				//LessionTeacherInfo lestea = lessionTeacherInfoMapper.selectByLessionAndClass(beanQueryVo);//得到教师id
 				//得到教师名称
-				TeacherInfo tea = teacherInfoMapper.selectByPrimaryKey(lestea.getTeacherId());
+				TeacherInfo tea = teacherInfoMapper.selectByPrimaryKey(claSub.getSubTeacherId());
 				//班级名称
 				ClassInfo cla = classInfoMapper.selectByPrimaryKey(stu.getClassId());
 				LessionEvaTemp lesEva = new LessionEvaTemp();
