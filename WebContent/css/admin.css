@@ -14,6 +14,16 @@
     </div>
     Explain:        栅格系统
 */
+.admin_select{
+	border: 1px solid #ddd;
+	width:70px; 
+	line-height:10px;
+	display:inline-block;
+	height:30px;
+}
+
+
+
 /*2.1 响应式栅格系统*/
 .container {
   padding-right: 15px;

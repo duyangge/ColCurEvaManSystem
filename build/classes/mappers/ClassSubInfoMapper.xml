@@ -203,9 +203,20 @@
   <!--按教师id  -->
   <select id="selectByteacher" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List"/>
-    from class_sub_tb
-    where sub_teacher_id = #{teacherId} 
+    <include refid="selectLikeId"/>
+    from class_sub_tb,lession_tb
+    <where>
+   		sub_lession_id = lession_id
+   		and
+   		sub_teacher_id = #{teacherId} 
+   		<if test="status != null and status != ''">
+  				 and sub_status=#{status}
+   		</if>
+   
+			 <if test="keyWords != null and keyWords != ''">
+				 and instr(lession_name,#{keyWords}) > 0
+			 </if>
+    </where>
   </select>
   
   <!-- 查询状态 -->

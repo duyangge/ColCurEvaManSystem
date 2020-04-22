@@ -21,15 +21,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
+import cn.jx.pxc.colcurevamansystem.bean.ParentFunInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
+import cn.jx.pxc.colcurevamansystem.service.FunInfoService;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
 import cn.jx.pxc.colcurevamansystem.service.TeacherInfoService;
+import cn.jx.pxc.colcurevamansystem.utils.ListPageUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -61,7 +64,8 @@ public class UserInfoController {
 	@Resource
 	public LessionInfoService lessionInfoService;
 	
-	
+	@Resource
+	public FunInfoService funInfoService;
 
 	/**进入登录页面
 	 * @param model
@@ -82,7 +86,7 @@ public class UserInfoController {
 		TeacherInfo tea = (TeacherInfo) session.getAttribute("admin");
 		TeacherInfo teacherInfo = teacherInfoService.selectByPrimaryKey(tea.getTeacherId());
 		model.addAttribute("tea",teacherInfo );
-		return "admin_info";
+		return "ad_info";
 	}
 	
 	
@@ -107,7 +111,7 @@ public class UserInfoController {
 			e.printStackTrace();
 		}
 		
-		return "admin_info";
+		return "ad_info";
 	}
 	
 	
@@ -146,17 +150,7 @@ public class UserInfoController {
 		
 		return "stu_info";
 	}
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
+			
 	/**用户登录：
 	 * 把所有操作交给Service层
 	 * 学生页面：
@@ -189,9 +183,11 @@ public class UserInfoController {
 				model.addAttribute("tea", tea);
 				return "tea_index";//教师页面
 			}else if(tea != null && tea.getRoleId() == 1){ //管理员登录
+				List<ParentFunInfo> funList = funInfoService.selectByName(beanQueryVo);
 				session.setAttribute("admin",tea);
 				model.addAttribute("admin", tea);
-				return "admin_index";//管理员界面
+				model.addAttribute("funList", funList);
+				return "ad_index";//管理员界面
 			}else {//登录错误
 				 message="用户名或密码错误，请重新登录！";
 				 return "forward:goLogin.do?message="+message;
@@ -212,7 +208,13 @@ public class UserInfoController {
 	@RequestMapping("/studentAdmin.do")
 	public String studentAdmin(Model model,BeanQueryVo beanQueryVo,@RequestParam(value="addStudentId",required=false)Integer param) {
 	try {
-		   List<StudentInfoCustom> stuList = null ;
+		if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+			beanQueryVo.setPageSize(5);
+		}
+		if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+		}
+		    List<StudentInfoCustom> stuList = null ;
 			if( param != null) {//添加修改信息自动查询
 				StudentInfoCustom stuCu = studentInfoService.selectCustomByKey(param);
 				stuList = new ArrayList<StudentInfoCustom>();
@@ -220,13 +222,91 @@ public class UserInfoController {
 			}else {//模糊查询+条件查询
 				stuList = studentInfoService.findStudentByName(beanQueryVo);
 			}
-			model.addAttribute("stuList", stuList);
+			if(stuList.size() > 0) {//防止查询数据为空，报异常
+               List<StudentInfoCustom> userInfoCustomList = this.getPageContentByStudent(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), stuList);
+				
+				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+				
+				model.addAttribute("stuList", userInfoCustomList);//得到分页内容
+			}
+			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+			//需要重新获取用户信息
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "admin_user_student";
+		return "ad_user_student";
 	}
+	
+	/**分页显示：默认显示第一页内容
+	 * @param currentPage
+	 * @param pageSize
+	 * @param userInfoCustomListOld
+	 * @return
+	 * @throws Exception
+	 */
+	public List<StudentInfoCustom> getPageContentByStudent(Model model, Integer currentPage, Integer pageSize ,List<StudentInfoCustom> userInfoCustomListOld) throws Exception{
+		ListPageUtil<StudentInfoCustom> list = null;
+		if(currentPage != null) {//当前页不为空
+			list = new ListPageUtil<StudentInfoCustom>(userInfoCustomListOld, currentPage, pageSize);
+			if(currentPage >=list.getTotalPage()) {
+				list = new ListPageUtil<StudentInfoCustom>(userInfoCustomListOld, list.getTotalPage(), pageSize);
+			}
+			if(currentPage <=0) {
+				list = new ListPageUtil<StudentInfoCustom>(userInfoCustomListOld, 1, pageSize);
+			}else {
+				list = new ListPageUtil<StudentInfoCustom>(userInfoCustomListOld, list.getCurrentPage(), pageSize);
+			}
+			model.addAttribute("currentPage",list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}else{//当前页为空,默认是第一页
+			list = new ListPageUtil<StudentInfoCustom>(userInfoCustomListOld, 1, pageSize);
+			model.addAttribute("currentPage", list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}
+		
+	}
+	
+	/**分页显示：默认显示第一页内容
+	 * @param currentPage
+	 * @param pageSize
+	 * @param userInfoCustomListOld
+	 * @return
+	 * @throws Exception
+	 */
+	public List<TeacherInfo> getPageContentByTeacher(Model model, Integer currentPage, Integer pageSize ,List<TeacherInfo> userInfoCustomListOld) throws Exception{
+		ListPageUtil<TeacherInfo> list = null;
+		if(currentPage != null) {//当前页不为空
+			list = new ListPageUtil<TeacherInfo>(userInfoCustomListOld, currentPage, pageSize);
+			if(currentPage >=list.getTotalPage()) {
+				list = new ListPageUtil<TeacherInfo>(userInfoCustomListOld, list.getTotalPage(), pageSize);
+			}
+			if(currentPage <=0) {
+				list = new ListPageUtil<TeacherInfo>(userInfoCustomListOld, 1, pageSize);
+			}else {
+				list = new ListPageUtil<TeacherInfo>(userInfoCustomListOld, list.getCurrentPage(), pageSize);
+			}
+			model.addAttribute("currentPage",list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}else{//当前页为空,默认是第一页
+			list = new ListPageUtil<TeacherInfo>(userInfoCustomListOld, 1, pageSize);
+			model.addAttribute("currentPage", list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**添加学生：
 	 * 添加学生后，自动通过主键显示查询
@@ -260,7 +340,7 @@ public class UserInfoController {
 		model.addAttribute("proList", proList);
 		//系统自动生成随机账号（8位）
 		model.addAttribute("account",this.getNum(8));
-		return "admin_user_student_add";
+		return "ad_user_student_add";
 	}
 	
 	/**
@@ -315,7 +395,7 @@ public class UserInfoController {
 		model.addAttribute("stu", stu);//保存编辑学生
 		List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
 		model.addAttribute("proList", proList);//保存所有学院
-		return "admin_user_student_edit";
+		return "ad_user_student_edit";
 	}
 	
 	
@@ -369,8 +449,13 @@ public class UserInfoController {
 	 */
 	@RequestMapping("/teacherAdmin.do")
 	public String teacherAdmin(Model model,BeanQueryVo beanQueryVo,@RequestParam(value="teacherId",required=false)Integer param) throws Exception { 
-		
 		    List<TeacherInfo>  teaList = null;
+		    if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+				beanQueryVo.setPageSize(5);
+			}
+			if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+				beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+			}
 			if( param != null) {//添加修改信息自动查询
 				teaList = new ArrayList<TeacherInfo>() ;
 				TeacherInfo tea = teacherInfoService.selectByPrimaryKey(param);
@@ -378,8 +463,16 @@ public class UserInfoController {
 			}else {//模糊查询+条件查询
 				  teaList = teacherInfoService.selectByNameList(beanQueryVo);
 			}	
-			model.addAttribute("teaList", teaList);
-		    return "admin_user_teacher";
+			if(teaList.size() > 0) {//防止查询数据为空，报异常
+	               List<TeacherInfo> userInfoCustomList = this.getPageContentByTeacher(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), teaList);
+					
+					model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+					
+					model.addAttribute("teaList", userInfoCustomList);//得到分页内容
+			}
+				model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+			
+		    return "ad_user_teacher";
 	}
 	
 	
@@ -395,7 +488,7 @@ public class UserInfoController {
 		model.addAttribute("proList", proList);
 		//系统自动生成随机账号（8位）
 		model.addAttribute("account",this.getNum(8));
-		return "admin_user_teacher_add";
+		return "ad_user_teacher_add";
 	}
 	
 	/**提交添加教师信息
@@ -428,7 +521,7 @@ public class UserInfoController {
 		model.addAttribute("proList", proList);
 		TeacherInfo tea = teacherInfoService.selectByPrimaryKey(id);
 		model.addAttribute("tea", tea);
-		return "admin_user_teacher_edit";
+		return "ad_user_teacher_edit";
 	}
 	
 	/**提交修改信息
@@ -488,7 +581,7 @@ public class UserInfoController {
 	 */
 	@RequestMapping("/indexAdmin.do")
 	public String indexAdmin() {
-		return "admin_welcome";
+		return "ad_welcome";
 	}
 	
 	/**退出登录

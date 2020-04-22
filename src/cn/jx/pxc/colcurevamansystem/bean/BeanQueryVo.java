@@ -14,6 +14,10 @@ package cn.jx.pxc.colcurevamansystem.bean;
 @SuppressWarnings("all")
 public class BeanQueryVo {
 	
+	private Integer pageSize;
+	
+	private Integer currentPage;
+	
 	private Integer category;
 	
 	private Integer id;
@@ -52,6 +56,18 @@ public class BeanQueryVo {
 	
 	private  ClassSubInfo classSubInfo;
 	
+	public Integer getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
 	public String getStudentName() {
 		return studentName;
 	}

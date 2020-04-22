@@ -213,12 +213,11 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 			
 			//得到需要的字段存入临时类中显示
 			for (ClassSubInfo claSub : claSubList) {
-				//List<StudentInfo>  stuList = claSub.getStudentInfoList();
+				List<StudentInfo>  stuList = claSub.getStudentInfoList();
 				LessionInfo les = lessionInfoMapper.selectByPrimaryKey(claSub.getSubLessionId());//由课程id得课程名称
 				StudentInfo stu = studentInfoMapper.selectByPrimaryKey(claSub.getSubStudentId());//由学生id得班级id
 				beanQueryVo.setLessionId(claSub.getSubLessionId());
 				beanQueryVo.setClassId(stu.getClassId());
-				//LessionTeacherInfo lestea = lessionTeacherInfoMapper.selectByLessionAndClass(beanQueryVo);//得到教师id
 				//得到教师名称
 				TeacherInfo tea = teacherInfoMapper.selectByPrimaryKey(claSub.getSubTeacherId());
 				//班级名称
@@ -296,19 +295,6 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 			lesEva.setSubInfo(claSub.getSubInfo());//评价
 			lesEvaList.add(lesEva);
 		}
-		//从所有课程中选择具有关键字段的课程:利用迭代器删除对象(模糊查询)
-			Iterator<LessionEvaTemp> it = lesEvaList.iterator();
-			while(it.hasNext()) {
-				LessionEvaTemp lesInfo = it.next();
-				if(lesInfo.getStatus().equals("1")) it.remove();//删除不可见留言
-				if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().trim().equals("")) {
-					if(lesInfo.getLessionName().trim().indexOf(beanQueryVo.getKeyWords()) == -1) {
-						it.remove();
-					}
-				}
-				
-				}
-		
 		return lesEvaList;
 	}
 

@@ -19,6 +19,7 @@ import cn.jx.pxc.colcurevamansystem.bean.ClassInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
+import cn.jx.pxc.colcurevamansystem.utils.ListPageUtil;
 
 /**
  *<p> Title:  ClassInfoController.java</p>
@@ -39,6 +40,37 @@ public class ClassInfoController {
 	@Resource
 	public ProfessionInfoService professionInfoService;
 	
+	/**分页显示：默认显示第一页内容
+	 * @param currentPage
+	 * @param pageSize
+	 * @param userInfoCustomListOld
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ClassInfoCustom> getPageContentByClassAdmin(Model model, Integer currentPage, Integer pageSize ,List<ClassInfoCustom> userInfoCustomListOld) throws Exception{
+		ListPageUtil<ClassInfoCustom> list = null;
+		if(currentPage != null) {//当前页不为空
+			list = new ListPageUtil<ClassInfoCustom>(userInfoCustomListOld, currentPage, pageSize);
+			if(currentPage >=list.getTotalPage()) {
+				list = new ListPageUtil<ClassInfoCustom>(userInfoCustomListOld, list.getTotalPage(), pageSize);
+			}
+			if(currentPage <=0) {
+				list = new ListPageUtil<ClassInfoCustom>(userInfoCustomListOld, 1, pageSize);
+			}else {
+				list = new ListPageUtil<ClassInfoCustom>(userInfoCustomListOld, list.getCurrentPage(), pageSize);
+			}
+			model.addAttribute("currentPage",list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}else{//当前页为空,默认是第一页
+			list = new ListPageUtil<ClassInfoCustom>(userInfoCustomListOld, 1, pageSize);
+			model.addAttribute("currentPage", list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}
+		
+	}
+	
 	/**分页+模糊查询
 	 * @param model
 	 * @param param
@@ -47,6 +79,12 @@ public class ClassInfoController {
 	 */
 	@RequestMapping("/classAdmin.do")
 	public String classAdmin(Model model,@RequestParam(value="claId",required=false)Integer param,BeanQueryVo beanQueryVo) {
+		if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+			beanQueryVo.setPageSize(5);
+		}
+		if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+		}
 		List<ClassInfoCustom> claList = null;
 		if(param != null) {//添加或修改，自动查询该条记录
 			claList = new ArrayList<ClassInfoCustom>();
@@ -59,8 +97,20 @@ public class ClassInfoController {
 				e.printStackTrace();
 			}
 		}
-		model.addAttribute("claList", claList);
-		return "admin_class";
+		if(claList.size() > 0) {//防止查询数据为空，报异常
+            List<ClassInfoCustom> userInfoCustomList;
+			try {
+				userInfoCustomList = this.getPageContentByClassAdmin(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), claList);
+	model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+				
+				model.addAttribute("claList", userInfoCustomList);//得到分页内容
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			}
+			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+		return "ad_class";
 	}
 	
 	
@@ -74,7 +124,7 @@ public class ClassInfoController {
 		BeanQueryVo beanQueryVo = new BeanQueryVo();
 		List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
 		model.addAttribute("proList", proList);
-        return "admin_class_add";
+        return "ad_class_add";
 	}
 	
 	/**添加班级
@@ -106,7 +156,7 @@ public class ClassInfoController {
 		model.addAttribute("proList", proList);
 		ClassInfo cla = classInfoService.selectByPrimaryKey(id);
 		model.addAttribute("cla", cla);
-		return "admin_class_edit";
+		return "ad_class_edit";
 	}
 	
 	

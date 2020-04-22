@@ -17,12 +17,33 @@
     modified_time
   </sql>
   
+  
+  <!--主键查询  -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from role_tb
     where role_id = #{roleId,jdbcType=INTEGER}
   </select>
+  
+  <!--模糊查询  -->
+  <select id="selectByName" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from role_tb
+    <where>
+    	<if test="keyWords != null and keyWords != null">
+    	   instr(role_name,#{keyWords}) > 0
+    	</if>
+    	<if test="status != null and status != ''">
+    	and 
+    	role_status=#{status}
+    	</if>
+    </where>
+  </select>
+  
+  
+  
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from role_tb

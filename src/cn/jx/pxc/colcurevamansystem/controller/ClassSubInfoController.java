@@ -24,6 +24,7 @@ import cn.jx.pxc.colcurevamansystem.service.ClassSubInfoService;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
 import cn.jx.pxc.colcurevamansystem.service.TeacherInfoService;
+import cn.jx.pxc.colcurevamansystem.utils.ListPageUtil;
 
 /**
  *<p> Title:  ClassSubInfoController.java</p>
@@ -59,20 +60,65 @@ public class ClassSubInfoController {
 	 */
 	@RequestMapping("/findStudentClassSubByTeacher.do")
 	public String findStudentClassSubByTeacher(Model model,HttpSession session,BeanQueryVo beanQueryVo) {
+		if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+			beanQueryVo.setPageSize(5);
+		}
+		if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+		}
+
 		TeacherInfo teacherInfo  = (TeacherInfo) session.getAttribute("admin");
 		TeacherInfo tea = teacherInfoService.selectByPrimaryKey(teacherInfo.getTeacherId());
 		List<LessionEvaTemp> lesEvaList = null;
 		beanQueryVo.setTeacherId(tea.getTeacherId());
+		beanQueryVo.setStatus("0");//教师只能查看可见评价
 		try {
 			lesEvaList = classSubInfoService.selectByteacher(beanQueryVo);
+			if(lesEvaList.size() > 0) {//防止查询数据为空，报异常
+	               List<LessionEvaTemp> userInfoCustomList = this.getPageContentByClassSubAndTeacher(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
+					
+					model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+					
+					model.addAttribute("lesEvaList", userInfoCustomList);//得到分页内容
+				}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	    model.addAttribute("lesEvaList", lesEvaList);
+		model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
 		return "tea_lession_eva";
 	}
 	
-	
+	/**分页显示：默认显示第一页内容
+	 * @param currentPage
+	 * @param pageSize
+	 * @param userInfoCustomListOld
+	 * @return
+	 * @throws Exception
+	 */
+	public List<LessionEvaTemp> getPageContentByClassSubAndTeacher(Model model, Integer currentPage, Integer pageSize ,List<LessionEvaTemp> userInfoCustomListOld) throws Exception{
+		ListPageUtil<LessionEvaTemp> list = null;
+		if(currentPage != null) {//当前页不为空
+			list = new ListPageUtil<LessionEvaTemp>(userInfoCustomListOld, currentPage, pageSize);
+			if(currentPage >=list.getTotalPage()) {
+				list = new ListPageUtil<LessionEvaTemp>(userInfoCustomListOld, list.getTotalPage(), pageSize);
+			}
+			if(currentPage <=0) {
+				list = new ListPageUtil<LessionEvaTemp>(userInfoCustomListOld, 1, pageSize);
+			}else {
+				list = new ListPageUtil<LessionEvaTemp>(userInfoCustomListOld, list.getCurrentPage(), pageSize);
+			}
+			model.addAttribute("currentPage",list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}else{//当前页为空,默认是第一页
+			list = new ListPageUtil<LessionEvaTemp>(userInfoCustomListOld, 1, pageSize);
+			model.addAttribute("currentPage", list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}
+		
+	}
 	
 	/**管理员查看详细评价内容
 	 * @param model
@@ -88,7 +134,7 @@ public class ClassSubInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "admin_lession_eva_see";
+		return "ad_lession_eva_see";
 	}
 	
 	/**教师查看详细评价内容
@@ -118,6 +164,12 @@ public class ClassSubInfoController {
 	 */
 	@RequestMapping("/findClassSub.do")
 	public String findClassSub(Model model,BeanQueryVo beanQueryVo,@RequestParam(value="evaId",required=false)Integer id) {
+		if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+			beanQueryVo.setPageSize(5);
+		}
+		if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+		}
 		List<LessionEvaTemp>  lesEvaList = null;
 		if(id != null) {//修改评价是否可见(默认都可见)
 			lesEvaList = new ArrayList<LessionEvaTemp>();
@@ -128,9 +180,21 @@ public class ClassSubInfoController {
 		}else {
 			  lesEvaList = classSubInfoService.selectLessionEva(beanQueryVo);
 		}
-		
-		model.addAttribute("lesEvaList", lesEvaList);
-		return "admin_lession_eva";
+		if(lesEvaList.size() > 0) {//防止查询数据为空，报异常
+            List<LessionEvaTemp> userInfoCustomList;
+			try {
+				userInfoCustomList = this.getPageContentByClassSubAndTeacher(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
+				
+				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+				
+				model.addAttribute("lesEvaList", userInfoCustomList);//得到分页内容
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+		return "ad_lession_eva";
 	}
 	
 	
@@ -141,6 +205,13 @@ public class ClassSubInfoController {
 	 */
 	@RequestMapping("/findStudentClassSub.do")
 	public String findStudentClassSub(Model model,BeanQueryVo beanQueryVo,HttpSession session, @RequestParam(value="claSubId",required=false)Integer id) {
+		if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+			beanQueryVo.setPageSize(5);
+		}
+		if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+		}
+
 		List<LessionEvaTemp> lesEvaList = null;
 		if(id != null) {//添加评价后，自动查询
 			ClassSubInfo claSub = classSubInfoService.selectByPrimaryKey(id);//得到该条记录
@@ -148,13 +219,22 @@ public class ClassSubInfoController {
 			lesEvaList = new ArrayList<LessionEvaTemp>();
 			LessionEvaTemp les = classSubInfoService.selectLessionEvaById(beanQueryVo);
 			lesEvaList.add(les);
-			model.addAttribute("lesEvaList", lesEvaList);
 		}else {//默认查询所有，分页查询+模糊查询
 			  StudentInfo stu = (StudentInfo) session.getAttribute("student");
 			  beanQueryVo.setStudentId(stu.getStudentId());
 			  lesEvaList = classSubInfoService.selectLessionEva(beanQueryVo);
-			  model.addAttribute("lesEvaList", lesEvaList);
 		}
+		if(lesEvaList.size() > 0) {//防止查询数据为空，报异常
+            List<LessionEvaTemp> userInfoCustomList = null;
+			try {
+				userInfoCustomList = this.getPageContentByClassSubAndTeacher(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
+				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+				model.addAttribute("lesEvaList", userInfoCustomList);//得到分页内容
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			}
+			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
 		return "stu_lession_eva";
 	}
 	
