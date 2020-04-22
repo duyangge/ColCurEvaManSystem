@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -24,12 +25,12 @@
 				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
 				<c:forEach items="${funList }" var="fun" varStatus="status">
 				      <li class="layui-nav-item">
-					    <a href="javascript:;"><i class="iconfont" data-id='${fun.funParentId }'   data-text="${fun.funParentName}" data-url="${fun.funParentUrl }">${fun.funParentImg }</i>${fun.funParentName }</a>
-					    <c:if test="${fun.subFunInfoList.size() > 0   }">
+					    <a href="javascript:;" data-id='${fun.funParentId }'   data-text="${fun.funParentName}" data-url="${fun.funParentUrl }"><i class="iconfont" >${fun.funParentImg }</i>${fun.funParentName }</a>
+					    <c:if test="${  not empty fun.subFunInfoList[0].funId   }"><!-- fn:length(fun.subFunInfoList) -->
 					   		 <dl class="layui-nav-child">
 					    		<c:forEach items="${fun.subFunInfoList }" var="subFun" varStatus="status">
 						    		 <dd>
-						    		    <a href="javascript:;" data-url="${subFun.funUrl }" data-id='${subFun.funId }' data-text="${subFun.funName }">
+						    		    <a href="javascript:;" data-url="${subFun.funUrl }" data-id='${subFun.funId }${status.count}' data-text="${subFun.funName }">
 						      			<span class="l-line"></span>${subFun.funName }</a>
 						      	     </dd>
 					    		</c:forEach>
@@ -37,64 +38,6 @@
 					    </c:if> 
 					  </li>
 				</c:forEach>
-                 
-
-                 <!-- 
-                 <li class="layui-nav-item">
-				          <a href="javascript:;"><i class="iconfont" data-id='5'   data-text="" data-url="">&#xe606;</i>用户管理</a>
-				    
-				    <dl class="layui-nav-child">
-				      <dd><a href="javascript:;" data-url="../user/teacherAdmin.do" data-id='1' data-text="教师管理">
-				      	<span class="l-line"></span>教师管理</a></dd>
-				      <dd><a href="javascript:;" data-url="../user/studentAdmin.do" data-id='2' data-text="学生管理">
-				      	<span class="l-line"></span>学生管理</a></dd>
-				    </dl>
-				    
-				  </li>
-                 
-                 
-                 
-                 
-                 
-                  <li class="layui-nav-item">
-				    <a href="javascript:;"data-url="../lession/lessionAdmin.do" data-id='3' data-text="课程管理">
-				    	<i class="iconfont">&#xe608;</i>课程管理</a>
-				  </li> 
-                  
-                   <li class="layui-nav-item">
-				    <a href="javascript:;"data-url="../classSub/findClassSub.do" data-id='4' data-text="课程评价管理">
-				    	<i class="iconfont">&#xe60c;</i>评价管理</a>
-				  </li> 
-                   
-
-				   <li class="layui-nav-item">
-				    <a href="javascript:;"data-url="../class/classAdmin.do" data-id='5' data-text="班级管理">
-				    	<i class="iconfont">&#xe600;</i>班级管理</a>
-				  </li> 
-				  
-                  
-                  <li class="layui-nav-item">
-				    <a href="javascript:;"data-url="../profession/professionAdmin.do" data-id='6' data-text="学院管理">
-				    	<i class="iconfont">&#xe60d;</i>学院管理</a>
-				  </li> 
-
-                   <li class="layui-nav-item">
-				    <a href="javascript:;"data-url="../role/getRoleAdBySelect.do" data-id='10' data-text="角色管理">
-				    	<i class="iconfont">&#xe60a;</i>角色管理</a>
-				  </li> 
-
-				  <li class="layui-nav-item">
-				    <a href="javascript:;" data-url="../user/goUpdateAdminInfo.do" data-id='8' data-text="个人信息">
-				    	<i class="iconfont">&#xe606;</i>个人信息</a>
-				  </li>
-
-
-				  <li class="layui-nav-item">
-				  	<a href="javascript:;" data-url="system.html" data-id='9' data-text="系统设置">
-				  		<i class="iconfont">&#xe60b;</i>系统设置</a>
-				  </li> -->
-
-
 				</ul>
 			</div>
 

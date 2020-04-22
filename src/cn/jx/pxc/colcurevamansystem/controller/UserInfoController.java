@@ -183,6 +183,7 @@ public class UserInfoController {
 				model.addAttribute("tea", tea);
 				return "tea_index";//教师页面
 			}else if(tea != null && tea.getRoleId() == 1){ //管理员登录
+				beanQueryVo.setId(1);
 				List<ParentFunInfo> funList = funInfoService.selectByName(beanQueryVo);
 				session.setAttribute("admin",tea);
 				model.addAttribute("admin", tea);
