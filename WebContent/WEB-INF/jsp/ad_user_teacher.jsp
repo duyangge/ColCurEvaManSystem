@@ -24,7 +24,6 @@
 							<div class="layui-inline tool-btn">
 								<button class="layui-btn layui-btn-small layui-btn-normal tea_go-btn hidden-xs" data-url="../user/goAddTeacher.do"><i class="layui-icon">&#xe654;</i></button>
 								<button class="layui-btn layui-btn-small layui-btn-danger delBtn"  data-url="../user/deleteTeacher.do"><i class="layui-icon">&#xe640;</i></button>
-						        <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs" data-url=""><i class="iconfont">&#xe656;</i></button>
 							</div>
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords"  placeholder="请输入关键字" value="${keyWords }" autocomplete="off" class="layui-input">
@@ -102,8 +101,8 @@
 									</td>
 									<td>
 										<div class="layui-inline">
-											<button class="layui-btn layui-btn-small layui-btn-normal tea_edit-btn" data-id="${tea.teacherId }" data-url="../user/goUpdateTeacher.do"><i class="layui-icon">&#xe642;</i></button>
-											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${tea.teacherId  }" data-url="../user/deleteTeacher.do"><i class="layui-icon">&#xe640;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-normal tea_edit-btn" data-id="${tea.teacherId }" data-url="../user/goUpdateTeacher.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="${tea.teacherId  }" data-url="../user/deleteTeacher.do"><i class="layui-icon">&#xe640;</i></button>
 										</div>
 									</td>
 								</tr>

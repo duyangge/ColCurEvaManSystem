@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -23,7 +22,6 @@
 						<div class="layui-form-item">
 							<div class="layui-inline tool-btn">
 								<button class="layui-btn layui-btn-small layui-btn-normal cla_go-btn hidden-xs" data-url=""><i class="layui-icon">&#xe654;</i></button>
-						        <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs" data-url=""><i class="iconfont">&#xe656;</i></button>
 							</div>
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords" value="${keyWords }"  placeholder="请输入关键字" autocomplete="off" class="layui-input">
@@ -95,7 +93,8 @@
 									<td class="hidden-xs"><fmt:formatDate value="${role.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
 									<td>
 										<div class="layui-inline">
-										<button class="layui-btn layui-btn-small layui-btn-normal cla_edit-btn" data-id="${role.roleId }" data-url=""><i class="layui-icon">&#xe642;</i></button>
+										<button class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="${role.roleId }" data-url=""><i class="layui-icon">&#xe642;</i></button>
+										<button class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="${role.roleId }" data-url=""><i class="layui-icon">权限</i></button>
 										</div>
 									</td>
 								</tr>

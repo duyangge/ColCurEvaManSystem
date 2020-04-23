@@ -25,7 +25,7 @@
 				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
 				<c:forEach items="${funList }" var="fun" varStatus="status">
 				      <li class="layui-nav-item">
-					    <a href="javascript:;" data-id='${fun.funParentId }'   data-text="${fun.funParentName}" data-url="${fun.funParentUrl }"><i class="iconfont" >${fun.funParentImg }</i>${fun.funParentName }</a>
+					    <a href="javascript:;" data-id='${fun.funParentId }'   data-text="${fun.funParentName}" data-url="${fun.funParentUrl }"><i class="iconfont" >&#xe${fun.funParentImg };</i>${fun.funParentName }</a>
 					    <c:if test="${  not empty fun.subFunInfoList[0].funId   }"><!-- fn:length(fun.subFunInfoList) -->
 					   		 <dl class="layui-nav-child">
 					    		<c:forEach items="${fun.subFunInfoList }" var="subFun" varStatus="status">

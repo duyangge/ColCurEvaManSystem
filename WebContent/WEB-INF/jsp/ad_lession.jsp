@@ -24,7 +24,6 @@
 							<div class="layui-inline tool-btn">
 								<button class="layui-btn layui-btn-small layui-btn-normal les_go-btn hidden-xs" data-url="../lession/goAddLession.do"><i class="layui-icon">&#xe654;</i></button>
 								<button class="layui-btn layui-btn-small layui-btn-danger delBtn"  data-url="../lession/deleteLession.do"><i class="layui-icon">&#xe640;</i></button>
-						        <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs" data-url=""><i class="iconfont">&#xe656;</i></button>
 							</div>
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords"  placeholder="请输入关键字" value="${keyWords }"  autocomplete="off" class="layui-input">
@@ -79,8 +78,8 @@
 									<td class="hidden-xs"><fmt:formatDate value="${les.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
 									<td>
 										<div class="layui-inline">
-											<button class="layui-btn layui-btn-small layui-btn-normal les_edit-btn" data-id="${les.lessionId }" data-url="../lession/goUpdateLession.do"><i class="layui-icon">&#xe642;</i></button>
-											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${les.lessionId  }" data-url="../lession/deleteLession.do"><i class="layui-icon">&#xe640;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-normal les_edit-btn" data-id="${les.lessionId }" data-url="../lession/goUpdateLession.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="${les.lessionId  }" data-url="../lession/deleteLession.do"><i class="layui-icon">&#xe640;</i></button>
 										</div>
 									</td>
 								</tr>

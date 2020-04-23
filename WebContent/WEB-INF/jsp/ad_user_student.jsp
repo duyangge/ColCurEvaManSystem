@@ -25,7 +25,6 @@
 							<div class="layui-inline tool-btn">
 								<button class="layui-btn layui-btn-small layui-btn-normal stu_go-btn hidden-xs" data-url="../user/goAddStudent.do"><i class="layui-icon">&#xe654;</i></button>
 								<button class="layui-btn layui-btn-small layui-btn-danger delBtn"  data-url="../user/deleteStudent.do"><i class="layui-icon">&#xe640;</i></button>
-						        <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs" data-url="/admin/category/listorderall.html"><i class="iconfont">&#xe656;</i></button>
 							</div>
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords"  placeholder="请输入关键字"  value="${keyWords }"  autocomplete="off" class="layui-input">
@@ -105,8 +104,8 @@
 									</td>
 									<td>
 										<div class="layui-inline">
-											<button class="layui-btn layui-btn-small layui-btn-normal stu_edit-btn" data-id="${stu.studentId }" data-url="../user/goUpdateStudent.do"><i class="layui-icon">&#xe642;</i></button>
-											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${stu.studentId }" data-url="../user/deleteStudent.do"><i class="layui-icon">&#xe640;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-normal stu_edit-btn" data-id="${stu.studentId }" data-url="../user/goUpdateStudent.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="${stu.studentId }" data-url="../user/deleteStudent.do"><i class="layui-icon">&#xe640;</i></button>
 										</div>
 									</td>
 								</tr>

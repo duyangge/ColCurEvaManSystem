@@ -111,8 +111,8 @@
 									</td>
 									<td>
 										<div class="layui-inline">
-											<button class="layui-btn layui-btn-small layui-btn-normal tea_see_eva_edit-btn" data-id="${lesEva.id }" data-url="../classSub/goAdminSeeLessionEva.do"><i class="layui-icon">&#xe642;</i></button>
-											<button class="layui-btn layui-btn-small layui-btn-danger del-btn" data-id="${lesEva.id }" data-url=""><i class="layui-icon">&#xe640;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-normal tea_see_eva_edit-btn" data-id="${lesEva.id }" data-url="../classSub/goAdminSeeLessionEva.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="${lesEva.id }" data-url=""><i class="layui-icon">&#xe640;</i></button>
 										</div>
 									</td>
 								</tr>

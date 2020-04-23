@@ -35,7 +35,6 @@
 						<div class="layui-form-item">
 							<div class="layui-inline tool-btn">
 								<button class="layui-btn layui-btn-small layui-btn-normal pro_go-btn hidden-xs" data-url="../profession/goAddProfession.do"><i class="layui-icon">&#xe654;</i></button>
-						        <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs" data-url=""><i class="iconfont">&#xe656;</i></button>
 							</div>
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords"  placeholder="请输入关键字" value="${keyWords }" autocomplete="off" class="layui-input">
@@ -92,7 +91,7 @@
 									<td class="hidden-xs"><fmt:formatDate value="${pro.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
 									<td>
 										<div class="layui-inline">
-											<button class="layui-btn layui-btn-small layui-btn-normal pro_edit-btn" data-id="${pro.professionId }" data-url="../profession/goUpdateProfession.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-normal pro_edit-btn" data-id="${pro.professionId }" data-url="../profession/goUpdateProfession.do"><i class="layui-icon">&#xe642;</i></button>
 										</div>
 									</td>
 								</tr>

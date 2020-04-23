@@ -167,10 +167,14 @@ public class UserInfoController {
 			String message="账号异常，请通知管理员处理！";
 			StudentInfo stu = studentInfoService.selectByAccountList(beanQueryVo);
 			TeacherInfo  tea = teacherInfoService.selectByAccountList(beanQueryVo);
+			
 			if ( stu != null ) {//学生登录
 				if(stu.getStatus().equals("1")) { 
 					return "forward:goLogin.do?message="+message;
 				}
+				beanQueryVo.setId(3);
+				List<ParentFunInfo>	funList = funInfoService.selectByName(beanQueryVo);
+				model.addAttribute("funList", funList);
 				session.setAttribute("student",stu);
 				model.addAttribute("stu", stu);
 				return "stu_index";//学生页面
@@ -179,25 +183,29 @@ public class UserInfoController {
 				if(tea.getStatus().equals("1")) { 
 					return "forward:goLogin.do?message="+message;
 				}
+				beanQueryVo.setId(2);
+				List<ParentFunInfo>	funList = funInfoService.selectByName(beanQueryVo);
+				model.addAttribute("funList", funList);
 				session.setAttribute("admin",tea);
 				model.addAttribute("tea", tea);
-				return "tea_index";//教师页面
+				return "te_index";//教师页面
 			}else if(tea != null && tea.getRoleId() == 1){ //管理员登录
 				beanQueryVo.setId(1);
-				List<ParentFunInfo> funList = funInfoService.selectByName(beanQueryVo);
+				List<ParentFunInfo>	funList = funInfoService.selectByName(beanQueryVo);
+				model.addAttribute("funList", funList);
 				session.setAttribute("admin",tea);
 				model.addAttribute("admin", tea);
-				model.addAttribute("funList", funList);
+				
 				return "ad_index";//管理员界面
 			}else {//登录错误
 				 message="用户名或密码错误，请重新登录！";
 				 return "forward:goLogin.do?message="+message;
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return "login";
+		return "redirect:goLogin.do";
 	}
 		
 	/**分页+

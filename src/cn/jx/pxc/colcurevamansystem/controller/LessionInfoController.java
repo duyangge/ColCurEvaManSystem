@@ -78,7 +78,7 @@ public class LessionInfoController {
 			e.printStackTrace();
 		}
 		
-		return "tea_lession";
+		return "te_lession";
 	}
 	
 	/**分页显示：默认显示第一页内容
@@ -128,7 +128,7 @@ public class LessionInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "tea_lession_see";
+		return "te_lession_see";
 	}
 	
 	

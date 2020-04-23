@@ -86,7 +86,7 @@ public class ClassSubInfoController {
 			e.printStackTrace();
 		}
 		model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
-		return "tea_lession_eva";
+		return "te_lession_eva";
 	}
 	
 	/**分页显示：默认显示第一页内容
@@ -151,7 +151,7 @@ public class ClassSubInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "tea_lession_eva_see";
+		return "te_lession_eva_see";
 	}
 	
 	
