@@ -85,7 +85,9 @@ public class ClassInfoController {
 		if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
 			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
 		}
+		
 		List<ClassInfoCustom> claList = null;
+		
 		if(param != null) {//添加或修改，自动查询该条记录
 			claList = new ArrayList<ClassInfoCustom>();
 			ClassInfoCustom cla = classInfoService.selectById(param);
@@ -100,17 +102,18 @@ public class ClassInfoController {
 		if(claList.size() > 0) {//防止查询数据为空，报异常
             List<ClassInfoCustom> userInfoCustomList;
 			try {
-				userInfoCustomList = this.getPageContentByClassAdmin(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), claList);
-	model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
-				
-				model.addAttribute("claList", userInfoCustomList);//得到分页内容
-			
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+					userInfoCustomList = this.getPageContentByClassAdmin(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), claList);
+		            model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+					model.addAttribute("claList", userInfoCustomList);//得到分页内容
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
-		return "ad_class";
+			List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
+			model.addAttribute("proList", proList);//保存每个学院
+			model.addAttribute("professionId", beanQueryVo.getProfessionId());
+			return "ad_class";
 	}
 	
 	

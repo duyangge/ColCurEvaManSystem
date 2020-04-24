@@ -110,7 +110,7 @@ public class UserInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		model.addAttribute("roadParent", "roadParent");
 		return "ad_info";
 	}
 	
@@ -147,7 +147,7 @@ public class UserInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		model.addAttribute("roadParent", "roadParent");
 		return "stu_info";
 	}
 			
@@ -231,6 +231,7 @@ public class UserInfoController {
 			}else {//模糊查询+条件查询
 				stuList = studentInfoService.findStudentByName(beanQueryVo);
 			}
+			
 			if(stuList.size() > 0) {//防止查询数据为空，报异常
                List<StudentInfoCustom> userInfoCustomList = this.getPageContentByStudent(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), stuList);
 				
@@ -239,6 +240,10 @@ public class UserInfoController {
 				model.addAttribute("stuList", userInfoCustomList);//得到分页内容
 			}
 			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+			//保存每个学院
+			List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
+			model.addAttribute("proList", proList);
+			model.addAttribute("professionId", beanQueryVo.getProfessionId());
 			//需要重新获取用户信息
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -376,7 +381,7 @@ public class UserInfoController {
 	@ResponseBody
 	@RequestMapping(value="/changeClass.do",method=RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
 	public String changeClass(Model model,Integer id,BeanQueryVo beanQueryVo) {
-		beanQueryVo.setProfessionId(id);
+		 beanQueryVo.setProfessionId(id);
 		 JSONArray array=new JSONArray();
 		  try {
 			 List<ClassInfo>  claList = classInfoService.selectByProfessionList(beanQueryVo);
@@ -545,6 +550,7 @@ public class UserInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("roadParent", "roadParent");
 		return "forward:teacherAdmin.do?param"+tea.getTeacherId();
 	}
 	
@@ -601,21 +607,4 @@ public class UserInfoController {
 		session.invalidate();
 		return "redirect:goLogin.do";
 	}
-	/**自动刷新学院
-	 * @param model
-	 * @param beanQueryVo
-	 *//*
-	@ResponseBody
-	@RequestMapping(value="/changeProfession.do",method=RequestMethod.POST)
-	public String changeProfession(Model model,BeanQueryVo beanQueryVo) {
-		List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
-		JSONArray array=new JSONArray();
-		for (ProfessionInfo professionInfo : proList) {
-			JSONObject obj=new JSONObject();
-			obj.put("professionId",professionInfo.getProfessionId() );
-			obj.put("professionName", professionInfo.getProfessionName());
-			array.add(obj);
-		}
-		return array.toString();
-	}*/
 }

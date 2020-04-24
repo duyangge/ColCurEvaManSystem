@@ -27,13 +27,14 @@
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords" value="${keyWords }"  placeholder="请输入关键字" autocomplete="off" class="layui-input">
 							</div>
-						<!-- 	<div class="layui-inline">
-								<select name="status" lay-filter="status" id="status">
-									<option value="" selected="selected">请选择学院</option>
-									<option value="0">正常</option>
-									<option value="1">异常</option>
+							<div class="layui-inline">
+								<select name="professionId" lay-verify="required" id="profession_id">	
+								    <option value="" data-id="">请选择学院</option>
+									<c:forEach items="${proList }" var="pro" varStatus="status">
+										<option value="${pro.professionId }" data-id="${pro.professionId }" <c:if test="${pro.professionId eq professionId }">selected="selected"</c:if>  >${pro.professionName }</option>
+									</c:forEach>							
 								</select>
-							</div> -->
+							</div>
 							<div class="layui-inline">
 							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
 							</div>

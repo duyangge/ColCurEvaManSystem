@@ -102,7 +102,20 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		window.location.href=url+"?id="+id;
 		return false;
 	})	
-		
+	
+	//管理员编辑菜单
+		$('#table-list,.tool-btn').on('click', '.edit-fun-btn', function() {
+			var tableName=$(this).attr('data-table');
+			var id = $(this).attr('data-id');
+			if(tableName == "parentFun"){
+				window.location.href="../fun/goEditParentFunPage.do?id="+id;
+			}else{
+				window.location.href="../fun/goEditSubFunPage.do?id="+id;
+			}
+			return false;
+		})	
+	
+	
 	//学生添加课程评价
 	$('#table-list,.tool-btn').on('click', '.eva_edit-btn', function() {
 		var url=$(this).attr('data-url');
@@ -145,11 +158,6 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	})	
 	
 	
-	
-	
-	
-	
-	
 	//列表删除（可公用）
 		$('#table-list').on('click', '.del-btn', function() {
 			var url=$(this).attr('data-url');
@@ -187,10 +195,28 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 			dialog.tips('批量删除', '.delBtn');
 		})		
 	
+		//菜单删除
+		$('#table-list').on('click', '.del-fun-btn', function() {
+			var tableName=$(this).attr('data-table');
+			var id = $(this).attr('data-id');
+			dialog.confirm({
+				message:'您确定要进行删除吗？',
+				success:function(){
+					layer.msg('删除成功');
+					if(tableName == "parentFun"){
+						window.location.href="../fun/delParentFun.do?id="+id;
+					}else{
+						window.location.href="../fun/delSubFun.do?id="+id;
+					}
+				},
+				cancel:function(){
+					layer.msg('取消成功');
+				}
+			})
+			return true;
+		})
 	
-	
-	
-	
+		
 	
 	
 	

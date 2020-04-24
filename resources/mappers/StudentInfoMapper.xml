@@ -74,6 +74,9 @@
 			<if test="status != null and status != ''">
 				and status=#{status}
 			</if>
+			<if test="professionId != null and professionId != ''">
+				and profession_id=#{professionId}
+			</if>
 		</where>
 	</select>
 

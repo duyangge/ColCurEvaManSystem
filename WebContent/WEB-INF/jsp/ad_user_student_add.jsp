@@ -21,7 +21,7 @@
 						<label class="layui-form-label">学院：</label>
 						<div class="layui-input-block" style="margin-bottom: 20px;">
 						   <!--循环便利所有学院  -->
-							<select name="studentInfo.professionId" lay-verify="required" id="profession_id">	
+							<select name="studentInfo.professionId" lay-verify="required" id="profession_id" lay-filter="profession">	
 								<c:forEach items="${proList }" var="pro" varStatus="status">
 									<option value="${pro.professionId }" data-id="${pro.professionId }" >${pro.professionName }</option>
 								</c:forEach>							
@@ -33,11 +33,7 @@
 						<div class="layui-input-block">
 							<!--循环便利所有班级  -->
 							<select name="studentInfo.classId" lay-verify="required" id="class_id" >	
-							<option value= "0" data-id="0">请选择所属班级</option>						
-							<!--<option value="1" selected="selected">1601软工班</option>
-								<option value="2">1602软工班</option>
-								<option value="3">1603软件班</option>
-								<option value="4">1604软件班</option>-->
+							      <option value="" data-id="">请选择所属班级</option>						
 							</select>
 						</div>
                         
@@ -110,48 +106,41 @@
 <script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 <script>
 
-
-
-
-
-//$(document).ready(function(){
-//选中一级产品类别后，获取并刷新二级产品类别列表
-//$("#profession_id").click(function(){
-	 var options=$("#profession_id option:selected");
-     var value=options.data("id");   
-            $.ajax({
-				async:false,
-				type:"post",
-				url:"../user/changeClass.do",
-				dataType: "json",
-				data:{id:value}, //二级产品类别的父ID
-				success:function(data){
-					$("#class_id").empty();
-					$("#class_id").append("<option value= '' data-id='0'>请选择所属班级</option>");
-					for(var i=0;i<data.length;i++){
-						$("#class_id").append("<option value='"+data[i].classId+"' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
-					}
-				},
-				error:function(err){
-		        	alert("失败");
-		      	}
-   });
-	
-//});
-
-//});     
-	
 //提交表单
 layui.use(['form'], function() {
 	var form = layui.form();
-	form.render();
+	//监听下拉列表提交
+	form.on('select(profession)', function(data) {
+		     var options=$("#profession_id option:selected");
+	         var value=options.data("id");   //得到学院id
+	            $.ajax({
+					async:false,
+					type:"post",
+					url:"../user/changeClass.do",
+					dataType: "json",
+					data:{id:value}, //二级产品类别的父ID
+					success:function(data){
+						$("#class_id").empty();
+						$("#class_id").append("<option value= '' data-id=''>请选择所属班级</option>");
+						for(var i=0;i<data.length;i++){
+							$("#class_id").append("<option value='"+data[i].classId+"' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+						}
+						form.render();
+					},
+					error:function(err){
+			        	alert("失败");
+			      	}
+	           })
+	})
+	
+	
 	//监听提交
 	form.on('submit(formDemo)', function(data) {
-		JSON.stringify(data.field);
+				JSON.stringify(data.field);
 				var passwd = document.getElementById('passwd').value;
 				var repasswd = document.getElementById('repasswd').value;
-		       var tel=document.getElementById('tel').value;
-		       var mail=document.getElementById('mail').value;
+		        var tel=document.getElementById('tel').value;
+		        var mail=document.getElementById('mail').value;
 		       if( isPoneAvailable(tel) &&  isEmailAvailable(mail)&&checkpasswd(passwd,repasswd)){
 		    	   return true;
 		       }else {

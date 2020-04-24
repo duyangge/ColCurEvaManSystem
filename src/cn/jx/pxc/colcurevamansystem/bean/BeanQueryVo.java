@@ -52,6 +52,14 @@ public class BeanQueryVo {
 	
 	private String studentName;
 	
+	private String tableName;
+	
+	public String getTableName() {
+		return tableName;
+	}
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
 	private StudentInfo studentInfo;
 	
 	private  ClassSubInfo classSubInfo;

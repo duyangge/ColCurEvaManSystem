@@ -21,6 +21,10 @@ if(message != null && message != ""){	//密码修改后，退出登录
 	//alert("23534");
 	top.location.href="../user/loginOut.do";
  }
+var roadParent = "${roadParent}";
+if(roadParent != null && roadParent != ""){	
+   		parent.location.reload();//刷新父页面
+ }
 //Demo
 layui.use(['form','element'], function(){
   var form = layui.form();

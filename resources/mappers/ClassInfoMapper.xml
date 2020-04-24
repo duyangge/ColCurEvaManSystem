@@ -18,9 +18,15 @@
     select 
     <include refid="Base_Column_List" />
     from class_tb
-	   <if test="keyWords != null and keyWords != ''">
-	     where instr(class_name,#{keyWords}) > 0
+    <where>
+    	<if test="keyWords != null and keyWords != ''">
+	      instr(class_name,#{keyWords}) > 0
 	   </if>
+    	<if test="professionId != null and professionId != ''">
+	     and profession_id = #{professionId}
+	   </if>
+    </where>
+	   
   </select>
   
   <sql id="Base_Column_List">

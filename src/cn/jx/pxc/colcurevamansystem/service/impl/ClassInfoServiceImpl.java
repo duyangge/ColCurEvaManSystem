@@ -118,13 +118,11 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 		List<ClassInfo>  claList = classInfoMapper.selectByNameList(beanQueryVo);
 		List<ClassInfoCustom> claCuList = new ArrayList<ClassInfoCustom>();
 		for (ClassInfo classInfo : claList) {
-			//if(classInfo.getClassName() != null) {
 				ClassInfoCustom claCus = new ClassInfoCustom();
 				BeanUtils.copyProperties(claCus, classInfo);
 				ProfessionInfo pro = professionMapper.selectByPrimaryKey(classInfo.getProfessionId());
 				claCus.setProfessionName(pro.getProfessionName());
 				claCuList.add(claCus);
-			//}
 		}
 		return claCuList;
 	}

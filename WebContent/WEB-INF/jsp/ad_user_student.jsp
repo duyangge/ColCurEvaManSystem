@@ -41,6 +41,14 @@
 								</select>
 							</div>
 							<div class="layui-inline">
+								<select name="professionId" lay-verify="required" id="profession_id">	
+								    <option value="" data-id="">请选择学院</option>
+									<c:forEach items="${proList }" var="pro" varStatus="status">
+										<option value="${pro.professionId }" data-id="${pro.professionId }" <c:if test="${pro.professionId eq professionId }">selected="selected"</c:if>  >${pro.professionName }</option>
+									</c:forEach>							
+								</select>
+							</div>
+							<div class="layui-inline">
 						          <select name="pageSize"  id="pageSize" lay-filter="status">
 						            <c:forEach begin="5" end="20" varStatus="status" step="5">
 						                   <option value="${status.current}" <c:if test="${status.current eq pageSize }"> selected="selected"</c:if> >${status.current}条/页</option>
