@@ -299,6 +299,14 @@ public class LessionInfoServiceImpl implements LessionInfoService {
 		
 		return null;
 	}
+
+	/* (non-Javadoc)
+	 * @see cn.jx.pxc.colcurevamansystem.service.LessionInfoService#selectByTeacherList(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
+	 */
+	@Override
+	public List<LessionTeacherInfo> selectByTeacherList(BeanQueryVo beanQueryVo) throws Exception {
+		return lessionTeacherInfoMapper.selectByTeacherList(beanQueryVo);
+	}
 	
 	
 	

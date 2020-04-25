@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
+import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionEvaTemp;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
+import cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
+import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ClassSubInfoService;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
@@ -51,15 +54,18 @@ public class ClassSubInfoController {
 	@Resource
 	public TeacherInfoService teacherInfoService;
 	
+	@Resource
+	public ClassInfoService classInfoService;
 	
 	/**教师查看自己教授课程的学生评价列表
 	 * @param model
 	 * @param session
 	 * @param beanQueryVo
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("/findStudentClassSubByTeacher.do")
-	public String findStudentClassSubByTeacher(Model model,HttpSession session,BeanQueryVo beanQueryVo) {
+	public String findStudentClassSubByTeacher(Model model,HttpSession session,BeanQueryVo beanQueryVo) throws Exception {
 		if(beanQueryVo.getPageSize() == null) {//默认显示第几页
 			beanQueryVo.setPageSize(5);
 		}
@@ -85,6 +91,15 @@ public class ClassSubInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//保持该教师所教所有班级
+		List<ClassInfo> claList = new ArrayList<ClassInfo>();
+		List<LessionTeacherInfo>  lesTeaList = lessionInfoService.selectByTeacherList(beanQueryVo);
+		for (LessionTeacherInfo lesTea : lesTeaList) {
+			ClassInfo cla = classInfoService.selectByPrimaryKey(lesTea.getClassId());
+			claList.add(cla);
+		}
+		model.addAttribute("classId", beanQueryVo.getClassId());
+		model.addAttribute("claList", claList);
 		model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
 		return "te_lession_eva";
 	}
@@ -235,7 +250,7 @@ public class ClassSubInfoController {
 			}
 			}
 			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
-		return "stu_lession_eva";
+		return "st_lession_eva";
 	}
 	
 	
@@ -258,7 +273,7 @@ public class ClassSubInfoController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		return "stu_lession_eva_sub";
+		return "st_lession_eva_sub";
 	}
 	
 	/**学生查看自己详细评价内容
@@ -280,7 +295,7 @@ public class ClassSubInfoController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		return "stu_lession_eva_see";
+		return "st_lession_eva_see";
 	}	
 	
 	

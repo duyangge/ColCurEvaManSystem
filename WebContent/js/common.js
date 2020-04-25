@@ -12,7 +12,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	//获取当前iframe的name值
 	var iframeObj = $(window.frameElement).attr('name');
 	
-	var check
+	//var check
 	
 	//全选
 	form.on('checkbox(allChoose)', function(data) {
@@ -28,8 +28,15 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	
 	//列表跳转
 	
+	//添加学生\、教师、学院、班级、课程，(可公用)
+/*	 $('#table-list,.tool-btn').on('click', '.add-btn', function() {
+		var url=$(this).attr('data-url');
+		window.location.href=url;
+		return false;
+	})*/
+	
 	//添加学生
-	 $('#table-list,.tool-btn').on('click', '.stu_go-btn', function() {
+	$('#table-list,.tool-btn').on('click', '.stu_go-btn', function() {
 		var url=$(this).attr('data-url');
 		window.location.href=url;
 		return false;
@@ -95,6 +102,48 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return false;
 	})	
 	
+	//教师具体查看课程评价
+	$('#table-list,.tool-btn').on('click', '.tea_see_eva_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return false;
+	})	
+	
+	//学生具体查看课程评价
+	$('#table-list,.tool-btn').on('click', '.stu_see_eva_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return false;
+	})	
+	
+	//管理员编辑角色信息
+	$('#table-list,.tool-btn').on('click', '.role_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return false;
+	})	
+	//管理员编辑角色权限
+	$('#table-list,.tool-btn').on('click', '.role_fun_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return false;
+	})	
+	
+	
+	
+/*	//编辑信息(学院,教师,班级,学生具体查看课程评价,教师具体查看课程评价)，（可通用）
+	$('#table-list,.tool-btn').on('click', 'edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return true;
+	})	
+	*/
+	
 	//管理员编辑课程
 	$('#table-list,.tool-btn').on('click', '.les_edit-btn', function() {
 		var url=$(this).attr('data-url');
@@ -132,21 +181,6 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		return true;
 	})	
 	
-	//教师具体查看课程评价
-	$('#table-list,.tool-btn').on('click', '.tea_see_eva_edit-btn', function() {
-		var url=$(this).attr('data-url');
-		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
-		return true;
-	})	
-	
-	//学生具体查看课程评价
-	$('#table-list,.tool-btn').on('click', '.stu_see_eva_edit-btn', function() {
-		var url=$(this).attr('data-url');
-		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
-		return true;
-	})	
 	
 	
 	//教师查看课程

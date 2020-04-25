@@ -73,14 +73,15 @@
 						</div>
 
 					</div>
+					
 					<div class="layui-form-item">
 						<label class="layui-form-label">状态：</label>
 						<div class="layui-input-block">
 							<input type="radio" name="status" value="1" title="正常" checked>
 							<input type="radio" name="status" value="0" title="异常">
 						</div>
-
 					</div>
+					
 					<div class="layui-form-item">
 						<div class="layui-input-block">
 							<button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>

@@ -8,6 +8,7 @@ import java.util.List;
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
+import cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo;
 
 /**
  *<p> Title:  LessionInfoService.java</p>
@@ -18,6 +19,13 @@ import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
  * @version 版本号
  */
 public interface LessionInfoService {
+	
+	/**通过查询教师id得到班级和课程
+	 * @param beanQueryVo
+	 * @return
+	 * @throws Exception
+	 */
+	List<LessionTeacherInfo> selectByTeacherList(BeanQueryVo beanQueryVo) throws Exception;
 	
 	
 	/**详细查看课程信息

@@ -6,14 +6,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>学生编辑</title>
-		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
-	</head>
-	<body>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>学生编辑</title>
+<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+<link rel="stylesheet" type="text/css" href="../css/admin.css" />
+</head>
+<body>
 		<div class="wrap-container">
 			<form class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/updateStudent.do" method="post">
 					
@@ -104,16 +104,12 @@
 					</div>
 				</form>
 		</div>
+	</body>
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 <script>
 //选中一级产品类别后，获取并刷新二级产品类别列表	    
-	
-	
-	
-	
-	
 //提交表单
 layui.use(['form'], function() {
 	var form = layui.form();
@@ -162,9 +158,6 @@ layui.use(['form'], function() {
 	
 	
 })
-
-
-			
-</script>
-	</body>
+		
+</script>	
 </html>

@@ -15,6 +15,11 @@ import cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo;
  */
 public interface LessionTeacherInfoMapper {
 	
+	
+	
+	
+
+	
 	/**通过查询课程得到班级和教师
 	 * @param beanQueryVo
 	 * @return

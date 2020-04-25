@@ -210,12 +210,18 @@
    		and
    		sub_teacher_id = #{teacherId} 
    		<if test="status != null and status != ''">
-  				 and sub_status=#{status}
+  				 and 
+  				    sub_status=#{status}
    		</if>
-   
-			 <if test="keyWords != null and keyWords != ''">
-				 and instr(lession_name,#{keyWords}) > 0
-			 </if>
+		 <if test="keyWords != null and keyWords != ''">
+			 and 
+			     instr(lession_name,#{keyWords}) > 0
+		 </if>
+		 
+		 <if test="classId != null and classId != ''">
+			 and 
+			     sub_class_id=#{classId}
+		 </if>
     </where>
   </select>
   

@@ -5,6 +5,7 @@ package cn.jx.pxc.colcurevamansystem.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -25,6 +26,7 @@ import cn.jx.pxc.colcurevamansystem.bean.ParentFunInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
+import cn.jx.pxc.colcurevamansystem.bean.SubFunInfo;
 import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 import cn.jx.pxc.colcurevamansystem.service.FunInfoService;
@@ -116,6 +118,8 @@ public class UserInfoController {
 	
 	
 	/**跳转学生基本信息
+	 * @param session
+	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="/goUpdateStudentInfo.do")
@@ -123,7 +127,7 @@ public class UserInfoController {
 		StudentInfo stu = (StudentInfo) session.getAttribute("student");
 		StudentInfoCustom stuCus = studentInfoService.selectCustomByKey(stu.getStudentId());
 		model.addAttribute("stu",stuCus );
-		return "stu_info";
+		return "st_info";
 	}
 	
 	
@@ -148,7 +152,7 @@ public class UserInfoController {
 			e.printStackTrace();
 		}
 		model.addAttribute("roadParent", "roadParent");
-		return "stu_info";
+		return "st_info";
 	}
 			
 	/**用户登录：
@@ -173,29 +177,57 @@ public class UserInfoController {
 					return "forward:goLogin.do?message="+message;
 				}
 				beanQueryVo.setId(3);
-				List<ParentFunInfo>	funList = funInfoService.selectByName(beanQueryVo);
+				List<ParentFunInfo>	funList = funInfoService.loadMenuByRoleAndStatus(beanQueryVo);
+				for (ParentFunInfo pa : funList) {
+					List<SubFunInfo> subList = pa.getSubFunInfoList();
+					if(subList.get(0).getFunId() != null) {
+						Iterator<SubFunInfo> it =  subList.iterator();
+						while(it.hasNext()) {
+							SubFunInfo sub = it.next();
+							if(sub.getFunStatus().equals("1")) it.remove();
+						}
+					}
+				}
 				model.addAttribute("funList", funList);
 				session.setAttribute("student",stu);
 				model.addAttribute("stu", stu);
-				return "stu_index";//学生页面
-				
+				return "st_index";//学生页面
 			}else if( tea != null && tea.getRoleId() != 1 ) {//教师登录
 				if(tea.getStatus().equals("1")) { 
 					return "forward:goLogin.do?message="+message;
 				}
 				beanQueryVo.setId(2);
-				List<ParentFunInfo>	funList = funInfoService.selectByName(beanQueryVo);
+				List<ParentFunInfo>	funList = funInfoService.loadMenuByRoleAndStatus(beanQueryVo);
+				for (ParentFunInfo pa : funList) {
+					List<SubFunInfo> subList = pa.getSubFunInfoList();
+					if(subList.get(0).getFunId() != null) {
+						Iterator<SubFunInfo> it =  subList.iterator();
+						while(it.hasNext()) {
+							SubFunInfo sub = it.next();
+							if(sub.getFunStatus().equals("1")) it.remove();
+						}
+					}
+				}
 				model.addAttribute("funList", funList);
 				session.setAttribute("admin",tea);
 				model.addAttribute("tea", tea);
 				return "te_index";//教师页面
 			}else if(tea != null && tea.getRoleId() == 1){ //管理员登录
 				beanQueryVo.setId(1);
-				List<ParentFunInfo>	funList = funInfoService.selectByName(beanQueryVo);
+				List<ParentFunInfo>	funList = funInfoService.loadMenuByRoleAndStatus(beanQueryVo);
+				for (ParentFunInfo pa : funList) {
+					List<SubFunInfo> subList = pa.getSubFunInfoList();
+					if(subList.get(0).getFunId() != null) {
+						Iterator<SubFunInfo> it =  subList.iterator();
+						while(it.hasNext()) {
+							SubFunInfo sub = it.next();
+							if(sub.getFunStatus().equals("1")) it.remove();
+						}
+					}
+				}
 				model.addAttribute("funList", funList);
 				session.setAttribute("admin",tea);
 				model.addAttribute("admin", tea);
-				
 				return "ad_index";//管理员界面
 			}else {//登录错误
 				 message="用户名或密码错误，请重新登录！";

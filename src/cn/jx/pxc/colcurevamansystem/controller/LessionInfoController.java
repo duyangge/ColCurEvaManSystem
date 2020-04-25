@@ -133,17 +133,6 @@ public class LessionInfoController {
 	
 	
 	
-	
-	
-	
-	
-	public String findLessionEvaByTeacher(Model model,HttpSession session, BeanQueryVo beanQueryVo) {
-		
-		return "";
-	}
-	
-	
-	
 	/**学生查询所在班级所有课程
 	 * @param model
 	 * @param beanQueryVo：classId
@@ -175,7 +164,7 @@ public class LessionInfoController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "stu_lession";
+		return "st_lession";
 	}
 	
 	
