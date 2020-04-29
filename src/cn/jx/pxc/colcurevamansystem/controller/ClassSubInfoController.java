@@ -4,7 +4,9 @@
 package cn.jx.pxc.colcurevamansystem.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -98,8 +100,12 @@ public class ClassSubInfoController {
 			ClassInfo cla = classInfoService.selectByPrimaryKey(lesTea.getClassId());
 			claList.add(cla);
 		}
+		//去重class对象
+		Set<ClassInfo> userSet = new HashSet<>(claList);
+	    List<ClassInfo> list = new ArrayList<>(userSet);
+		
 		model.addAttribute("classId", beanQueryVo.getClassId());
-		model.addAttribute("claList", claList);
+		model.addAttribute("claList", list);
 		model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
 		return "te_lession_eva";
 	}

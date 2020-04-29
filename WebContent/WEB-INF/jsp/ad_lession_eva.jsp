@@ -5,48 +5,56 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="renderer" content="webkit">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>课程评价管理</title>
 		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
 		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
-<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
-	<body>
+<body>
 		<div class="wrap-container clearfix">
 				<div class="column-content-detail">
 				<!-- form表单，将搜索按钮变为提交按按钮 -->
 					<form class="layui-form" action="../classSub/findClassSub.do" method="post">
 						<div class="layui-form-item">
+						    
+							<div class="layui-inline">
+						        <input type="text" name="startTime" style="width:100px;" class="layui-input" placeholder="开始日期" id="startTime" onclick="layui.laydate({elem:this})"/>
+							</div>
+							<div class="layui-inline">
+								<input type="text" name="endTime" style="width:100px;" class="layui-input" placeholder="截至日期" id="endTime" onclick="layui.laydate({elem:this})"/>
+							</div>
+							
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords"  placeholder="请输入关键字" autocomplete="off" class="layui-input">
 							</div>
 							<div class="layui-inline">
 							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
 							</div>
-							<div class="layui-inline">
-								<select name="category" lay-filter="status" id="status">
-									<option value="0" selected="selected">请选择类别</option>
+						 	<div class="layui-inline" style="width:80px;" >
+								<select name="category" lay-filter="status" id="status" >
+									<option value="0" selected="selected">类别</option>
 									<option value="1">班级</option>
 									<option value="2">教师</option>
 									<option value="3">课程</option>
 									<option value="4">学生</option>
 								</select>
 							</div>
-							<div class="layui-inline">
+							<div class="layui-inline" style="width:80px;">
 								<select name="status" lay-filter="status" id="status">
-									<option value="0" selected="selected">请选择一个状态</option>
+									<option value="0" selected="selected">状态</option>
 									<option value="1">可见</option>
 									<option value="2">不可见</option>
 								</select>
 							</div>
-							<div class="layui-inline">
+							<div class="layui-inline" style="width:90px;">
 						          <select name="pageSize"  id="pageSize" lay-filter="status">
 						            <c:forEach begin="5" end="20" varStatus="status" step="5">
-						                   <option value="${status.current}" <c:if test="${status.current eq pageSize }"> selected="selected"</c:if> >${status.current}条/页</option>
+						                   <option value="${status.current}" 
+						                   <%-- <c:if test="${status.current eq pageSize }"> selected="selected"</c:if>  --%>
+						                   >${status.current}条/页</option>
 						            </c:forEach>
 						          </select>
 							</div>
@@ -142,9 +150,11 @@
 					 </c:if>
 				</div>
 		</div>
-			</body>
+</body>
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
 
-      							<script type="text/javascript">
 	var obj = document.getElementById("pageSize");
 	var index = obj.selectedIndex;
 	var pageSize = obj.options[index].value;
@@ -177,5 +187,6 @@
 		var currentPage = document.getElementById("currentPage").value;
 		window.location.href="../classSub/findClassSub.do?&keyWords="+name+"&pageSize="+pageSize+"&currentPage="+currentPage;
 	}
+
 </script>
 </html>

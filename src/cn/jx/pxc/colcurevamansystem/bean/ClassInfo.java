@@ -104,12 +104,17 @@ public class ClassInfo {
     public void setClassInfo(String classInfo) {
         this.classInfo = classInfo == null ? null : classInfo.trim();
     }
-
-	@Override
-	public String toString() {
-		return "ClassInfo [classId=" + classId + ", professionId=" + professionId + ", className=" + className
-				+ ", createdUser=" + createdUser + ", createdTime=" + createdTime + ", modifiedUser=" + modifiedUser
-				+ ", modifiedTime=" + modifiedTime + ", classInfo=" + classInfo + ", professionInfo=" + professionInfo
-				+ "]";
-	}
+    
+    @Override
+    public boolean equals(Object obj) {
+      ClassInfo cla = (ClassInfo) obj;
+     return classId.equals(cla.classId);
+    }
+    
+    @Override
+    public int hashCode() {
+         Integer in = classId;
+         return in.hashCode();
+   }
+	
 }

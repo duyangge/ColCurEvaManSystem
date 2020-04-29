@@ -27,18 +27,18 @@
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords" value="${keyWords }"  placeholder="请输入关键字" autocomplete="off" class="layui-input">
 							</div>
-							<div class="layui-inline">
+							<div class="layui-inline" style="width:80px;">
 								<select name="professionId" lay-verify="required" id="profession_id">	
-								    <option value="" data-id="">请选择学院</option>
+								    <option value="" data-id="">学院</option>
 									<c:forEach items="${proList }" var="pro" varStatus="status">
-										<option value="${pro.professionId }" data-id="${pro.professionId }" <c:if test="${pro.professionId eq professionId }">selected="selected"</c:if>  >${pro.professionName }</option>
+										<option value="${pro.professionId }" data-id="${pro.professionId }" <%-- <c:if test="${pro.professionId eq professionId }">selected="selected"</c:if> --%>  >${pro.professionName }</option>
 									</c:forEach>							
 								</select>
 							</div>
 							<div class="layui-inline">
 							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
 							</div>
-							<div class="layui-inline">
+							<div class="layui-inline" style="width:90px;">
 						          <select name="pageSize"  id="pageSize" lay-filter="status">
 						            <c:forEach begin="5" end="20" varStatus="status" step="5">
 						                   <option value="${status.current}" <c:if test="${status.current eq pageSize }"> selected="selected"</c:if> >${status.current}条/页</option>

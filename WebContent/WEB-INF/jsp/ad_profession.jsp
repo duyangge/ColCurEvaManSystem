@@ -42,7 +42,7 @@
 							<div class="layui-inline">
 								 <input type="submit" class="layui-btn layui-btn-normal" value="搜索">
 							</div>
-							 <div class="layui-inline">
+							 <div class="layui-inline" style="width:90px;">
 						          <select name="pageSize"  id="pageSize" lay-filter="status">
 						            <c:forEach begin="5" end="20" varStatus="status" step="5">
 						                   <option value="${status.current}" <c:if test="${status.current eq pageSize }"> selected="selected"</c:if> >${status.current}条/页</option>

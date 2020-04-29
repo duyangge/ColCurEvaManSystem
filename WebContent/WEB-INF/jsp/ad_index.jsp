@@ -55,7 +55,10 @@
 						</a>
 					</div>
 					<ul class="layui-nav" lay-filter="rightNav">
-					  <li class="layui-nav-item"><a href="javascript:;" data-url="" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
+					  <li class="layui-nav-item">
+					  <span id="getTime"></span>
+					  </li>
+					  <li class="layui-nav-item"><a href="javascript:;" data-url="../user/goLookEpidemicPage.do" data-id='4' data-text="疫情消息"><i class="iconfont">&#xe603;</i></a></li>
 					  <li class="layui-nav-item">
 					    <a href="javascript:;" data-url="../user/goUpdateAdminInfo.do" data-id='5' data-text="个人信息">${admin.username }</a>
 					  </li>
@@ -99,6 +102,26 @@
       var $i = $("<span/>").text(a[a_idx]);
       a_idx = (a_idx + 1) % a.length;var x = e.pageX,y = e.pageY;$i.css({"z-index": 100000000,"top": y - 20,"left": x,"position": "absolute","font-weight": "bold","color": "#ff6651"});
       $("body").append($i);$i.animate({"top": y - 180,"opacity": 0},1500,function() {$i.remove();});});});
+
+      //获取当前时间
+		function y2k(number) { return (number < 1000) ? number + 1900 : number; }
+		var now = new Date();
+		var dd = now.getDate() , mt = now.getMonth() + 1 , yy = y2k(now.getYear()) , weekVal = now.getDay();
+		if (weekVal==0)
+		msg1="星期日";
+		else if (weekVal==1)
+		msg1="星期一";
+		else if (weekVal==2)
+		msg1="星期二";
+		else if (weekVal==3)
+		msg1="星期三";
+		else if (weekVal==4)
+		msg1="星期四";
+		else if (weekVal==5)
+		msg1="星期五";
+		else if (weekVal==6)
+		msg1="星期六";
+		document.getElementById('getTime').innerText=yy+"年"+mt+"月"+dd+"日"+" "+msg1;
 </script>
 </body>
 </html>

@@ -24,6 +24,7 @@ import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ParentFunInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
+import cn.jx.pxc.colcurevamansystem.bean.RoleInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.SubFunInfo;
@@ -32,6 +33,7 @@ import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 import cn.jx.pxc.colcurevamansystem.service.FunInfoService;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
+import cn.jx.pxc.colcurevamansystem.service.RoleInfoService;
 import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
 import cn.jx.pxc.colcurevamansystem.service.TeacherInfoService;
 import cn.jx.pxc.colcurevamansystem.utils.ListPageUtil;
@@ -68,6 +70,9 @@ public class UserInfoController {
 	
 	@Resource
 	public FunInfoService funInfoService;
+	
+	@Resource
+	public RoleInfoService roleInfoService;
 
 	/**进入登录页面
 	 * @param model
@@ -171,9 +176,9 @@ public class UserInfoController {
 			String message="账号异常，请通知管理员处理！";
 			StudentInfo stu = studentInfoService.selectByAccountList(beanQueryVo);
 			TeacherInfo  tea = teacherInfoService.selectByAccountList(beanQueryVo);
-			
 			if ( stu != null ) {//学生登录
-				if(stu.getStatus().equals("1")) { 
+				RoleInfo role = roleInfoService.selectByPrimaryKey(stu.getRoleId());
+				if(stu.getStatus().equals("1")||role.getRoleStatus().equals("1")) { 
 					return "forward:goLogin.do?message="+message;
 				}
 				beanQueryVo.setId(3);
@@ -193,7 +198,8 @@ public class UserInfoController {
 				model.addAttribute("stu", stu);
 				return "st_index";//学生页面
 			}else if( tea != null && tea.getRoleId() != 1 ) {//教师登录
-				if(tea.getStatus().equals("1")) { 
+				RoleInfo role = roleInfoService.selectByPrimaryKey(tea.getRoleId());
+				if(tea.getStatus().equals("1")||role.getRoleStatus().equals("1")) { 
 					return "forward:goLogin.do?message="+message;
 				}
 				beanQueryVo.setId(2);
@@ -638,5 +644,13 @@ public class UserInfoController {
 	public String loginOut(HttpSession session) {
 		session.invalidate();
 		return "redirect:goLogin.do";
+	}
+	
+	/**查看疫情分布
+	 * @return
+	 */
+	@RequestMapping("/goLookEpidemicPage.do")
+	public String goLookEpidemicPage() {
+	return "look_epidemic";	
 	}
 }
