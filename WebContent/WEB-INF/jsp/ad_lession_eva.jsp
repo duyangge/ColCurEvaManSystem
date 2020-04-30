@@ -17,7 +17,7 @@
 		<div class="wrap-container clearfix">
 				<div class="column-content-detail">
 				<!-- form表单，将搜索按钮变为提交按按钮 -->
-					<form class="layui-form" action="../classSub/findClassSub.do" method="post">
+					<form class="layui-form" action="../classSub/findClassSub.do" method="post" id="myform">
 						<div class="layui-form-item">
 						    
 							<div class="layui-inline">
@@ -28,25 +28,25 @@
 							</div>
 							
 							<div class="layui-inline">
-								<input type="text" id="seacher" name="keyWords"  placeholder="请输入关键字" autocomplete="off" class="layui-input">
+								<input type="text" id="seacher" name="keyWords" value="${keyWords }" placeholder="请输入关键字" autocomplete="off" class="layui-input">
 							</div>
 							<div class="layui-inline">
 							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
 							</div>
 						 	<div class="layui-inline" style="width:80px;" >
-								<select name="category" lay-filter="status" id="status" >
-									<option value="0" selected="selected">类别</option>
-									<option value="1">班级</option>
-									<option value="2">教师</option>
-									<option value="3">课程</option>
-									<option value="4">学生</option>
+								<select name="category" lay-filter="status" id="category" >
+									<option value="0" <c:if test="${category eq '0' }"> selected="selected"</c:if> >类别</option>
+									<option value="1" <c:if test="${category eq '1' }"> selected="selected"</c:if>>班级</option>
+									<option value="2" <c:if test="${category eq '2' }"> selected="selected"</c:if>>教师</option>
+									<option value="3" <c:if test="${category eq '3' }"> selected="selected"</c:if>>课程</option>
+									<option value="4" <c:if test="${category eq '4' }"> selected="selected"</c:if>>学生</option>
 								</select>
 							</div>
 							<div class="layui-inline" style="width:80px;">
 								<select name="status" lay-filter="status" id="status">
-									<option value="0" selected="selected">状态</option>
-									<option value="1">可见</option>
-									<option value="2">不可见</option>
+									<option value="0" <c:if test="${category eq '0' }"> selected="selected"</c:if>>状态</option>
+									<option value="1"  <c:if test="${status eq '1' }"> selected="selected"</c:if>>可见</option>
+									<option value="2"  <c:if test="${status eq '2' }"> selected="selected"</c:if>>不可见</option>
 								</select>
 							</div>
 							<div class="layui-inline" style="width:90px;">
@@ -158,22 +158,35 @@
 	var obj = document.getElementById("pageSize");
 	var index = obj.selectedIndex;
 	var pageSize = obj.options[index].value;
+	
+	var obj_cat = document.getElementById("category");
+	var index_cat = obj_cat.selectedIndex;
+	var category =obj_cat.options[index_cat].value;
+	
+	var obj_sta = document.getElementById("status");
+	var index_sta = obj_sta.selectedIndex;
+	var status = obj_sta.options[index_sta].value;
+	
+	var startTime = document.getElementById("startTime").value;
+	var endTime = document.getElementById("endTime").value;
+	
 	function firstPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../classSub/findClassSub.do?currentPage=1&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../classSub/findClassSub.do?currentPage=1&keyWords="+name+"&pageSize="+pageSize+"&status="+status+"&category="+category+"&startTime="+startTime+"&endTime="+endTime;
 	}
 	function finalPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../classSub/findClassSub.do?currentPage="+${totalPage }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../classSub/findClassSub.do?currentPage="+${totalPage }+"&keyWords="+name+"&pageSize="+pageSize+"&status="+status+"&category="+category+"&startTime="+startTime+"&endTime="+endTime;
 	}
 	function nextPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../classSub/findClassSub.do?currentPage="+${currentPage + 1 }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../classSub/findClassSub.do?currentPage="+${currentPage + 1 }+"&keyWords="+name+"&pageSize="+pageSize+"&status="+status+"&category="+category+"&startTime="+startTime+"&endTime="+endTime;
+		//document.myform.submit();
 	}
 
 	function lastPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../classSub/findClassSub.do?currentPage="+${currentPage - 1 }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../classSub/findClassSub.do?currentPage="+${currentPage - 1 }+"&keyWords="+name+"&pageSize="+pageSize+"&status="+status+"&category="+category+"&startTime="+startTime+"&endTime="+endTime;
 	}
 	function goDis(){
 		var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/ 
@@ -185,7 +198,7 @@
 		}
 		var name = document.getElementById("seacher").value;
 		var currentPage = document.getElementById("currentPage").value;
-		window.location.href="../classSub/findClassSub.do?&keyWords="+name+"&pageSize="+pageSize+"&currentPage="+currentPage;
+		window.location.href="../classSub/findClassSub.do?&keyWords="+name+"&pageSize="+pageSize+"&currentPage="+currentPage+"&status="+status+"&category="+category+"&startTime="+startTime+"&endTime="+endTime;
 	}
 
 </script>

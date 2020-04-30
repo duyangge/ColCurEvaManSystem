@@ -208,11 +208,13 @@ public class ClassSubInfoController {
 		}else {
 			  lesEvaList = classSubInfoService.selectLessionEva(beanQueryVo);
 		}
+		
 		if(lesEvaList.size() > 0) {//防止查询数据为空，报异常
             List<LessionEvaTemp> userInfoCustomList;
 			try {
 				userInfoCustomList = this.getPageContentByClassSubAndTeacher(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
 				model.addAttribute("lesEvaList", userInfoCustomList);//得到分页内容
+				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -221,7 +223,10 @@ public class ClassSubInfoController {
 		model.addAttribute("keyWords", beanQueryVo.getKeyWords());
 		model.addAttribute("startTime", beanQueryVo.getStartTime());
 		model.addAttribute("endTime", beanQueryVo.getEndTime());
-		model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+		//可见
+		model.addAttribute("status",beanQueryVo.getStatus() );
+		//类别
+		model.addAttribute("category", beanQueryVo.getCategory());
 		return "ad_lession_eva";
 	}
 	
@@ -372,7 +377,7 @@ public class ClassSubInfoController {
 			model.addAttribute("professionId", beanQueryVo.getProfessionId());
 			model.addAttribute("lesEvaList", lesEvaList);
 			model.addAttribute("startTime", beanQueryVo.getStartTime());
-			model.addAttribute("endTime", beanQueryVo.getStartTime());
+			model.addAttribute("endTime", beanQueryVo.getEndTime());
 		    return "ad_lession_eva_ana";
 	}
 	
