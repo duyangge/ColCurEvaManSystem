@@ -19,14 +19,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo;
+import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.LessionEvaTemp;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 import cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo;
+import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
+import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ClassSubInfoService;
 import cn.jx.pxc.colcurevamansystem.service.LessionInfoService;
+import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
 import cn.jx.pxc.colcurevamansystem.service.TeacherInfoService;
 import cn.jx.pxc.colcurevamansystem.utils.ListPageUtil;
@@ -58,6 +62,9 @@ public class ClassSubInfoController {
 	
 	@Resource
 	public ClassInfoService classInfoService;
+	
+	@Resource
+	public ProfessionInfoService professionInfoService;
 	
 	/**教师查看自己教授课程的学生评价列表
 	 * @param model
@@ -205,16 +212,16 @@ public class ClassSubInfoController {
             List<LessionEvaTemp> userInfoCustomList;
 			try {
 				userInfoCustomList = this.getPageContentByClassSubAndTeacher(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
-				
-				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
-				
 				model.addAttribute("lesEvaList", userInfoCustomList);//得到分页内容
-			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+		//数据回显
+		model.addAttribute("keyWords", beanQueryVo.getKeyWords());
+		model.addAttribute("startTime", beanQueryVo.getStartTime());
+		model.addAttribute("endTime", beanQueryVo.getEndTime());
+		model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
 		return "ad_lession_eva";
 	}
 	
@@ -333,6 +340,71 @@ public class ClassSubInfoController {
 	public String updateLessionEva(Model model,ClassSubInfo claSub) {
 		classSubInfoService.updateByPrimaryKeySelective(claSub);
 		return "forward:findClassSub.do?evaId="+claSub.getSubEvaId();
+	}
+	
+	/**查看课程评价分
+	 * @param beanQueryVo
+	 * @return
+	 */
+	@RequestMapping("/lookEvaAnaResult.do")
+	public String lookEvaAnaResult(BeanQueryVo beanQueryVo, Model model) {
+		if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+			beanQueryVo.setPageSize(5);
+		}
+		if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+		}
+		List<ClassSubInfoCustom>  lesEvaList = classSubInfoService.findAvgScoreByClassIdAndLessionId(beanQueryVo);
+		if(lesEvaList.size() > 0) {//防止查询数据为空，报异常
+            List<ClassSubInfoCustom> userInfoCustomList = null;
+			try {
+				userInfoCustomList = this.getPageContent(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
+				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+				model.addAttribute("stuList", userInfoCustomList);//得到分页内容
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		    //数据回显
+			model.addAttribute("keyWords", beanQueryVo.getKeyWords());
+			List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
+			model.addAttribute("proList", proList);//保存每个学院
+			model.addAttribute("professionId", beanQueryVo.getProfessionId());
+			model.addAttribute("lesEvaList", lesEvaList);
+			model.addAttribute("startTime", beanQueryVo.getStartTime());
+			model.addAttribute("endTime", beanQueryVo.getStartTime());
+		    return "ad_lession_eva_ana";
+	}
+	
+	/**分页显示：默认显示第一页内容
+	 * @param currentPage
+	 * @param pageSize
+	 * @param userInfoCustomListOld
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ClassSubInfoCustom> getPageContent(Model model, Integer currentPage, Integer pageSize ,List<ClassSubInfoCustom> userInfoCustomListOld) throws Exception{
+		ListPageUtil<ClassSubInfoCustom> list = null;
+		if(currentPage != null) {//当前页不为空
+			list = new ListPageUtil<ClassSubInfoCustom>(userInfoCustomListOld, currentPage, pageSize);
+			if(currentPage >=list.getTotalPage()) {
+				list = new ListPageUtil<ClassSubInfoCustom>(userInfoCustomListOld, list.getTotalPage(), pageSize);
+			}
+			if(currentPage <=0) {
+				list = new ListPageUtil<ClassSubInfoCustom>(userInfoCustomListOld, 1, pageSize);
+			}else {
+				list = new ListPageUtil<ClassSubInfoCustom>(userInfoCustomListOld, list.getCurrentPage(), pageSize);
+			}
+			model.addAttribute("currentPage",list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}else{//当前页为空,默认是第一页
+			list = new ListPageUtil<ClassSubInfoCustom>(userInfoCustomListOld, 1, pageSize);
+			model.addAttribute("currentPage", list.getCurrentPage());
+			model.addAttribute("totalPage", list.getTotalPage());
+			return list.getData();
+		}
+		
 	}
 	
 }

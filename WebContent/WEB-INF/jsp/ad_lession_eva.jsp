@@ -21,10 +21,10 @@
 						<div class="layui-form-item">
 						    
 							<div class="layui-inline">
-						        <input type="text" name="startTime" style="width:100px;" class="layui-input" placeholder="开始日期" id="startTime" onclick="layui.laydate({elem:this})"/>
+						        <input type="text" name="startTime" style="width:100px;" value="${startTime }" class="layui-input" placeholder="开始日期" id="startTime" onclick="layui.laydate({elem:this})"/>
 							</div>
 							<div class="layui-inline">
-								<input type="text" name="endTime" style="width:100px;" class="layui-input" placeholder="截至日期" id="endTime" onclick="layui.laydate({elem:this})"/>
+								<input type="text" name="endTime" style="width:100px;" value="${endTime }" class="layui-input" placeholder="截至日期" id="endTime" onclick="layui.laydate({elem:this})"/>
 							</div>
 							
 							<div class="layui-inline">
@@ -53,7 +53,7 @@
 						          <select name="pageSize"  id="pageSize" lay-filter="status">
 						            <c:forEach begin="5" end="20" varStatus="status" step="5">
 						                   <option value="${status.current}" 
-						                   <%-- <c:if test="${status.current eq pageSize }"> selected="selected"</c:if>  --%>
+						                   <c:if test="${status.current eq pageSize }"> selected="selected"</c:if> 
 						                   >${status.current}条/页</option>
 						            </c:forEach>
 						          </select>

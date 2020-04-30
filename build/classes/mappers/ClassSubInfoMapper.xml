@@ -74,23 +74,80 @@
     </collection>
   </resultMap>
   
-  
-  
-  <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
     sub_eva_id, sub_student_id,sub_class_id,sub_teacher_id, sub_score, sub_info, created_user, created_time, modified_user, 
     modified_time, sub_status, sub_lession_id
   </sql>
   
   
+  
+  <!--评价表扩展类映射关系  -->
+  <resultMap id="BaseResultMapCustom" type="cn.jx.pxc.colcurevamansystem.bean.ClassSubInfoCustom">
+  	 <result column="lession_id" jdbcType="INTEGER" property="subLessionId" />
+     <result column="class_id" jdbcType="INTEGER" property="subClassId" />
+     <result column="teacher_id" jdbcType="INTEGER" property="subTeacherId" />
+      <result column="class_name" jdbcType="VARCHAR" property="className"/>
+      <result column="lession_name" jdbcType="VARCHAR" property="lessionName" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="evanum" jdbcType="INTEGER" property="evaNum" />
+      <result column="avgscore" jdbcType="DOUBLE" property="avgScore" />
+  </resultMap>
+  
+ <!--通过课程id和班级id查询该门课程某段时间的评价平均分查询  -->
+  <select id="findAvgScoreByClassIdAndLessionId" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMapCustom">
+  SELECT
+      lession_id,
+      class_id,
+  	  teacher_id,
+	  avg(sub_score) as avgscore,
+	  lession_name,
+      class_name,
+      username,
+      count(*) as evanum
+FROM
+	 class_sub_tb,
+	 lession_tb,
+     class_tb,
+     teacher_tb
+WHERE
+	  lession_id = sub_lession_id
+	and 
+	sub_class_id = class_id
+	and
+	 teacher_id = sub_teacher_id
+	<if test="classId != null and classId != ''">
+	and
+		sub_class_id = #{classId}
+	</if>
+	<if test="lessionId != null and lessionId != ''">
+	AND 
+	  sub_lession_id = #{lessionId}
+	</if>
+	<if test="startTime != null and startTime != '' or endTime != null and endTime != ''  ">
+		AND 
+	class_sub_tb.created_time BETWEEN #{startTime} AND #{endTime}
+	</if>
+	GROUP BY
+ 	sub_class_id,sub_lession_id
+ </select>
+  
+  
+  
   <!--主键查询  -->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMapCustom">
     select 
     <include refid="Base_Column_List" />
     from class_sub_tb
     where sub_eva_id = #{subEvaId,jdbcType=INTEGER}
   </select>
   
-  <!--查询所有  -->
+ 
+  
+  
+  
+  
+  
+  <!--角色权限查询所有和模糊查询  -->
   <select id="selectByAllList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
      select distinct
    <include refid="selectLikeId" />
@@ -118,6 +175,10 @@
    		<if test="status != null and status != ''">
    		  and	sub_status=#{status}
    		</if>
+   		<if test="startTime != null and startTime != '' or endTime != null and endTime != ''  ">
+		and
+	      class_sub_tb.created_time between #{startTime} and #{endTime}
+	    </if>
    	</where>
   </select>
   
@@ -140,31 +201,44 @@
   <!--模糊+分类查询  -->
   <select id="selectByName" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
     select distinct
-   <include refid="selectLikeId" />
-    from class_sub_tb,class_tb,lession_tb,teacher_tb,student_tb
+   		<include refid="selectLikeId" />
+    from 
+	    class_sub_tb
+	    ,class_tb
+	    ,lession_tb
+	    ,teacher_tb
+	    ,student_tb
    <where>
-   	   class_tb.class_id = sub_class_id
+   	   		class_tb.class_id = sub_class_id
    		and
-   		lession_tb.lession_id = sub_lession_id
+   			lession_tb.lession_id = sub_lession_id
    		and 
-   		teacher_tb.teacher_id = sub_teacher_id
+   		   teacher_tb.teacher_id = sub_teacher_id
    		and 
-   		sub_student_id = student_tb.student_id
+   		   sub_student_id = student_tb.student_id
    		<if test="lessionName != null and lessionName != ''">
-   		 and instr(lession_name,#{lessionName}) > 0
+   		 and 
+   		    instr(lession_name,#{lessionName}) > 0
    		</if>
    		<if test="teacherName != null and teacherName != ''">
    		 and teacher_tb.username like '%${teacherName}%'
    		</if>
    		<if test="className != null and className != ''">
-   		 and instr(class_name,#{className}) > 0
+   		 and 
+   		   instr(class_name,#{className}) > 0
    		</if>  		
    		<if test="studentName != null and studentName != ''">
-   		 and student_tb.username like '%${studentName}%'
+   		 and 
+   		    student_tb.username like '%${studentName}%'
    		</if>  		
    		<if test="status != null and status != ''">
-   		and	sub_status=#{status}
+   		and	
+   		   sub_status=#{status}
    		</if>
+   		<if test="startTime != null and startTime != '' or endTime != null and endTime != ''  ">
+		and
+	      class_sub_tb.created_time between #{startTime} and #{endTime}
+	    </if>
    </where>
         
   </select>

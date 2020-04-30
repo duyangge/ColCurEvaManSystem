@@ -3,6 +3,8 @@
  */
 package cn.jx.pxc.colcurevamansystem.bean;
 
+import java.util.Date;
+
 /**
  *<p> Title:  BeanInfoQueryVo</p>
  *<p> Description:  用户综合查询类</p>
@@ -54,6 +56,22 @@ public class BeanQueryVo {
 	
 	private String tableName;
 	
+	private String startTime;
+	
+	private String endTime;
+	
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 	public String getTableName() {
 		return tableName;
 	}

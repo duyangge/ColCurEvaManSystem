@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo;
+import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfoCustom;
 
 /**
  *<p> Title:  ClassSubInfoMapper.java</p>
@@ -15,7 +16,11 @@ import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo;
  */
 public interface ClassSubInfoMapper {
 	
-	
+	/**通过班级id和课程id查询该门课程评价分数
+	 * @param beanQueryVo
+	 * @return
+	 */
+	List<ClassSubInfoCustom> findAvgScoreByClassIdAndLessionId(BeanQueryVo beanQueryVo);
 	
 	/**通过模糊查询多表
 	 * @param beanQueryVo

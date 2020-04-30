@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfo;
+import cn.jx.pxc.colcurevamansystem.bean.ClassSubInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.LessionEvaTemp;
 import cn.jx.pxc.colcurevamansystem.bean.LessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo;
@@ -322,6 +323,14 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 				lesEva.setSubInfo(claSub.getSubInfo());//评价
 				lesEva.setStatus(claSub.getSubStatus());
 				return lesEva;
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.jx.pxc.colcurevamansystem.service.ClassSubInfoService#findAvgScoreByClassIdAndLessionId(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
+	 */
+	@Override
+	public List<ClassSubInfoCustom> findAvgScoreByClassIdAndLessionId(BeanQueryVo beanQueryVo) {
+		return classSubInfoMapper.findAvgScoreByClassIdAndLessionId(beanQueryVo);
 	}
 
 }
