@@ -130,8 +130,8 @@ layui.use(['form'], function() {
 					error:function(err){
 			        	alert("失败");
 			      	}
-	           })
-	})
+	           });
+	});
 	
 	
 	//监听提交

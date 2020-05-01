@@ -20,7 +20,9 @@
 
 			<!--侧边栏-->
 			<div class="main-layout-side">
-				<div class="m-logo"></div>
+				<div class="m-logo">
+					<img  alt="" src="../images/head.jpg"   height="60px" width="60px;"  style="border-radius: 250px;">
+				</div>
 				
 				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
 				<c:forEach items="${funList }" var="fun" varStatus="status">
@@ -97,6 +99,7 @@
 <script src="../js/main.js" type="text/javascript" charset="utf-8"></script>  
 <script src="../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+
       /* 鼠标点击特效 - 7Core.CN */
       var a_idx = 0;jQuery(document).ready(function($) {$("body").click(function(e) {var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
       var $i = $("<span/>").text(a[a_idx]);
@@ -122,6 +125,9 @@
 		else if (weekVal==6)
 		msg1="星期六";
 		document.getElementById('getTime').innerText=yy+"年"+mt+"月"+dd+"日"+" "+msg1;
+		//图片旋转
+		 
+
 </script>
 </body>
 </html>

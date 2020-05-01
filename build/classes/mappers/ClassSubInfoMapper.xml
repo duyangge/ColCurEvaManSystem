@@ -110,25 +110,31 @@ FROM
      class_tb,
      teacher_tb
 WHERE
-	  lession_id = sub_lession_id
+	  	lession_id = sub_lession_id
 	and 
-	sub_class_id = class_id
+		sub_class_id = class_id
 	and
-	 teacher_id = sub_teacher_id
+	 	teacher_id = sub_teacher_id
 	<if test="classId != null and classId != ''">
-	and
-		sub_class_id = #{classId}
+		and
+			sub_class_id = #{classId}
 	</if>
 	<if test="lessionId != null and lessionId != ''">
-	AND 
-	  sub_lession_id = #{lessionId}
+		and 
+		  sub_lession_id = #{lessionId}
+	</if>
+	<if test="keyWords != null and keyWords != ''">
+		and 
+			sub_lession_id = lession_id
+		and
+		  	instr(lession_name,#{keyWords}) > 0 
 	</if>
 	<if test="startTime != null and startTime != '' or endTime != null and endTime != ''  ">
-		AND 
-	class_sub_tb.created_time BETWEEN #{startTime} AND #{endTime}
+	and 
+	   		class_sub_tb.created_time BETWEEN #{startTime} AND #{endTime}
 	</if>
 	GROUP BY
- 	sub_class_id,sub_lession_id
+ 			sub_class_id,sub_lession_id
  </select>
   
   
@@ -139,13 +145,7 @@ WHERE
     <include refid="Base_Column_List" />
     from class_sub_tb
     where sub_eva_id = #{subEvaId,jdbcType=INTEGER}
-  </select>
-  
- 
-  
-  
-  
-  
+  </select>  
   
   <!--角色权限查询所有和模糊查询  -->
   <select id="selectByAllList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">

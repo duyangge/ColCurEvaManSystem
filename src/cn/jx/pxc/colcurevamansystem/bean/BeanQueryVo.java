@@ -60,6 +60,14 @@ public class BeanQueryVo {
 	
 	private String endTime;
 	
+	private String showWays;
+	
+	public String getShowWays() {
+		return showWays;
+	}
+	public void setShowWays(String showWays) {
+		this.showWays = showWays;
+	}
 	public String getStartTime() {
 		return startTime;
 	}

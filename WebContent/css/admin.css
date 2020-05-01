@@ -1596,10 +1596,11 @@
   -ms-transition: left 0.3s;
   transition: left 0.3s;
 }
-.main-layout-side .m-logo {/* url(../images/logo.png)  */
+.main-layout-side .m-logo { 
+
   width: 100%;
   height: 60px;
-  background: #00b5f9 center center no-repeat;
+  background: #00b5f9  /* url("../images/head.jpg") */ center center no-repeat;
 }
 .main-layout-side .layui-nav {
   background: #444c63;

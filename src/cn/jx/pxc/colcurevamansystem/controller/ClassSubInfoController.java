@@ -14,7 +14,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
@@ -25,7 +29,6 @@ import cn.jx.pxc.colcurevamansystem.bean.LessionInfoTemp;
 import cn.jx.pxc.colcurevamansystem.bean.LessionTeacherInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.StudentInfo;
-import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.TeacherInfo;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ClassSubInfoService;
@@ -360,24 +363,32 @@ public class ClassSubInfoController {
 			beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
 		}
 		List<ClassSubInfoCustom>  lesEvaList = classSubInfoService.findAvgScoreByClassIdAndLessionId(beanQueryVo);
-		if(lesEvaList.size() > 0) {//防止查询数据为空，报异常
-            List<ClassSubInfoCustom> userInfoCustomList = null;
-			try {
-				userInfoCustomList = this.getPageContent(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
-				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
-				model.addAttribute("stuList", userInfoCustomList);//得到分页内容
-			} catch (Exception e) {
-				e.printStackTrace();
+		String way = beanQueryVo.getShowWays();
+		if(way == null || !way.equals("1")) {//判断显示方式
+			if(lesEvaList.size() > 0) {//防止查询数据为空，报异常
+	            List<ClassSubInfoCustom> userInfoCustomList = null;
+				try {
+					userInfoCustomList = this.getPageContent(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), lesEvaList);
+					model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+					model.addAttribute("lesEvaList", userInfoCustomList);//得到分页内容
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+		}else {
+			//return "forward:goEchartsPage.do?beanQueryVo="+beanQueryVo;
+			model.addAttribute("lesEvaList",JSON.toJSONString(lesEvaList));
 		}
 		    //数据回显
 			model.addAttribute("keyWords", beanQueryVo.getKeyWords());
-			List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
+			List<ProfessionInfo>  proList = professionInfoService.selectByName(null);
 			model.addAttribute("proList", proList);//保存每个学院
 			model.addAttribute("professionId", beanQueryVo.getProfessionId());
-			model.addAttribute("lesEvaList", lesEvaList);
+			model.addAttribute("classId", beanQueryVo.getClassId());
 			model.addAttribute("startTime", beanQueryVo.getStartTime());
 			model.addAttribute("endTime", beanQueryVo.getEndTime());
+			model.addAttribute("showWays", beanQueryVo.getShowWays());
+			model.addAttribute("totalPage", 1);
 		    return "ad_lession_eva_ana";
 	}
 	
@@ -410,6 +421,26 @@ public class ClassSubInfoController {
 			return list.getData();
 		}
 		
+	}
+	
+	/**利用echart插件查看班级课程平均分
+	 * @param model
+	 * @param beanQueryVo
+	 * @return
+	 */
+	@ResponseBody
+    @RequestMapping(value = "/goEchartsPage.do", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+	public List<ClassSubInfoCustom>  goEchartsPage(Model model, BeanQueryVo beanQueryVo){
+		List<ClassSubInfoCustom>  lesEvaList = classSubInfoService.findAvgScoreByClassIdAndLessionId(beanQueryVo);
+		List<ProfessionInfo>  proList = professionInfoService.selectByName(null);
+		//数据回显
+		model.addAttribute("proList", proList);//保存每个学院
+		model.addAttribute("professionId", beanQueryVo.getProfessionId());
+		model.addAttribute("classId", beanQueryVo.getClassId());
+		model.addAttribute("startTime", beanQueryVo.getStartTime());
+		model.addAttribute("endTime", beanQueryVo.getEndTime());
+		model.addAttribute("showWays", beanQueryVo.getShowWays());
+		return lesEvaList;
 	}
 	
 }
