@@ -22,31 +22,66 @@
 	
 	<!-- 使用注解，开启配置组件扫描，使用了注解开发，就需要开启组件扫描 -->
 	<context:component-scan base-package="cn.jx.pxc.colcurevamansystem.controller"/>
+
 	
-	<!-- 注解驱动 （处理器映射器和处理器解析器）-->
+	<!--conversion-service="conversionService"  validator="validator"    -->
 	<mvc:annotation-driven/>
+	
 	
 	<!-- 处理静态资源处理器 (解除对静态资源的访问)-->
 	<mvc:default-servlet-handler/>
 
-<!-- 	<mvc:view-controller path="/" view-name="redirect:login" /> -->
-
-	 <!--自定义拦截器  
-	  	1.多个拦截器，顺序执行
-	  	2./**表示所有url包括子url路径，/*表示根url
-	  -->
-<!-- 	<mvc:interceptors>
-		登录拦截器 
+	
+	  <!--文件上传  -->
+	  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	  	<property name="maxUploadSize">	<!--设置上传文件的最大尺寸为5MB  -->
+	  		<value>5242880</value>
+	  	</property>
+	  </bean>
+	
+	
+	 <!--自定义拦截器 1.多个拦截器，顺序执行2./**表示所有url包括子url路径，/*表示根url-->
+	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
-			<bean class="cn.jx.pxc.otsystem.interceptor.LoginInterceptor"></bean>
+			  <mvc:exclude-mapping path="/user/goLogin.do" />
+			<bean class="cn.jx.pxc.colcurevamansystem.interceptor.LoginInterceptor"></bean>
 		</mvc:interceptor>
+	</mvc:interceptors>
 	
-	</mvc:interceptors> -->
+	
+	<!--全局异常处理器只要实现HandlerExceptionResolver接口就是全局异常处理器-->
+	<bean class="cn.jx.pxc.colcurevamansystem.exception.CustomExceptionResolver"></bean>	
 	
 	<!-- 配置视图解析器ViewResovler -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+
 </beans>
+	<!--conversionService:自定义参数绑定(处理日期类型)  -->
+<!-- 	<bean id="conversionService" class=" org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">转换器
+			<list>
+				<bean class="cn.jx.pxc.colcurevamansystem.controller.converter.CustomDateConverter"></bean>
+			</list>
+		</property>
+	</bean> -->
+	
+	<!--springmvc校验器  -->
+	<!-- <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		指定校验使用的资源文件，在文件中配置校验错误信息，如果不指定则默认使用classpath下的validationMessages.properties 
+		<property name="validationMessageSource" ref="messageSource"></property>
+	</bean> -->
+	
+	<!--校验错误信息配置文件  -->
+<!-- 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource ">
+		<property name="basenames">资源文件名 
+			<list>
+				<value>classpath:CustomValidationMessages</value>
+			</list>
+		</property>		
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="cacheSeconds" value="120"/>对资源文件内容缓存实际单位秒 
+	</bean> -->

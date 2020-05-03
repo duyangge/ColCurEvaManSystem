@@ -176,14 +176,7 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 				Integer cate = beanQueryVo.getCategory();//查询类别
 				String status = beanQueryVo.getStatus();//查询状态
 				 if(status != null &&cate != null) {//避免空指针异常
-					//状态查询
-	                    if(status.equals("1")) {//可见
-	                    	beanQueryVo.setStatus("0");
-	                    }else if(status.equals("2")) {//不可见
-	                    	beanQueryVo.setStatus("1");
-	                    }else {
-	                    	beanQueryVo.setStatus(null);//为空
-	                    }  
+					//状态查询  
 	                    
 	                    //分类查询
 						if(cate == 1) {//班级
@@ -233,6 +226,8 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 				lesEva.setScore(claSub.getSubScore());//课程评价分
 				lesEva.setSubInfo(claSub.getSubInfo());//评价
 				lesEva.setStatus(claSub.getSubStatus());
+				lesEva.setStartTime(beanQueryVo.getStartTime());
+				lesEva.setEndTime(beanQueryVo.getEndTime());
 				lesEvaList.add(lesEva);
 			}
 		} catch (Exception e) {
@@ -330,7 +325,13 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 	 */
 	@Override
 	public List<ClassSubInfoCustom> findAvgScoreByClassIdAndLessionId(BeanQueryVo beanQueryVo) {
-		return classSubInfoMapper.findAvgScoreByClassIdAndLessionId(beanQueryVo);
+		List<ClassSubInfoCustom> claSubList = classSubInfoMapper.findAvgScoreByClassIdAndLessionId(beanQueryVo);
+		for (ClassSubInfoCustom claSub : claSubList) {
+			 claSub.setStartTime(beanQueryVo.getStartTime());
+			 claSub.setEndTime(beanQueryVo.getEndTime());
+			 //claSubList.add(claSub);
+		}
+		return claSubList;
 	}
 
 }

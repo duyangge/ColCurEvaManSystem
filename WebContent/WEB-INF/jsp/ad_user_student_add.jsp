@@ -15,13 +15,15 @@
 	</head>
 	<body>
 		<div class="wrap-container">
-			<form class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/addStudent.do" method="post">
-
+			<form class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/addStudent.do" method="post" enctype="multipart/form-data">
+						<c:forEach items="${allErrors}"  var="error">
+		                     <font color="red">${error.getDefaultMessage()}</font>
+	                    </c:forEach>
 					<div class="layui-form-item">
 						<label class="layui-form-label">学院：</label>
 						<div class="layui-input-block" style="margin-bottom: 20px;">
 						   <!--循环便利所有学院  -->
-							<select name="studentInfo.professionId" lay-verify="required" id="profession_id" lay-filter="profession">	
+							<select name="professionId" lay-verify="required" id="profession_id" lay-filter="profession">	
 								<c:forEach items="${proList }" var="pro" varStatus="status">
 									<option value="${pro.professionId }" data-id="${pro.professionId }" >${pro.professionName }</option>
 								</c:forEach>							
@@ -32,7 +34,7 @@
 						<label class="layui-form-label">班级：</label>
 						<div class="layui-input-block">
 							<!--循环便利所有班级  -->
-							<select name="studentInfo.classId" lay-verify="required" id="class_id" >	
+							<select name="classId" lay-verify="required" id="class_id" >	
 							      <option value="" data-id="">请选择所属班级</option>						
 							</select>
 						</div>
@@ -43,14 +45,25 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">账号：</label>
 						<div class="layui-input-block">
-							<input type="text" name="studentInfo.account" required lay-verify="required" value="${account }"  autocomplete="off" class="layui-input">
+							<input type="text" name="account" required lay-verify="required" value="${account }"  autocomplete="off" class="layui-input">
 						</div>
 					</div>
 
 					<div class="layui-form-item">
 						<label class="layui-form-label">姓名：</label>
 						<div class="layui-input-block">
-							<input type="text" name="studentInfo.username" required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+							<input type="text" name="username" required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">头像：</label>
+						<div class="layui-input-block">
+						<c:if test="${headImage !=null}">
+						    <img src="/pic/${headImage}" width="100" height="100"/>
+						     <br/>
+					     </c:if>
+							<input type="file"  name="head_image"/> 
 						</div>
 					</div>
 
@@ -58,21 +71,21 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">电话号码：</label>
 						<div class="layui-input-block">
-							<input type="text" id="tel" name="studentInfo.telphone" required lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+							<input type="text" id="tel" name="telphone" required lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
 						</div>
 						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="telmes"></span>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">email：</label>
 						<div class="layui-input-block">
-							<input type="text" id="mail" name="studentInfo.mail" required lay-verify="required" placeholder="请输入email" autocomplete="off" class="layui-input">
+							<input type="text" id="mail" name="mail" required lay-verify="required" placeholder="请输入email" autocomplete="off" class="layui-input">
 						</div>
 						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="mailmes"></span>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码：</label>
 						<div class="layui-input-block">
-							<input type="password" id="passwd" name="studentInfo.password" required lay-verify="required" value="pxxy${account }" autocomplete="off" class="layui-input">
+							<input type="password" id="passwd" name="password" required lay-verify="required" value="pxxy${account }" autocomplete="off" class="layui-input">
 						</div>
 						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
 
@@ -87,8 +100,8 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">状态：</label>
 						<div class="layui-input-block">
-							<input type="radio" name="studentInfo.status" value="0" title="正常" checked>
-							<input type="radio" name="studentInfo.status" value="1" title="异常">
+							<input type="radio" name="status" value="0" title="正常" checked>
+							<input type="radio" name="status" value="1" title="异常">
 						</div>
 
 					</div>
@@ -136,7 +149,7 @@ layui.use(['form'], function() {
 	
 	//监听提交
 	form.on('submit(formDemo)', function(data) {
-				JSON.stringify(data.field);
+				alert(JSON.stringify(data.field));
 				var passwd = document.getElementById('passwd').value;
 				var repasswd = document.getElementById('repasswd').value;
 		        var tel=document.getElementById('tel').value;

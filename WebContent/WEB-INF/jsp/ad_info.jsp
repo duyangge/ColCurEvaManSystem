@@ -13,47 +13,6 @@
 		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
 		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
-<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-<script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-var message = "${message}";
-if(message != null && message != ""){	//密码修改后，退出登录
-	//alert("23534");
-	top.location.href="../user/loginOut.do";
- }
-var roadParent = "${roadParent}";
-if(roadParent != null && roadParent != ""){	
-   		parent.location.reload();//刷新父页面
- }
-//Demo
-layui.use(['form','element'], function(){
-  var form = layui.form();
-  var element = layui.element();
-  form.render();
-  //监听信息提交
-  form.on('submit(adminInfo)', function(data){
-    JSON.stringify(data.field);
-    var tel=document.getElementById('tel').value;
-    var mail=document.getElementById('mail').value;
-    if( isPoneAvailable(tel) &&  isEmailAvailable(mail)){
- 	   return true;
-    }else {
-     	return false;
-     }
-  });
-  //监听密码提交
-   form.on('submit(adminPassword)', function(data){
-    JSON.stringify(data.field);
-    var passwd = document.getElementById('passwd').value;
-	var repasswd = document.getElementById('repasswd').value;
-    if(checkpasswd(passwd,repasswd))
-        return true;
-    else 
-    	return false;
-  });
-});
-
-</script>
 <body>
 <div class="layui-tab page-content-wrap">
 		  <ul class="layui-tab-title">
@@ -62,7 +21,7 @@ layui.use(['form','element'], function(){
 		  </ul>
 		  <div class="layui-tab-content">
 		    <div class="layui-tab-item layui-show">
-		    	<form class="layui-form"  style="width: 90%;padding-top: 20px;" action="../user/updateAdminInfo.do" method="post">
+		    	<form enctype="multipart/form-data" class="layui-form"  style="width: 90%;padding-top: 20px;" action="../user/updateAdminInfo.do" method="post">
 		    	
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">ID：</label>
@@ -83,6 +42,17 @@ layui.use(['form','element'], function(){
 						<label class="layui-form-label">姓名：</label>
 						<div class="layui-input-block">
 							<input type="text" name="username" required lay-verify="required" value="${tea.username}" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">头像：</label>
+						<div class="layui-input-block">
+							<c:if test="${tea.headImage !=null}">
+						    <img src="/pic/${tea.headImage}" width="100" height="100"/>
+						     <br/>
+					     </c:if>
+							<input type="file"  name="head_image"/> 
 						</div>
 					</div>
 
@@ -122,11 +92,11 @@ layui.use(['form','element'], function(){
 		    </div>
 		    
 		    <div class="layui-tab-item">
-		    	<form class="layui-form" v style="width: 90%;padding-top: 20px;" action="../user/updateAdminInfo.do" method="post">
+		    	<form class="layui-form" v style="width: 90%;padding-top: 20px;" action="../user/updateAdminPassWord.do" method="post">
+		    	<input type="hidden" name="teacherId" value="${tea.teacherId }">
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">用户名：</label>
 				    <div class="layui-input-block">
-				     <input type="hidden" name="id" value="${tea.teacherId }">
 				      <input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled" value="${tea.username }">
 				    </div>
 				  </div>
@@ -161,4 +131,44 @@ layui.use(['form','element'], function(){
 		</div>
 	
 	</body>
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+var message = "${message}";
+if(message != null && message != ""){	//密码修改后，退出登录
+	top.location.href="../user/loginOut.do";
+ }
+var roadParent = "${roadParent}";
+if(roadParent != null && roadParent != ""){	
+   		parent.location.reload();//刷新父页面
+ }
+//Demo
+layui.use(['form','element'], function(){
+  var form = layui.form();
+  var element = layui.element();
+  form.render();
+  //监听信息提交
+  form.on('submit(adminInfo)', function(data){
+    JSON.stringify(data.field);
+    var tel=document.getElementById('tel').value;
+    var mail=document.getElementById('mail').value;
+    if( isPoneAvailable(tel) &&  isEmailAvailable(mail)){
+ 	   return true;
+    }else {
+     	return false;
+     }
+  });
+  //监听密码提交
+   form.on('submit(adminPassword)', function(data){
+    JSON.stringify(data.field);
+    var passwd = document.getElementById('passwd').value;
+	var repasswd = document.getElementById('repasswd').value;
+    if(checkpasswd(passwd,repasswd))
+        return true;
+    else 
+    	return false;
+  });
+});
+
+</script>
 </html>

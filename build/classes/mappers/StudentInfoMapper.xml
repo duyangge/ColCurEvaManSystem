@@ -64,12 +64,14 @@
 	<!--模糊查询 -->
 	<select id="selectByNameList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo"
 		resultMap="BaseResultMap">
-		select
+		select distinct
 		<include refid="Base_Column_List" />
 		from student_tb
 		<where>
 			<if test="keyWords != null and keyWords != ''">
 				instr(username, #{keyWords}) > 0
+				or
+				instr(account,#{keyWords}) > 0
 			</if>
 			<if test="status != null and status != ''">
 				and status=#{status}

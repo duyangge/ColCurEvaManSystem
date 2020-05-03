@@ -15,8 +15,8 @@
 </head>
 <body>
 		<div class="wrap-container">
-			<form class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/updateStudent.do" method="post">
-					
+			<form enctype="multipart/form-data"  class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/updateStudent.do" method="post">
+					<input type="hidden" value="${stu.studentId}" name="studentId">
 					<div class="layui-form-item">
 						<label class="layui-form-label">学院：</label>
 						<div class="layui-input-block" style="margin-bottom: 20px;">
@@ -44,7 +44,6 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">账号：</label>
 						<div class="layui-input-block">
-						   <input type="hidden" name="studentId" value="${stu.studentId }" class="layui-input">
 							<input type="text" name="account" value="${stu.account }" required lay-verify="required" readonly="readonly"  autocomplete="off" class="layui-input">
 						</div>
 					</div>
@@ -53,6 +52,17 @@
 						<label class="layui-form-label">姓名：</label>
 						<div class="layui-input-block">
 							<input type="text" name="username" value="${stu.username }"  required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">头像：</label>
+						<div class="layui-input-block">
+							<c:if test="${stu.headImage !=null}">
+						    <img src="/pic/${stu.headImage}" width="100" height="100"/>
+						     <br/>
+					     </c:if>
+							<input type="file"  name="head_image"/> 
 						</div>
 					</div>
 

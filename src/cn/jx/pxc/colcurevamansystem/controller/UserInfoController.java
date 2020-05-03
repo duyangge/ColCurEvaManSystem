@@ -3,11 +3,13 @@
  */
 package cn.jx.pxc.colcurevamansystem.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -15,10 +17,14 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
@@ -103,23 +109,67 @@ public class UserInfoController {
 	 * @return
 	 */
 	@RequestMapping("/updateAdminInfo.do" )
-	public String  updateAdminInfo(Model model,TeacherInfo tea,Integer id) {
+	public String  updateAdminInfo(Model model,TeacherInfo tea,Integer id,BindingResult bindingResult, MultipartFile head_image) {
 		try {
 			tea.setTeacherId(id);
-			teacherInfoService.updateByPrimaryKeySelective(tea);//由于更新后，tea.id变成影响行数
-			if(tea.getPassword() != null) {//修改密码成功后，返回登录页面
-				model.addAttribute("message", "退出登录");
-			}else {//修改基本信息后，返回基本信息页面
-				TeacherInfo teacherInfo = teacherInfoService.selectByPrimaryKey(id);
-				model.addAttribute("tea", teacherInfo);
+			//存储图片的物理地址
+			String pic_path = "E:\\learnsoftware\\fileUpload\\temp\\";
+			//得到图片的原始name
+			String originalFileName = head_image.getOriginalFilename();//
+			//上传图片，判断上传的图片不能为空
+			if (head_image != null && originalFileName != null && originalFileName != "") {
+				//新的图片名称
+				String newFileName = UUID.randomUUID()+originalFileName.substring(originalFileName.lastIndexOf("."));
+				//新图片
+				File newFile = new File(pic_path+newFileName);
+				//将内存中的数据写入磁盘
+				head_image.transferTo(newFile);
+				tea.setHeadImage(newFileName);;//将图片名称写入数据库中
 			}
-			
+			teacherInfoService.updateByPrimaryKeySelective(tea);//由于更新后，tea.id变成影响行数		
+		    //修改基本信息后，返回基本信息页面
+			TeacherInfo teacherInfo = teacherInfoService.selectByPrimaryKey(id);
+			model.addAttribute("tea", teacherInfo);			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		model.addAttribute("roadParent", "roadParent");
 		return "ad_info";
 	}
+	
+	/**修改管理员密码(教师和超级管理员)
+	 * @param model
+	 * @param tea
+	 * @return
+	 */
+	@RequestMapping("/updateAdminPassWord.do")
+	public String updateAdminPassWord(Model model,TeacherInfo tea) {
+		try {
+			teacherInfoService.updateByPrimaryKeySelective(tea);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("message", "退出登录");
+		return "ad_info";
+	}
+	
+	/**修改学生密码
+	 * @param model
+	 * @param tea
+	 * @return
+	 */
+	@RequestMapping("/updateStudentPassWord.do")
+	public String updateStudentPassWord(Model model,StudentInfo stu) {
+		try {
+			studentInfoService.updateByPrimaryKeySelective(stu);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("message", "退出登录");
+		return "ad_info";
+	}
+	
+	
 	
 	
 	/**跳转学生基本信息
@@ -142,17 +192,25 @@ public class UserInfoController {
 	 * @return
 	 */
 	@RequestMapping("/updateStudentInfo.do" )
-	public String  updateStudentInfo(Model model,StudentInfo stu,Integer id) {
+	public String  updateStudentInfo(Model model,StudentInfo stu, BindingResult bindingResult, MultipartFile head_image) {
 		try {
-			stu.setStudentId(id);
-			studentInfoService.updateByPrimaryKeySelective(stu);//由于更新后，tea.id变成影响行数
-			if(stu.getPassword() != null) {//修改密码成功后，返回登录页面
-				model.addAttribute("message", "密码修改成功，重新登录");
-			}else {//修改基本信息后，返回基本信息页面
-				StudentInfoCustom stuCus = studentInfoService.selectCustomByKey(id);
+			//存储图片的物理地址
+			String pic_path = "E:\\learnsoftware\\fileUpload\\temp\\";
+			//得到图片的原始name
+			String originalFileName = head_image.getOriginalFilename();//
+			//上传图片，判断上传的图片不能为空
+			if (head_image != null &&originalFileName != null && !"".equals(originalFileName) ) {				
+				//新的图片名称
+				String newFileName = UUID.randomUUID()+originalFileName.substring(originalFileName.lastIndexOf("."));				
+				//新图片
+				File newFile = new File(pic_path+newFileName);
+				//将内存中的数据写入磁盘
+				head_image.transferTo(newFile);
+				stu.setHeadImage(newFileName);;//将图片名称写入数据库中
+			}			
+			    studentInfoService.updateByPrimaryKeySelective(stu);//由于更新后，tea.id变成影响行数		
+				StudentInfoCustom stuCus = studentInfoService.selectCustomByKey(stu.getStudentId());
 				model.addAttribute("stu", stuCus);
-			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -364,15 +422,28 @@ public class UserInfoController {
 	 * 添加学生后，自动通过主键显示查询
 	 * @param model
 	 * @param beanQueryVo
-	 * @return
+	 * @return 
 	 */
 	@RequestMapping(value="/addStudent.do",method=RequestMethod.POST)
-	public String addStudent(Model model,BeanQueryVo beanQueryVo) {
-		//接收前台传递的json串
-		StudentInfo studentInfo = new StudentInfo();
-		BeanUtils.copyProperties(beanQueryVo.getStudentInfo(), studentInfo);//基本信息
+	public String addStudent(Model model,StudentInfo studentInfo, BindingResult bindingResult, MultipartFile head_image ) {
 		try {
+			
+			String pic_path = "E:\\learnsoftware\\fileUpload\\temp\\";//存储图片的物理地址
+			//真实项目中创建图片服务器；在tomcat服务器下创建图片缓存地址：图片虚拟目录（两个方式：直接图形添加和在service.xml中添加）
+			//物理地址和虚拟地址			
+			String originalFileName = head_image.getOriginalFilename();//得到图片的原始name
+			//上传图片，判断上传的图片不能为空
+			if (head_image != null && originalFileName != null && originalFileName != "") {
+				//新的图片名称
+				String newFileName = UUID.randomUUID()+originalFileName.substring(originalFileName.lastIndexOf("."));
+				//新图片
+				File newFile = new File(pic_path+newFileName);
+				//将内存中的数据写入磁盘
+				head_image.transferTo(newFile);
+				studentInfo.setHeadImage(newFileName);;//将图片名称写入数据库中
+			}
 			studentInfoService.insertSelective(studentInfo);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -451,13 +522,27 @@ public class UserInfoController {
 	}
 	
 	
-	/**修改学生信息
+	/**管理员修改学生信息
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping("/updateStudent.do")
-	public String updateStudent(Model model,StudentInfo stu) {
+	public String updateStudent(Model model,StudentInfo stu,BindingResult bindingResult, MultipartFile head_image) {
 		try {
+			//存储图片的物理地址
+			String pic_path = "E:\\learnsoftware\\fileUpload\\temp\\";
+			//得到图片的原始name
+			String originalFileName = head_image.getOriginalFilename();//
+			//上传图片，判断上传的图片不能为空
+			if (head_image != null && originalFileName != null && !"".equals(originalFileName) ) {				
+				//新的图片名称
+				String newFileName = UUID.randomUUID()+originalFileName.substring(originalFileName.lastIndexOf("."));				
+				//新图片
+				File newFile = new File(pic_path+newFileName);
+				//将内存中的数据写入磁盘
+				head_image.transferTo(newFile);
+				stu.setHeadImage(newFileName);;//将图片名称写入数据库中
+			}			
 			studentInfoService.updateByPrimaryKeySelective(stu);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -549,8 +634,22 @@ public class UserInfoController {
 	 * @return
 	 */
 	@RequestMapping("/addTeacher.do")
-	public String addTeacher(TeacherInfo teacherInfo,Model model) {
+	public String addTeacher(TeacherInfo teacherInfo,Model model,BindingResult bindingResult, MultipartFile head_image) {
 		try {
+			//存储图片的物理地址
+			String pic_path = "E:\\learnsoftware\\fileUpload\\temp\\";
+			//得到图片的原始name
+			String originalFileName = head_image.getOriginalFilename();//
+			//上传图片，判断上传的图片不能为空
+			if (head_image != null && originalFileName != null && originalFileName != "") {
+				//新的图片名称
+				String newFileName = UUID.randomUUID()+originalFileName.substring(originalFileName.lastIndexOf("."));
+				//新图片
+				File newFile = new File(pic_path+newFileName);
+				//将内存中的数据写入磁盘
+				head_image.transferTo(newFile);
+				teacherInfo.setHeadImage(newFileName);;//将图片名称写入数据库中
+			}
 			teacherInfoService.insertSelective(teacherInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -582,8 +681,22 @@ public class UserInfoController {
 	 * @return
 	 */
 	@RequestMapping("/updateTeacher.do")
-	public String updateTeacher(Model model,TeacherInfo tea) {
+	public String updateTeacher(Model model,TeacherInfo tea,BindingResult bindingResult, MultipartFile head_image) {
 		try {
+			//存储图片的物理地址
+			String pic_path = "E:\\learnsoftware\\fileUpload\\temp\\";
+			//得到图片的原始name
+			String originalFileName = head_image.getOriginalFilename();//
+			//上传图片，判断上传的图片不能为空
+			if (head_image != null && originalFileName != null && originalFileName != "") {
+				//新的图片名称
+				String newFileName = UUID.randomUUID()+originalFileName.substring(originalFileName.lastIndexOf("."));
+				//新图片
+				File newFile = new File(pic_path+newFileName);
+				//将内存中的数据写入磁盘
+				head_image.transferTo(newFile);
+				tea.setHeadImage(newFileName);;//将图片名称写入数据库中
+			}
 			teacherInfoService.updateByPrimaryKeySelective(tea);
 		} catch (Exception e) {
 			e.printStackTrace();

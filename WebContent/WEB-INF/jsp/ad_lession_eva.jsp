@@ -35,18 +35,18 @@
 							</div>
 						 	<div class="layui-inline" style="width:80px;" >
 								<select name="category" lay-filter="status" id="category" >
-									<option value="0" <c:if test="${category eq '0' }"> selected="selected"</c:if> >类别</option>
+									<option value="">类别</option>
 									<option value="1" <c:if test="${category eq '1' }"> selected="selected"</c:if>>班级</option>
 									<option value="2" <c:if test="${category eq '2' }"> selected="selected"</c:if>>教师</option>
 									<option value="3" <c:if test="${category eq '3' }"> selected="selected"</c:if>>课程</option>
 									<option value="4" <c:if test="${category eq '4' }"> selected="selected"</c:if>>学生</option>
 								</select>
 							</div>
-							<div class="layui-inline" style="width:80px;">
+							<div class="layui-inline" style="width:90px;">
 								<select name="status" lay-filter="status" id="status">
-									<option value="0" <c:if test="${category eq '0' }"> selected="selected"</c:if>>状态</option>
-									<option value="1"  <c:if test="${status eq '1' }"> selected="selected"</c:if>>可见</option>
-									<option value="2"  <c:if test="${status eq '2' }"> selected="selected"</c:if>>不可见</option>
+									<option value="" >状态</option>
+									<option value="0"  <c:if test="${status eq '0' }"> selected="selected"</c:if>>可见</option>
+									<option value="1"  <c:if test="${status eq '1' }"> selected="selected"</c:if>>不可见</option>
 								</select>
 							</div>
 							<div class="layui-inline" style="width:90px;">
@@ -57,6 +57,10 @@
 						                   >${status.current}条/页</option>
 						            </c:forEach>
 						          </select>
+							</div>
+							
+							<div class="layui-inline" style="width:90px;">
+						        <button class="layui-btn layui-btn-mini layui-btn-normal" onclick="ToExcel();">导出excel</button>
 							</div>
 							
 						</div>
@@ -200,6 +204,13 @@
 		var currentPage = document.getElementById("currentPage").value;
 		window.location.href="../classSub/findClassSub.do?&keyWords="+name+"&pageSize="+pageSize+"&currentPage="+currentPage+"&status="+status+"&category="+category+"&startTime="+startTime+"&endTime="+endTime;
 	}
-
+	//点击导出excel
+	   function ToExcel(){
+		   var name = document.getElementById("seacher").value;
+	       var  exportLink ="../classSub/exportExcelToLessionEva.do?startTime="+startTime+"&endTime="+endTime+"&category="+category+"&status="+status+"&keyWords="+name;//拼接controller访问地址
+	       alert("exportLink:"+exportLink);
+	       window.open(exportLink ,'_self');//进行访问	  ,'scrollbars=no,resizable=no,width=641,height=480,top=50,left=50' 
+	       alert("下载成功！");
+	   }
 </script>
 </html>

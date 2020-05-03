@@ -35,12 +35,12 @@
 							</div>
 							<div class="layui-inline" style="width:80px;">
 								    <select name="status" lay-filter="status" id="status">
-									<option value="" selected="selected">请选择一个状态</option>
+									<option value="" selected="selected">状态</option>
 									<option value="0">正常</option>
 									<option value="1">异常</option>
 								</select>
 							</div>
-							<div class="layui-inline" style="width:80px;">
+							<div class="layui-inline" style="width:195px;">
 								<select name="professionId" lay-verify="required" id="profession_id">	
 								    <option value="" data-id="">学院</option>
 									<c:forEach items="${proList }" var="pro" varStatus="status">
@@ -148,22 +148,23 @@
 	var obj = document.getElementById("pageSize");
 	var index = obj.selectedIndex;
 	var pageSize = obj.options[index].value;
+	var professionId = document.getElementById("profession_id").value;
 	function firstPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../user/studentAdmin.do?currentPage=1&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../user/studentAdmin.do?currentPage=1&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 	function finalPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../user/studentAdmin.do?currentPage="+${totalPage }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../user/studentAdmin.do?currentPage="+${totalPage }+"&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 	function nextPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../user/studentAdmin.do?currentPage="+${currentPage + 1 }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../user/studentAdmin.do?currentPage="+${currentPage + 1 }+"&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 
 	function lastPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../user/studentAdmin.do?currentPage="+${currentPage - 1 }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../user/studentAdmin.do?currentPage="+${currentPage - 1 }+"&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 	function goDis(){
 		var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/ 

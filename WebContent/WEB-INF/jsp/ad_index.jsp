@@ -21,7 +21,7 @@
 			<!--侧边栏-->
 			<div class="main-layout-side">
 				<div class="m-logo">
-					<img  alt="" src="../images/head.jpg"   height="60px" width="60px;"  style="border-radius: 250px;">
+					<img  alt="" src="/pic/${admin.headImage }"   height="60px" width="60px;"  style="border-radius: 250px;">
 				</div>
 				
 				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">

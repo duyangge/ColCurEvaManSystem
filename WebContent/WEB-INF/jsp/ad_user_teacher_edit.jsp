@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<div class="wrap-container">
-			<form class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/updateTeacher.do" method="post">
+			<form enctype="multipart/form-data" class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/updateTeacher.do" method="post">
 					<div class="layui-form-item">
 						<label class="layui-form-label">学院：</label>
 						<div class="layui-input-block" style="margin-bottom: 20px;">
@@ -43,6 +43,18 @@
 							<input type="text" name="username" required lay-verify="required" value="${tea.username}" placeholder="请输入姓名" autocomplete="off" class="layui-input">
 						</div>
 					</div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">头像：</label>
+						<div class="layui-input-block">
+						<c:if test="${tea.headImage !=null}">
+						    <img src="/pic/${tea.headImage}" width="100" height="100"/>
+						     <br/>
+					     </c:if>
+							<input type="file"  name="head_image"/> 
+						</div>
+					</div>
+					
 
 
 					<div class="layui-form-item">
