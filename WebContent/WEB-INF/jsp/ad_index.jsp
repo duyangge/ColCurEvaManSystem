@@ -21,9 +21,12 @@
 			<!--侧边栏-->
 			<div class="main-layout-side">
 				<div class="m-logo">
-					<img  alt="" src="/pic/${admin.headImage }"   height="60px" width="60px;"  style="border-radius: 250px;">
+					<div align="center" >
+						<a  href="javascript:;" data-id='5' data-text="个人信息" data-url="../user/goUpdateAdminInfo.do" >
+							<img  alt="" src="/pic/${admin.headImage }"   height="60px" width="60px;"  style="border-radius: 250px;">
+						</a>
+					</div>
 				</div>
-				
 				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
 				<c:forEach items="${funList }" var="fun" varStatus="status">
 				      <li class="layui-nav-item">

@@ -45,7 +45,7 @@
 						</div>
 					</form>
 				</div>
-				<p class="copyright">Copyright 2019-2020 by CTWFC</p>
+				<p class="copyright">@Copyright 2019-2020 by compangy.CTWFC公司</p>
 			</div>
 		</div>
 		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>

@@ -88,7 +88,7 @@ public class UserInfoController {
 	@RequestMapping("/goLogin.do")
 	public String goLogin(Model model,@RequestParam(value="message",required=false)String mes) {
 		model.addAttribute("message", mes);
-		return "logins";
+		return "login";
 	}
 	
 	/**跳转管理员个人基本信息
@@ -742,12 +742,28 @@ public class UserInfoController {
 	
 	
 	
-	/**后台首页
+	/**超级管理员后台首页
 	 * @return
 	 */
 	@RequestMapping("/indexAdmin.do")
 	public String indexAdmin() {
 		return "ad_welcome";
+	}
+	
+	/**教师后台首页
+	 * @return
+	 */
+	@RequestMapping("/indexTeacher.do")
+	public String indexTeacher() {
+		return "te_welcome";
+	}
+	
+	/**学生后台首页
+	 * @return
+	 */
+	@RequestMapping("/indexStudent.do")
+	public String indexStudent() {
+		return "st_welcome";
 	}
 	
 	/**退出登录
