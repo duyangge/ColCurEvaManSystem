@@ -23,7 +23,7 @@
 							<select name="professionId" lay-verify="required" id="profession_id">	
 								<c:forEach items="${proList }" var="pro" varStatus="status">
 									<option value="${pro.professionId }" data-id="${pro.professionId }" 
-									<%-- <c:if test="${pro.professionId eq tea.professionId}">selected="selected"</c:if> --%> 
+									<c:if test="${pro.professionId eq tea.professionId}">selected="selected"</c:if> 
 									>${pro.professionName }</option>
 								</c:forEach>							
 							</select>

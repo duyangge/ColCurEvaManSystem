@@ -13,20 +13,6 @@
 		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
 		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
-<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
-<script>
-	//Demo
-	layui.use(['form'], function() {
-		var form = layui.form();
-		form.render();
-		//监听提交
-		form.on('submit(formDemo)', function(data) {
-			layer.msg(JSON.stringify(data.field));
-			return true;
-		});
-	});
-</script>
 	<body>
 		<div class="wrap-container clearfix">
 				<div class="column-content-detail">
@@ -84,7 +70,7 @@
 									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>
 									<td class="hidden-xs">${pro.professionId }</td>
 									<td class="hidden-xs">${pro.professionName }</td>
-									<td><textarea>${pro.professionInfo }</textarea></td>
+									<td><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${pro.professionInfo }</textarea></td>
 									<td>${pro.createdUser }</td>
 									<th>${pro.modifiedUser }</th>
 									<td class="hidden-xs"><fmt:formatDate value="${pro.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
@@ -121,7 +107,19 @@
 				</div>
 		</div>
 </body>
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+//Demo
+layui.use(['form'], function() {
+	var form = layui.form();
+	form.render();
+	//监听提交
+	form.on('submit(formDemo)', function(data) {
+		layer.msg(JSON.stringify(data.field));
+		return true;
+	});
+});
 	var obj = document.getElementById("pageSize");
 	var index = obj.selectedIndex;
 	var pageSize = obj.options[index].value;

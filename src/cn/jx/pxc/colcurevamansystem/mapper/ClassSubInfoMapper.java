@@ -65,6 +65,10 @@ public interface ClassSubInfoMapper {
 
     int insertSelective(ClassSubInfo record);
 
+    /**
+     * @param subEvaId
+     * @return
+     */
     ClassSubInfo selectByPrimaryKey(Integer subEvaId);
 
     int updateByPrimaryKeySelective(ClassSubInfo record);

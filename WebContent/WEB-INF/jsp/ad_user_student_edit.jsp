@@ -119,6 +119,36 @@
 <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 <script>
+//跳转页面的同时就加载
+$(document).ready(function() {
+	 var options=$("#profession_id option:selected");
+     var value=options.data("id");   //得到学院id
+	 $.ajax({
+			async:false,
+			type:"post",
+			url:"../user/changeClass.do",
+			dataType: "json",
+			data:{id:value}, //二级产品类别的父ID
+			success:function(data){
+				$("#class_id").empty();
+				$("#class_id").append("<option value= '' data-id=''>请选择所属班级</option>");
+				var id = "${stu.classId}";
+				for(var i=0;i<data.length;i++){
+					if(id == data[i].classId ){
+						$("#class_id").append("<option value='"+data[i].classId+"'  selected='selected' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+					}else{
+						$("#class_id").append("<option value='"+data[i].classId+"'  data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+					}
+				}
+				form.render();
+			},
+			error:function(err){
+	        	alert("失败");
+	      	}
+    });//ajax
+	
+	
+});
 //选中一级产品类别后，获取并刷新二级产品类别列表	    
 //提交表单
 layui.use(['form'], function() {
@@ -127,30 +157,31 @@ layui.use(['form'], function() {
 	form.on('select(profession)', function(data) {
 		     var options=$("#profession_id option:selected");
 	         var value=options.data("id");   //得到学院id
-	            $.ajax({
-					async:false,
-					type:"post",
-					url:"../user/changeClass.do",
-					dataType: "json",
-					data:{id:value}, //二级产品类别的父ID
-					success:function(data){
-						$("#class_id").empty();
-						$("#class_id").append("<option value= '' data-id=''>请选择所属班级</option>");
-						var id = "${stu.classId}";
-						for(var i=0;i<data.length;i++){
-							if(id == data[i].classId ){
-								$("#class_id").append("<option value='"+data[i].classId+"'  selected='selected' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
-							}else{
-								$("#class_id").append("<option value='"+data[i].classId+"'  data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+	        	 $.ajax({
+						async:false,
+						type:"post",
+						url:"../user/changeClass.do",
+						dataType: "json",
+						data:{id:value}, //二级产品类别的父ID
+						success:function(data){
+							$("#class_id").empty();
+							$("#class_id").append("<option value= '' data-id=''>请选择所属班级</option>");
+							var id = "${stu.classId}";
+							for(var i=0;i<data.length;i++){
+								if(id == data[i].classId ){
+									$("#class_id").append("<option value='"+data[i].classId+"'  selected='selected' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+								}else{
+									$("#class_id").append("<option value='"+data[i].classId+"'  data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+								}
 							}
-						}
-						form.render();
-					},
-					error:function(err){
-			        	alert("失败");
-			      	}
-	           })
-	})
+							form.render();
+						},
+						error:function(err){
+				        	alert("失败");
+				      	}
+		           });//ajax
+        
+	});//select
 	
 	//监听提交
 	form.on('submit(formDemo)', function(data) {

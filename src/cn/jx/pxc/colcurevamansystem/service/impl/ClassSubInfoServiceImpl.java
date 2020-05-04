@@ -245,7 +245,6 @@ public class ClassSubInfoServiceImpl implements ClassSubInfoService {
 		LessionEvaTemp lesEva = new LessionEvaTemp();
 		
 		ClassSubInfo claSub = classSubInfoMapper.selectByPrimaryKey(beanQueryVo.getId());
-		//LessionTeacherInfo lestea = lessionTeacherInfoMapper.selectByLessionAndClass(beanQueryVo);//得到教师id
 		//得到教师名称
 		TeacherInfo tea = teacherInfoMapper.selectByPrimaryKey(claSub.getSubTeacherId());
 		//班级名称

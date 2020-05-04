@@ -50,7 +50,6 @@
 					</form>
 					<c:if test="${ not empty claList  }"> 
 					<div class="layui-form" id="table-list">
-					
 					<table class="layui-table" lay-even lay-skin="nob">
 						<colgroup>
 								<col width="50">
@@ -83,7 +82,7 @@
 									<td class="hidden-xs">${cla.classId }</td>
 									<td >${cla.className }</td>
 									<td >${cla.professionName }</td>
-									<td ><textarea  readonly="readonly" style="background:transparent;border:none; resize:none;">${cla.classInfo }</textarea></td>
+									<td ><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${cla.classInfo }</textarea></td>
 									<td >${cla.createdUser }</td>
 									<td class="hidden-xs" ><fmt:formatDate value="${cla.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss"/></td>
 									<td class="hidden-xs"><fmt:formatDate value="${cla.modifiedTime }" pattern="yyyy:MM:dd:HH:mm:ss" /></td>
@@ -122,22 +121,24 @@
 	var obj = document.getElementById("pageSize");
 	var index = obj.selectedIndex;
 	var pageSize = obj.options[index].value;
+	var professionId = document.getElementById("profession_id").value;
+	
 	function firstPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../class/classAdmin.do?currentPage=1&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../class/classAdmin.do?currentPage=1&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 	function finalPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../class/classAdmin.do?currentPage="+${totalPage }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../class/classAdmin.do?currentPage="+${totalPage }+"&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 	function nextPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../class/classAdmin.do?currentPage="+${currentPage + 1 }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../class/classAdmin.do?currentPage="+${currentPage + 1 }+"&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 
 	function lastPage(){
 		var name = document.getElementById("seacher").value;
-		window.location.href="../class/classAdmin.do?currentPage="+${currentPage - 1 }+"&keyWords="+name+"&pageSize="+pageSize;
+		window.location.href="../class/classAdmin.do?currentPage="+${currentPage - 1 }+"&keyWords="+name+"&pageSize="+pageSize+"&professionId="+professionId;
 	}
 	function goDis(){
 		var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/ 

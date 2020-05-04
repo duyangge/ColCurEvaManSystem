@@ -670,7 +670,6 @@ public class ClassSubInfoController {
 				}
 			}
 		}else {
-			//return "forward:goEchartsPage.do?beanQueryVo="+beanQueryVo;
 			model.addAttribute("lesEvaList",JSON.toJSONString(lesEvaList));
 		}
 		    //数据回显
@@ -682,7 +681,6 @@ public class ClassSubInfoController {
 			model.addAttribute("startTime", beanQueryVo.getStartTime());
 			model.addAttribute("endTime", beanQueryVo.getEndTime());
 			model.addAttribute("showWays", beanQueryVo.getShowWays());
-			model.addAttribute("totalPage", 1);
 		    return "ad_lession_eva_ana";
 	}
 	
