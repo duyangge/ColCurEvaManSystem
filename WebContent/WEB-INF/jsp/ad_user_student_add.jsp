@@ -149,7 +149,7 @@ layui.use(['form'], function() {
 	
 	//监听提交
 	form.on('submit(formDemo)', function(data) {
-				alert(JSON.stringify(data.field));
+				JSON.stringify(data.field);
 				var passwd = document.getElementById('passwd').value;
 				var repasswd = document.getElementById('repasswd').value;
 		        var tel=document.getElementById('tel').value;
