@@ -208,7 +208,7 @@
 	   function ToExcel(){
 		   var name = document.getElementById("seacher").value;
 	       var  exportLink ="../classSub/exportExcelToLessionEva.do?startTime="+startTime+"&endTime="+endTime+"&category="+category+"&status="+status+"&keyWords="+name;//拼接controller访问地址
-	       alert("exportLink:"+exportLink);
+	      // alert("exportLink:"+exportLink);
 	       window.open(exportLink ,'_self');//进行访问	  ,'scrollbars=no,resizable=no,width=641,height=480,top=50,left=50' 
 	       alert("下载成功！");
 	   }

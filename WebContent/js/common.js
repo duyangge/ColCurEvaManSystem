@@ -26,6 +26,18 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	//渲染表单
 	form.render();	
 	
+	//角色权限全选
+	form.on('checkbox(allRoleChoose)', function(data) {
+		var child = $(data.elem).parents('div').find('tbody input[type="checkbox"]');
+		child.each(function(index, item) {
+			item.checked = data.elem.checked;
+		});
+		form.render('checkbox');
+	});
+	
+	//渲染表单
+	form.render();	
+	
 	//列表跳转
 	
 	//添加学生\、教师、学院、班级、课程，(可公用)

@@ -18,9 +18,9 @@
 				<!-- form表单，将搜索按钮变为提交按按钮 -->
 					<form class="layui-form" action="../role/getRoleAd.do" method="post">
 						<div class="layui-form-item">
-							<div class="layui-inline tool-btn">
-								<button class="layui-btn layui-btn-small layui-btn-normal cla_go-btn hidden-xs" data-url=""><i class="layui-icon">&#xe654;</i></button>
-							</div>
+							<!-- <div class="layui-inline tool-btn">
+								<button class="layui-btn layui-btn-small layui-btn-normal cla_go-btn hidden-xs" data-url="../role/goAddRolePage.do"><i class="layui-icon">&#xe654;</i></button>
+							</div> -->
 							<div class="layui-inline">
 								<input type="text" id="seacher" name="keyWords" value="${keyWords }"  placeholder="请输入关键字" autocomplete="off" class="layui-input">
 							</div>
