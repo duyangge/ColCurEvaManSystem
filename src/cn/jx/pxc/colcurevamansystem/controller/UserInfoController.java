@@ -79,6 +79,41 @@ public class UserInfoController {
 	
 	@Resource
 	public RoleInfoService roleInfoService;
+	
+
+	/**查看某班级的学生
+	 * @param beanQueryVo
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/getStudentsByClass.do")
+	public String getStudentsByClass(BeanQueryVo  beanQueryVo, Model model) {
+		try {
+			if(beanQueryVo.getPageSize() == null) {//默认显示第几页
+				beanQueryVo.setClassId(beanQueryVo.getId());
+				beanQueryVo.setPageSize(5);
+			}
+			if(beanQueryVo.getKeyWords() != null && !beanQueryVo.getKeyWords().equals("") ) {//去点空格
+				beanQueryVo.setKeyWords(beanQueryVo.getKeyWords().trim());
+			}
+			List<StudentInfoCustom> stuList = studentInfoService.selectByClassList(beanQueryVo);
+			
+			if(stuList.size() > 0) {//防止查询数据为空，报异常
+               List<StudentInfoCustom> userInfoCustomList = this.getPageContentByStudent(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), stuList);
+				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
+				model.addAttribute("stuList", userInfoCustomList);//得到分页内容
+			}
+			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+			//保存每个学院
+			List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
+			model.addAttribute("proList", proList);
+			model.addAttribute("professionId", beanQueryVo.getProfessionId());
+			model.addAttribute("classId", beanQueryVo.getClassId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "ad_class_student";
+	}
 
 	/**进入登录页面
 	 * @param model

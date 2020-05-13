@@ -15,6 +15,17 @@ package cn.jx.pxc.colcurevamansystem.bean;
 public class ClassInfoCustom extends ClassInfo {
 	
 	private String professionName;
+	
+	private Integer studentNum;
+	
+
+	public Integer getStudentNum() {
+		return studentNum;
+	}
+
+	public void setStudentNum(Integer studentNum) {
+		this.studentNum = studentNum;
+	}
 
 	public String getProfessionName() {
 		return professionName;

@@ -19,6 +19,7 @@ import cn.jx.pxc.colcurevamansystem.bean.ClassInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
+import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
 import cn.jx.pxc.colcurevamansystem.utils.ListPageUtil;
 
 /**

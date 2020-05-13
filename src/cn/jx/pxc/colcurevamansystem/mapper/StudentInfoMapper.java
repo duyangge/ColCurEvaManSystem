@@ -16,6 +16,15 @@ import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 public interface StudentInfoMapper {
 	
 	
+	
+	/**查询某班级的总人数
+	 * @param classId
+	 * @return
+	 * @throws Exception
+	 */
+	Integer selectNumByClass(Integer classId) throws Exception;
+	
+	
 	/**批量删除学生
 	 * @param beanQueryVo
 	 * @return

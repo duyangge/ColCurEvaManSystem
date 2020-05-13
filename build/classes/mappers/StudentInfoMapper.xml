@@ -83,27 +83,48 @@
 	</select>
 
 	<!-- 通过班级id查询学生 -->
-	<select id="selectByClassList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo"
-		resultMap="BaseResultMap">
+	<select id="selectByClassList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from student_tb
-		where class_id=#{classId}
+		<where>
+		    class_id=#{classId}
+			<if test="keyWords != null and keyWords != ''">
+			and 
+			  instr(username,#{keyWords}) > 0
+			or
+			  instr(account,#{keyWords}) > 0
+			</if>
+			<if test="status != null and status != ''">
+				and status=#{status}
+			</if>
+		</where> 
 	</select>
 
 	<!-- 通过账号查询学生 -->
-	<select id="selectByAccountList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo"
-		resultMap="BaseResultMap">
+	<select id="selectByAccountList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from student_tb
-		where account=#{account}
-		<if test="password != null and password != ''">
-			and password=#{password}
-		</if>
+			<include refid="Base_Column_List" />
+		from 
+			student_tb
+		<where>
+			    account=#{account}
+			<if test="password != null and password != ''">
+				and password=#{password}
+			</if>
+		</where>
 	</select>
 
-
+    <!--统计某个班级的总人数  -->
+    <select id="selectNumByClass" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select
+			count(*)
+		from 
+			student_tb
+		<where>
+		    class_id=#{classId}
+		</where> 
+	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from student_tb

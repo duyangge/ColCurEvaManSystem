@@ -56,6 +56,7 @@
 								<col class="hidden-xs" width="50">
 								<col >
 								<col >
+								<col >
 								<col >	
 								<col >	
 								<col class="hidden-xs" width="150">
@@ -66,9 +67,10 @@
 								<tr>
 									<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
 									<th class="hidden-xs">ID</th>
-									<th >班级名称</th>
-									<th >所属学院</th>
-									<th >备注信息</th>
+									<th >班级</th>
+									<th >学院</th>
+									<th >人数</th>
+									<th >备注</th>
 									<th >创建者</th>
 									<th class="hidden-xs">创建时间</th>
 									<th class="hidden-xs">修改时间</th>
@@ -80,8 +82,9 @@
 									<tr>
 									<td><input type="checkbox" name="classId" lay-skin="primary" data-id="1" value="${cla.classId }"></td>
 									<td class="hidden-xs">${cla.classId }</td>
-									<td >${cla.className }</td>
-									<td >${cla.professionName }</td>
+									<td ><a href="javaScript:;" class="layui-btn layui-btn-mini layui-btn-normal cla_edit-btn" data-id="${cla.classId }"  data-text="班级学生管理" data-url="../user/getStudentsByClass.do">${cla.className }</a></td>
+									<td ><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${cla.professionName }</textarea></td>
+									<td >${cla.studentNum }</td>
 									<td ><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${cla.classInfo }</textarea></td>
 									<td >${cla.createdUser }</td>
 									<td class="hidden-xs" ><fmt:formatDate value="${cla.createdTime }" pattern="yyyy:MM:dd:HH:mm:ss"/></td>

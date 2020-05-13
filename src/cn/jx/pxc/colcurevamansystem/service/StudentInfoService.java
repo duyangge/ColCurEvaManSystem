@@ -18,6 +18,16 @@ import cn.jx.pxc.colcurevamansystem.bean.StudentInfoCustom;
  * @version 版本号
  */
 public interface StudentInfoService {
+	
+	
+	/**查询某班级的总人数
+	 * @param classId
+	 * @return
+	 * @throws Exception
+	 */
+	int selectNumByClass(Integer classId) throws Exception;
+	
+	
 
 	/**批量删除学生
 	 * @param beanQueryVo
@@ -39,7 +49,7 @@ public interface StudentInfoService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<StudentInfo> selectByClassList(BeanQueryVo beanQueryVo) throws Exception;
+	List<StudentInfoCustom> selectByClassList(BeanQueryVo beanQueryVo) throws Exception;
 	
 	
 	  /**主键查询

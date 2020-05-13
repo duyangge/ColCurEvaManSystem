@@ -59,8 +59,19 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 	 * @see cn.jx.pxc.colcurevamansystem.service.StudentInfoService#selectByClassList(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
 	 */
 	@Override
-	public List<StudentInfo> selectByClassList(BeanQueryVo beanQueryVo) throws Exception {
-		return studentInfoMapper.selectByClassList(beanQueryVo);
+	public List<StudentInfoCustom> selectByClassList(BeanQueryVo beanQueryVo) throws Exception {
+		List<StudentInfo> stuList = studentInfoMapper.selectByClassList(beanQueryVo);
+		List<StudentInfoCustom> stuCusList = new ArrayList<StudentInfoCustom>();
+		for (int i = 0; i < stuList.size(); i++) {  //容易出现空指针异常
+	        StudentInfoCustom stuCu = new StudentInfoCustom(); 
+	        BeanUtils.copyProperties(stuList.get(i), stuCu);
+            ClassInfo cla = classInfoMapper.selectByPrimaryKey(stuList.get(i).getClassId());
+    		ProfessionInfo pro = professionInfoMapper.selectByPrimaryKey(stuList.get(i).getProfessionId());
+    		stuCu.setClassName(cla.getClassName());
+    		stuCu.setProfessionName(pro.getProfessionName());;
+    		stuCusList.add(stuCu);
+}
+		return stuCusList;
 	}
 
 	/* (non-Javadoc)
@@ -112,7 +123,6 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 		List<StudentInfoCustom> stuCuList = new ArrayList<StudentInfoCustom>();
 		//复制类
 		for (int i = 0; i < stuList.size(); i++) {  //容易出现空指针异常
-			   // if(StringUtils.isEmpty(beanQueryVo.getStatus()) || beanQueryVo.getStatus().equals(stuList.get(i).getStatus())) {//判断选中的状态
 			        StudentInfoCustom stuCu = new StudentInfoCustom(); 
 			        BeanUtils.copyProperties(stuList.get(i), stuCu);
 		            ClassInfo cla = classInfoMapper.selectByPrimaryKey(stuList.get(i).getClassId());
@@ -120,7 +130,6 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 		    		stuCu.setClassName(cla.getClassName());
 		    		stuCu.setProfessionName(pro.getProfessionName());;
 		    		stuCuList.add(stuCu);
-			   // }
 		}
 		return stuCuList;
 	}
@@ -154,6 +163,14 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 	@Override
 	public int deleteStudentList(BeanQueryVo beanQueryVo) throws Exception {
 		return studentInfoMapper.deleteStudentList(beanQueryVo);
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.jx.pxc.colcurevamansystem.service.StudentInfoService#selectNumByClass(java.lang.Integer)
+	 */
+	@Override
+	public int selectNumByClass(Integer classId) throws Exception {
+		return studentInfoMapper.selectNumByClass(classId);
 	}
 	
 	

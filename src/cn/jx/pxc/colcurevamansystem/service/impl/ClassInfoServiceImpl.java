@@ -13,12 +13,14 @@ import javax.annotation.Resource;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfoCustom;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.mapper.ClassInfoMapper;
 import cn.jx.pxc.colcurevamansystem.mapper.ProfessionInfoMapper;
+import cn.jx.pxc.colcurevamansystem.mapper.StudentInfoMapper;
 import cn.jx.pxc.colcurevamansystem.service.ClassInfoService;
 
 /**
@@ -38,6 +40,9 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 	
 	@Resource
 	public ProfessionInfoMapper professionMapper;
+	
+	@Resource
+	public StudentInfoMapper studentInfoMapper;
 	
 	/* (non-Javadoc)
 	 * @see cn.jx.pxc.colcurevamansystem.service.ClassInfoService#selectByProfessionList(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
@@ -122,6 +127,8 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 				BeanUtils.copyProperties(claCus, classInfo);
 				ProfessionInfo pro = professionMapper.selectByPrimaryKey(classInfo.getProfessionId());
 				claCus.setProfessionName(pro.getProfessionName());
+				Integer num = studentInfoMapper.selectNumByClass(claCus.getClassId());
+				claCus.setStudentNum(num);
 				claCuList.add(claCus);
 		}
 		return claCuList;
