@@ -59,6 +59,7 @@ import cn.jx.pxc.colcurevamansystem.service.ProfessionInfoService;
 import cn.jx.pxc.colcurevamansystem.service.RoleInfoService;
 import cn.jx.pxc.colcurevamansystem.service.StudentInfoService;
 import cn.jx.pxc.colcurevamansystem.service.TeacherInfoService;
+import cn.jx.pxc.colcurevamansystem.utils.CodeUtil;
 import cn.jx.pxc.colcurevamansystem.utils.ListPageUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -413,6 +414,8 @@ public class UserInfoController {
 	public String login(Model model,BeanQueryVo beanQueryVo,HttpSession session) {
 		try {
 			String message="账号异常，请通知管理员处理！";
+			String enCodePassword = CodeUtil.getMD5Encoding(beanQueryVo.getPassword());
+			beanQueryVo.setPassword(enCodePassword);
 			StudentInfo stu = studentInfoService.selectByAccountList(beanQueryVo);
 			TeacherInfo  tea = teacherInfoService.selectByAccountList(beanQueryVo);
 			if ( stu != null ) {//学生登录
@@ -622,6 +625,8 @@ public class UserInfoController {
 				head_image.transferTo(newFile);
 				studentInfo.setHeadImage(newFileName);;//将图片名称写入数据库中
 			}
+			String enCodePasswd = CodeUtil.getMD5Encoding(studentInfo.getPassword());
+			studentInfo.setPassword(enCodePasswd);
 			studentInfoService.insertSelective(studentInfo);
 			
 		} catch (Exception e) {
@@ -830,6 +835,8 @@ public class UserInfoController {
 				head_image.transferTo(newFile);
 				teacherInfo.setHeadImage(newFileName);;//将图片名称写入数据库中
 			}
+			String enCodePasswd = CodeUtil.getMD5Encoding(teacherInfo.getPassword());
+			teacherInfo.setPassword(enCodePasswd);
 			teacherInfoService.insertSelective(teacherInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
