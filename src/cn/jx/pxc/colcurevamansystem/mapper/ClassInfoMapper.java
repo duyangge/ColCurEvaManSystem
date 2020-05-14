@@ -15,6 +15,13 @@ import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
  */
 public interface ClassInfoMapper {
 	
+	
+	/**查询某个学院下所有班级总数
+	 * @param professionId
+	 * @return
+	 */
+	int selectClassNum(Integer professionId);
+	
 	/**模糊查询：全局查询
 	 * @param beanQueryVo
 	 * @return

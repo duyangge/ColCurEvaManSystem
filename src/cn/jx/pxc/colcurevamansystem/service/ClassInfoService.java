@@ -32,7 +32,7 @@ public interface ClassInfoService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<ClassInfo> selectByProfessionList(BeanQueryVo beanQueryVo) throws Exception;
+	List<ClassInfoCustom> selectByProfessionList(BeanQueryVo beanQueryVo) throws Exception;
 	
 	/**模糊查询：全局查询
 	 * @param beanQueryVo

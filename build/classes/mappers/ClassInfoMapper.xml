@@ -26,7 +26,6 @@
 	     and profession_id = #{professionId}
 	   </if>
     </where>
-	   
   </select>
   
   <sql id="Base_Column_List">
@@ -42,12 +41,31 @@
     where class_id = #{classId,jdbcType=INTEGER}
   </select>
   
-  <!--学院ID查询下  -->
-  <select id="selectByProfessionList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+  
+  <!--查询某个学院的所有班级总数  -->
+  <select id="selectClassNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select 
-    <include refid="Base_Column_List" />
+    count(*)
     from class_tb
     where profession_id = #{professionId,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  
+  <!--学院ID查询所有班级  -->
+  <select id="selectByProfessionList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+        <include refid="Base_Column_List" />
+    from 
+        class_tb
+   <where>
+   		profession_id = #{professionId,jdbcType=INTEGER}
+   	  <if test="keyWords != null and keyWords != ''">
+	     and
+	        instr(class_name,#{keyWords}) > 0
+	   </if>
+   </where>
   </select>
   
   

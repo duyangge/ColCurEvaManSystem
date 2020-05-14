@@ -7,17 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>学生管理</title>
-		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>学生管理</title>
+<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
-<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
-
-	<body>
-		<div class="wrap-container clearfix">
+<body>
+	<div class="wrap-container clearfix">
 				<div class="column-content-detail">
 				<!-- form表单，将搜索按钮变为提交按按钮 -->
 					<form class="layui-form" action="../user/studentAdmin.do" method="post">
@@ -36,16 +33,22 @@
 							<div class="layui-inline" style="width:80px;">
 								    <select name="status" lay-filter="status" id="status">
 									<option value="" selected="selected">状态</option>
-									<option value="0">正常</option>
-									<option value="1">异常</option>
+									<option value="0" <c:if test="${status eq '0'}">selected="selected"</c:if> >正常</option>
+									<option value="1" <c:if test="${status eq '1'}">selected="selected"</c:if> >异常</option>
 								</select>
 							</div>
 							<div class="layui-inline" style="width:195px;">
-								<select name="professionId" lay-verify="required" id="profession_id">	
+								<select name="professionId" lay-verify="required" id="profession_id" lay-filter="profession">	
 								    <option value="" data-id="">学院</option>
 									<c:forEach items="${proList }" var="pro" varStatus="status">
 										<option value="${pro.professionId }" data-id="${pro.professionId }" <c:if test="${pro.professionId eq professionId }">selected="selected"</c:if>  >${pro.professionName }</option>
 									</c:forEach>							
+								</select>
+							</div>
+							<div class="layui-inline" style="width:130px;">
+								<!--循环便利所有班级  -->
+								<select name="classId" lay-verify="required" id="class_id" >	
+								      <option value="" data-id="">班级</option>						
 								</select>
 							</div>
 							<div class="layui-inline" style="width:90px;">
@@ -143,8 +146,75 @@
 					
 				</div>
 		</div>
-			</body>
+</body>
+<script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+//跳转页面的同时就加载
+ $(document).ready(function() {
+	 var options=$("#profession_id option:selected");
+     var value=options.data("id");   //得到学院id
+	 $.ajax({
+			async:false,
+			type:"post",
+			url:"../user/changeClass.do",
+			dataType: "json",
+			data:{id:value}, //二级产品类别的父ID
+			success:function(data){
+				$("#class_id").empty();
+				$("#class_id").append("<option value= '' data-id=''>班级</option>");
+				var id = "${classId}";
+				for(var i=0;i<data.length;i++){
+					if(id == data[i].classId ){
+						$("#class_id").append("<option value='"+data[i].classId+"'  selected='selected' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+					}else{
+						$("#class_id").append("<option value='"+data[i].classId+"'  data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+					}
+				}
+				form.render();
+			},
+			error:function(err){
+	        	alert("失败");
+	      	}
+    });//ajax
+}); 
+
+//点击学院，变化班级
+layui.use(['form'], function() {
+	var form = layui.form();
+	//监听下拉列表提交
+	form.on('select(profession)', function(data) {
+		     var options=$("#profession_id option:selected");
+	         var value=options.data("id");   //得到学院id
+	            $.ajax({
+					async:false,
+					type:"post",
+					url:"../user/changeClass.do",
+					dataType: "json",
+					data:{id:value}, //二级产品类别的父ID
+					success:function(data){
+						$("#class_id").empty();
+						$("#class_id").append("<option value= '' data-id=''>班级</option>");
+						var id = "${classId}";
+						for(var i=0;i<data.length;i++){
+							if(id == data[i].classId ){
+								$("#class_id").append("<option value='"+data[i].classId+"'  selected='selected' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+							}else{
+								$("#class_id").append("<option value='"+data[i].classId+"'  data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+							}
+						}
+						form.render();
+					},
+					error:function(err){
+			        	alert("失败");
+			      	}
+	           });
+	});
+	
+});
+
+//分页处理
 	var obj = document.getElementById("pageSize");
 	var index = obj.selectedIndex;
 	var pageSize = obj.options[index].value;

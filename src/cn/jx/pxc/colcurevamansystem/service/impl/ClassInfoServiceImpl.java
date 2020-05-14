@@ -48,9 +48,19 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 	 * @see cn.jx.pxc.colcurevamansystem.service.ClassInfoService#selectByProfessionList(cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo)
 	 */
 	@Override
-	public List<ClassInfo> selectByProfessionList(BeanQueryVo beanQueryVo) throws Exception {
-		// TODO Auto-generated method stub
-		return classInfoMapper.selectByProfessionList(beanQueryVo);
+	public List<ClassInfoCustom> selectByProfessionList(BeanQueryVo beanQueryVo) throws Exception {
+		 List<ClassInfo> claList = classInfoMapper.selectByProfessionList(beanQueryVo);
+		 List<ClassInfoCustom> claCuList = new ArrayList<ClassInfoCustom>();
+			for (ClassInfo classInfo : claList) {
+					ClassInfoCustom claCus = new ClassInfoCustom();
+					BeanUtils.copyProperties(claCus, classInfo);
+					ProfessionInfo pro = professionMapper.selectByPrimaryKey(classInfo.getProfessionId());
+					claCus.setProfessionName(pro.getProfessionName());
+					Integer num = studentInfoMapper.selectNumByClass(claCus.getClassId());
+					claCus.setStudentNum(num);
+					claCuList.add(claCus);
+			}
+			return claCuList;
 	}
 
 	/* (non-Javadoc)

@@ -4,16 +4,31 @@
 package cn.jx.pxc.colcurevamansystem.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.JOptionPane;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +43,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo;
 import cn.jx.pxc.colcurevamansystem.bean.ClassInfo;
+import cn.jx.pxc.colcurevamansystem.bean.ClassInfoCustom;
+import cn.jx.pxc.colcurevamansystem.bean.LessionEvaTemp;
 import cn.jx.pxc.colcurevamansystem.bean.ParentFunInfo;
 import cn.jx.pxc.colcurevamansystem.bean.ProfessionInfo;
 import cn.jx.pxc.colcurevamansystem.bean.RoleInfo;
@@ -80,6 +97,135 @@ public class UserInfoController {
 	@Resource
 	public RoleInfoService roleInfoService;
 	
+	/**导出班级课程详细评价表，所有学生
+     * @param request
+     * @param response
+     * @param beanQueryVo
+	 * @throws Exception 
+     */
+    @RequestMapping(value = "/exportExcelToStudent.do", method={RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public void exportExcelToStudent( HttpServletRequest request, HttpServletResponse response,BeanQueryVo beanQueryVo) throws Exception {
+    	String mether =request.getMethod();
+    	//获取查询数据，在service层实现
+    	List<StudentInfoCustom> list = studentInfoService.selectByClassList(beanQueryVo);
+    	HSSFWorkbook wb = new HSSFWorkbook();//声明工
+    	String tableName = list.get(0).getClassName()+"学生表";
+    	Sheet sheet = wb.createSheet(tableName);//新建表
+    	sheet.setDefaultColumnWidth(15);//设置表宽
+    	HSSFCellStyle style = wb.createCellStyle();
+    	org.apache.poi.hssf.usermodel.HSSFFont font = wb.createFont();
+    	font.setFontHeightInPoints((short) 12);
+    	HSSFCellStyle headerStyle = wb.createCellStyle();
+    	org.apache.poi.hssf.usermodel.HSSFFont headerFont = wb.createFont();
+    	headerFont.setFontHeightInPoints((short) 14);
+    	headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    	headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+    	headerStyle.setFont(headerFont);
+    	CellRangeAddress cra0 = new CellRangeAddress(0, 1,0,9);
+    	sheet.addMergedRegion(cra0);
+    	sheet.setDefaultColumnWidth((short) 15);
+    	Row row = sheet.createRow(0);
+    	Cell cell1 = row.createCell(0);
+    	
+    	cell1.setCellValue(tableName);
+    	cell1.setCellStyle(headerStyle);
+    	//设置字体样式
+    	org.apache.poi.hssf.usermodel.HSSFFont titleFont = wb.createFont();
+    	titleFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    	style.setFont(titleFont);
+    	style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+    	
+    	Row row1 = sheet.createRow(2);
+    	Cell cell = row1.createCell(0);
+    	
+    	cell.setCellValue("学号");
+    	cell.setCellStyle(style);
+    	cell = row1.createCell(1);
+    	
+    	cell.setCellValue("姓名");
+    	cell.setCellStyle(style);
+    	cell = row1.createCell(2);
+    	
+    	cell.setCellValue("电话号码");
+    	cell.setCellStyle(style);
+    	cell = row1.createCell(3);
+    	
+    	cell.setCellValue("邮箱");
+    	cell.setCellStyle(style);
+    	cell = row1.createCell(4);
+    	
+    	cell.setCellValue("班级");
+    	cell.setCellStyle(style);
+    	cell = row1.createCell(5);
+    	
+    	cell.setCellValue("学院");
+    	cell.setCellStyle(style);
+    	cell = row1.createCell(6);
+  	
+    	//时间转字符串的格式
+    	for (int i = 0, imax = list.size(); i < imax; i++) {
+    		row1 = sheet.createRow(i + 3);
+    		//学号
+    		if (list.get(i).getAccount() == null || "".equals(list.get(i).getAccount())) {//班级名称
+    			row1.createCell(0).setCellValue("-");
+    		} else {
+    			row1.createCell(0).setCellValue(list.get(i).getAccount());
+    		}
+    		
+    		//姓名
+    		if (list.get(i).getUsername()== null || "".equals(list.get(i).getUsername())) {//课程名称
+    			row1.createCell(1).setCellValue("-");
+    		} else {
+    			row1.createCell(1).setCellValue(list.get(i).getUsername());
+    		}
+    		
+    		//电话号码
+    		if (list.get(i).getTelphone() == null ||"".equals(list.get(i).getTelphone())) {//授课教师
+    			row1.createCell(2).setCellValue("-");
+    		} else {
+    			row1.createCell(2).setCellValue(list.get(i).getTelphone());
+    		}
+    		//邮箱
+    		if (list.get(i).getMail() == null||"".equals(list.get(i).getMail())) {//平均分
+    			row1.createCell(3).setCellValue("-");
+    		} else {
+    			row1.createCell(3).setCellValue(list.get(i).getMail());
+    		}
+    		//班级
+    		if (list.get(i).getClassName() == null||"".equals(list.get(i).getClassName())) {//平均分
+    			row1.createCell(4).setCellValue("-");
+    		} else {
+    			row1.createCell(4).setCellValue(list.get(i).getClassName());
+    		}
+    		//学院
+    		if (list.get(i).getProfessionName() == null||"".equals(list.get(i).getProfessionName())) {//平均分
+    			row1.createCell(5).setCellValue("-");
+    		} else {
+    			row1.createCell(5).setCellValue(list.get(i).getProfessionName());
+    		}
+    	   	         
+    	}
+    	try {
+    		response.reset();
+    		response.setContentType("application/msexcel;charset=UTF-8");
+    		SimpleDateFormat newsdf=new SimpleDateFormat("yyyyMMdd");
+    		String date = newsdf.format(new Date());
+    		String str = tableName + date + ".xls";
+    		response.addHeader("Content-Disposition", "attachment;filename=\""
+    				+ new String(str.getBytes("UTF-8"), "ISO8859-1") + "\"");
+    		OutputStream out = response.getOutputStream();
+    		wb.write(out);
+    		out.flush();
+    		out.close();
+    	} catch (FileNotFoundException e) {
+    		JOptionPane.showMessageDialog(null, "导出失败!");
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		JOptionPane.showMessageDialog(null, "导出失败!");
+    		e.printStackTrace();
+    	}
+    }	
 
 	/**查看某班级的学生
 	 * @param beanQueryVo
@@ -362,12 +508,9 @@ public class UserInfoController {
 			}else {//模糊查询+条件查询
 				stuList = studentInfoService.findStudentByName(beanQueryVo);
 			}
-			
 			if(stuList.size() > 0) {//防止查询数据为空，报异常
                List<StudentInfoCustom> userInfoCustomList = this.getPageContentByStudent(model, beanQueryVo.getCurrentPage(), beanQueryVo.getPageSize(), stuList);
-				
 				model.addAttribute("pageSize", beanQueryVo.getPageSize());//每页显示数
-				
 				model.addAttribute("stuList", userInfoCustomList);//得到分页内容
 			}
 			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
@@ -375,6 +518,8 @@ public class UserInfoController {
 			List<ProfessionInfo>  proList = professionInfoService.selectByName(beanQueryVo);
 			model.addAttribute("proList", proList);
 			model.addAttribute("professionId", beanQueryVo.getProfessionId());
+			model.addAttribute("classId", beanQueryVo.getClassId());
+			model.addAttribute("status", beanQueryVo.getStatus());
 			//需要重新获取用户信息
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -528,7 +673,7 @@ public class UserInfoController {
 		 beanQueryVo.setProfessionId(id);
 		 JSONArray array=new JSONArray();
 		  try {
-			 List<ClassInfo>  claList = classInfoService.selectByProfessionList(beanQueryVo);
+			 List<ClassInfoCustom>  claList = classInfoService.selectByProfessionList(beanQueryVo);
 			for (ClassInfo cla : claList) {
 				JSONObject obj=new JSONObject();
 				obj.put("classId",cla.getClassId() );

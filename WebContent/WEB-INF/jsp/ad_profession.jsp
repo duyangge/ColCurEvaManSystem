@@ -7,11 +7,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>学院管理</title>
-		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>学院管理</title>
+<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
 	<body>
 		<div class="wrap-container clearfix">
@@ -34,6 +34,9 @@
 						                   <option value="${status.current}" <c:if test="${status.current eq pageSize }"> selected="selected"</c:if> >${status.current}条/页</option>
 						            </c:forEach>
 						          </select>
+							</div>
+							<div class="layui-inline" style="width:90px;">
+						        <button class="layui-btn layui-btn-mini layui-btn-normal" onclick="ToExcel();">导出excel</button>
 							</div>
 						</div>
 					</form>
@@ -69,7 +72,7 @@
 								<tr>
 									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>
 									<td class="hidden-xs">${pro.professionId }</td>
-									<td class="hidden-xs">${pro.professionName }</td>
+									<td class="hidden-xs"><a href="javaScript:;" class="layui-btn layui-btn-mini layui-btn-normal cla_edit-btn" data-id="${pro.professionId }"  data-text="学院班级管理" data-url="../class/getClassByProfession.do">${pro.professionName }</a></td>
 									<td><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${pro.professionInfo }</textarea></td>
 									<td>${pro.createdUser }</td>
 									<th>${pro.modifiedUser }</th>
@@ -109,6 +112,7 @@
 </body>
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 //Demo
 layui.use(['form'], function() {
@@ -135,7 +139,6 @@ layui.use(['form'], function() {
 		var name = document.getElementById("seacher").value;
 		window.location.href="../profession/professionAdmin.do?currentPage="+${currentPage + 1 }+"&keyWords="+name+"&pageSize="+pageSize;
 	}
-
 	function lastPage(){
 		var name = document.getElementById("seacher").value;
 		window.location.href="../profession/professionAdmin.do?currentPage="+${currentPage - 1 }+"&keyWords="+name+"&pageSize="+pageSize;
@@ -152,5 +155,11 @@ layui.use(['form'], function() {
 		var currentPage = document.getElementById("currentPage").value;
 		window.location.href="../profession/professionAdmin.do?&keyWords="+name+"&pageSize="+pageSize+"&currentPage="+currentPage;
 	}
-</script>		
+	//点击导出excel
+	  function ToExcel(){
+	       var  exportLink ="../profession/exportReportStaticsData.do?keyWords="+$("#seacher").val();//拼接controller访问地址
+	       window.open(exportLink ,'_self');//进行访问	 'scrollbars=no,resizable=no,width=641,height=480,top=50,left=50' 
+	       alert("下载成功！");
+	   }
+</script>	
 </html>

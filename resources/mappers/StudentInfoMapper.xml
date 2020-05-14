@@ -62,8 +62,7 @@
 	</select>
 
 	<!--模糊查询 -->
-	<select id="selectByNameList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo"
-		resultMap="BaseResultMap">
+	<select id="selectByNameList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
 		select distinct
 		<include refid="Base_Column_List" />
 		from student_tb
@@ -78,6 +77,9 @@
 			</if>
 			<if test="professionId != null and professionId != ''">
 				and profession_id=#{professionId}
+			</if>
+			<if test="classId != null and classId != ''">
+				and class_id=#{classId}
 			</if>
 		</where>
 	</select>
