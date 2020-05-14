@@ -86,7 +86,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">密码：</label>
 						<div class="layui-input-block">
-							<input type="password" id="passwd" name="password"  value="${stu.password }" required lay-verify="required" placeholder="00000000" autocomplete="off" class="layui-input">
+							<input type="password" id="passwd" name="password"  value="${stu.password }" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
 						</div>
 						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
 
@@ -94,7 +94,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">确认密码：</label>
 						<div class="layui-input-block">
-							<input type="password" id="repasswd" name="repassword" value="${stu.password }" required lay-verify="required" placeholder="00000000" autocomplete="off" class="layui-input">
+							<input type="password" id="repasswd" name="repassword" value="${stu.password }" required lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
 						</div>
 
 					</div>
