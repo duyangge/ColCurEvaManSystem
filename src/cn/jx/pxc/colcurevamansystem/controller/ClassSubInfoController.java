@@ -410,7 +410,10 @@ public class ClassSubInfoController {
 		
 		model.addAttribute("classId", beanQueryVo.getClassId());
 		model.addAttribute("claList", list);
-		model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+		//数据回显
+		model.addAttribute("keyWords", beanQueryVo.getKeyWords());
+		model.addAttribute("startTime", beanQueryVo.getStartTime());
+		model.addAttribute("endTime", beanQueryVo.getEndTime());
 		return "te_lession_eva";
 	}
 	
@@ -565,6 +568,8 @@ public class ClassSubInfoController {
 			}
 			}
 			model.addAttribute("keyWords", beanQueryVo.getKeyWords());//数据回显
+			model.addAttribute("startTime", beanQueryVo.getStartTime());
+			model.addAttribute("endTime", beanQueryVo.getEndTime());
 		return "st_lession_eva";
 	}
 	

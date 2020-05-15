@@ -278,9 +278,17 @@ WHERE
   <!--按学生id共同查询课程评价id  -->
   <select id="selectByStudentList" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List"/>
-    from class_sub_tb
-    where sub_student_id = #{studentId} 
+           <include refid="Base_Column_List"/>
+    from 
+           class_sub_tb
+         <where>
+         		 sub_student_id = #{studentId} 
+            <if test="startTime != null and startTime != '' or endTime != null and endTime != ''  ">
+		      and
+                 class_sub_tb.created_time between #{startTime} and #{endTime}
+            </if>
+         </where> 
+        
   </select>
   
   
@@ -306,6 +314,11 @@ WHERE
 			 and 
 			     sub_class_id=#{classId}
 		 </if>
+	     <if test="startTime != null and startTime != '' or endTime != null and endTime != ''  ">
+	      and
+                class_sub_tb.created_time between #{startTime} and #{endTime}
+         </if>
+		 
     </where>
   </select>
   
