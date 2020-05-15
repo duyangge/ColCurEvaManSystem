@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.SubFunInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.SubFunInfo">
+    <id column="fun_id" jdbcType="INTEGER" property="funId" />
+    <result column="fun_parent_id" jdbcType="INTEGER" property="funParentId" />
+    <result column="fun_name" jdbcType="VARCHAR" property="funName" />
+    <result column="fun_url" jdbcType="VARCHAR" property="funUrl" />
+    <result column="fun_status" jdbcType="CHAR" property="funStatus" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <!--一对一  -->
+    <association property="parentFunInfo" javaType="cn.jx.pxc.colcurevamansystem.bean.ParentFunInfo">
+    	 <id column="fun_parent_id" jdbcType="INTEGER" property="funParentId" />
+	    <result column="fun_parent_name" jdbcType="VARCHAR" property="funParentName" />
+	    <result column="fun_parent_url" jdbcType="VARCHAR" property="funParentUrl" />
+	    <result column="fun_parent_status" jdbcType="CHAR" property="funParentStatus" />
+	    <result column="fun_parent_img" jdbcType="VARCHAR" property="funParentImg" />
+	    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+	    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+	    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+	    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    </association>
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List">
+    fun_id, fun_parent_id, fun_name, fun_url, fun_status, created_user, created_time, 
+    modified_user, modified_time
+  </sql>
+  
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sub_fun_tb
+    where fun_id = #{funId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectSubFunByParentFunId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sub_fun_tb
+    where fun_parent_id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectSubFunByName" parameterType="cn.jx.pxc.colcurevamansystem.bean.BeanQueryVo" resultMap="BaseResultMap">
+    select 
+	    fun_id, 
+	     s.fun_parent_id, 
+	    fun_name, 
+	    fun_url, 
+	    fun_status,
+	    s.created_user, 
+	     s.created_time, 
+	     s.modified_user,
+	     s.modified_time,
+	     p.fun_parent_id, 
+	     fun_parent_name,
+	      fun_parent_url, 
+	      fun_parent_status,
+	      fun_parent_img, 
+	    p.created_user, 
+	   p.created_time, 
+	    p.modified_user, 
+	    p.modified_time
+      from
+       sub_fun_tb s,parent_fun_tb p
+    <where>
+    		p.fun_parent_id = s.fun_parent_id
+    	<if test="status != null and status != ''">
+    	 and  fun_status=#{status}
+    	</if>
+    	<if test="keyWords != null and keyWords != ''">
+    	and instr(fun_name,#{keyWords}) > 0
+      </if>
+    </where> 
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sub_fun_tb
+    where fun_id = #{funId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.SubFunInfo">
+    insert into sub_fun_tb (fun_id, fun_parent_id, fun_name, 
+      fun_url, fun_status, created_user, 
+      created_time, modified_user, modified_time
+      )
+    values (#{funId,jdbcType=INTEGER}, #{funParentId,jdbcType=INTEGER}, #{funName,jdbcType=VARCHAR}, 
+      #{funUrl,jdbcType=VARCHAR}, #{funStatus,jdbcType=CHAR}, #{createdUser,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.SubFunInfo">
+    insert into sub_fun_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="funId != null">
+        fun_id,
+      </if>
+      <if test="funParentId != null">
+        fun_parent_id,
+      </if>
+      <if test="funName != null">
+        fun_name,
+      </if>
+      <if test="funUrl != null">
+        fun_url,
+      </if>
+      <if test="funStatus != null">
+        fun_status,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="funId != null">
+        #{funId,jdbcType=INTEGER},
+      </if>
+      <if test="funParentId != null">
+        #{funParentId,jdbcType=INTEGER},
+      </if>
+      <if test="funName != null">
+        #{funName,jdbcType=VARCHAR},
+      </if>
+      <if test="funUrl != null">
+        #{funUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="funStatus != null">
+        #{funStatus,jdbcType=CHAR},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.SubFunInfo">
+    update sub_fun_tb
+    <set>
+      <if test="funParentId != null">
+        fun_parent_id = #{funParentId,jdbcType=INTEGER},
+      </if>
+      <if test="funName != null">
+        fun_name = #{funName,jdbcType=VARCHAR},
+      </if>
+      <if test="funUrl != null">
+        fun_url = #{funUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="funStatus != null">
+        fun_status = #{funStatus,jdbcType=CHAR},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where fun_id = #{funId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.SubFunInfo">
+    update sub_fun_tb
+    set fun_parent_id = #{funParentId,jdbcType=INTEGER},
+      fun_name = #{funName,jdbcType=VARCHAR},
+      fun_url = #{funUrl,jdbcType=VARCHAR},
+      fun_status = #{funStatus,jdbcType=CHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where fun_id = #{funId,jdbcType=INTEGER}
+  </update>
+</mapper>

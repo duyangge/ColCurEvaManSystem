@@ -1,0 +1,92 @@
+@charset "utf-8";
+
+/* 漂浮层 */
+.fly_div_all {
+    background: #efefef;
+    width: 56px;
+    height: 150px;
+    position: fixed;
+    right: 50px;
+    bottom: 240px;
+    border: 1px solid #DCDCDC;
+}
+.fly_all_div {
+    position: relative;
+}
+.fly_all_div .back_top_div {
+    background: #efefef;
+    padding: 10px 5px 0;
+    display: block;
+    height: 50px;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid #dcdcdc;
+}
+.fly_all_div .cantact_us {
+    width: 56px;
+    height: 100px;
+    text-align: center;
+    line-height: 150px;
+}
+
+.foot_div_all {
+    background: #efefef;
+    margin-top: 20px;
+}
+.foot_div_other {
+    border-top: 1px solid #d5d5d5;
+    height: 162px;
+}
+.foot_div_other .center_foot {
+    width: 910px;
+    margin: 0 auto;
+    color: #717171;
+    position: relative;
+    font-size: 14px;
+}
+.foot_div_other .center_foot .footer_left_div {
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    width: 530px;
+    padding: 0 48px 12px 0;
+    border-right: 1px solid #ccc;
+}
+.footer_left_div .contact_left {
+    float: left;
+    padding-top: 20px;
+}
+.footer_left_div .contact_right {
+    float: right;
+    padding-top: 20px;
+}
+.foot_div_other .center_foot .footer_right_div {
+    position: absolute;
+    top: 20px;
+    left: 628px;
+}
+
+
+.footer_bottom {
+    height: 50px;
+    width: 100%;
+    background: #002c4b;
+}
+.footer_bottom_div {
+    width: 980px;
+    margin: 0 auto;
+}
+.footer_copyright {
+    float: right;
+    color: white;
+    line-height: 50px;
+    font-size: 12px;
+}
+.footer_copyright a {
+    color: white;
+}
+.footer_china_net {
+    padding-top: 12px;
+    display: inline-block;
+}

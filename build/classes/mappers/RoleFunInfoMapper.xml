@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.pxc.colcurevamansystem.mapper.RoleFunInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.jx.pxc.colcurevamansystem.bean.RoleFunInfo">
+    <id column="role_fun_id" jdbcType="INTEGER" property="roleFunId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="fun_id" jdbcType="INTEGER" property="funId" />
+    <result column="role_fun_status" jdbcType="VARCHAR" property="roleFunStatus" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_user" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    role_fun_id, role_id, fun_id, role_fun_status, created_user, created_time, modified_user, 
+    modified_time
+  </sql>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from role_fun_tb
+    where role_fun_id = #{roleFunId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByFunId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from role_fun_tb
+    where fun_id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from role_fun_tb
+    where role_fun_id = #{roleFunId,jdbcType=INTEGER}
+  </delete>
+  
+  <!-- 通过角色id删除 -->
+  <delete id="deleteByFunId" parameterType="java.lang.Integer">
+    delete from role_fun_tb
+    where fun_id = #{funId,jdbcType=INTEGER}
+  </delete>
+  
+  
+   <insert id="insert" parameterType="cn.jx.pxc.colcurevamansystem.bean.RoleFunInfo">
+    insert into role_fun_tb (role_fun_id, role_id, fun_id, 
+       role_fun_status, created_user, 
+      created_time, modified_user, modified_time
+      )
+    values (#{roleFunId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{funId,jdbcType=INTEGER}, 
+      #{roleFunStatus,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+   <insert id="insertSelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.RoleFunInfo">
+    insert into role_fun_tb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleFunId != null">
+        role_fun_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="funId != null">
+        fun_id,
+      </if>
+
+      <if test="roleFunStatus != null">
+        role_fun_status,
+      </if>
+      <if test="createdUser != null">
+        created_user,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedUser != null">
+        modified_user,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleFunId != null">
+        #{roleFunId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="funId != null">
+        #{funId,jdbcType=INTEGER},
+      </if>
+
+      <if test="roleFunStatus != null">
+        #{roleFunStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.pxc.colcurevamansystem.bean.RoleFunInfo">
+    update role_fun_tb
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="funId != null">
+        fun_id = #{funId,jdbcType=INTEGER},
+      </if>
+
+      <if test="roleFunStatus != null">
+        role_fun_status = #{roleFunStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createdUser != null">
+        created_user = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where role_fun_id = #{roleFunId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.pxc.colcurevamansystem.bean.RoleFunInfo">
+    update role_fun_tb
+    set role_id = #{roleId,jdbcType=INTEGER},
+      fun_id = #{funId,jdbcType=INTEGER},
+      role_fun_status = #{roleFunStatus,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_user = #{modifiedUser,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where role_fun_id = #{roleFunId,jdbcType=INTEGER}
+  </update>
+</mapper>
