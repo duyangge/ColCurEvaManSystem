@@ -587,6 +587,7 @@ public class ClassSubInfoController {
 		StudentInfo stu = (StudentInfo) session.getAttribute("student");
 		beanQueryVo.setClassId(stu.getClassId());
 		beanQueryVo.setStudentId(stu.getStudentId());
+		beanQueryVo.setLessionId(beanQueryVo.getId());
 			try {
 				LessionInfoTemp lesTemp = lessionInfoService.selectByIdLessionTemp(beanQueryVo);
 				model.addAttribute("lesTemp", lesTemp);

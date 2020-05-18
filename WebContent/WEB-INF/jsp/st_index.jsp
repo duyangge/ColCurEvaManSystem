@@ -54,7 +54,7 @@
 					  <li class="layui-nav-item"><span id="getTime"></span></li>
 					  <li class="layui-nav-item"><a href="javascript:;" data-url="../user/goLookEpidemicPage.do" data-id='4' data-text="疫情消息"><i class="iconfont">&#xe603;</i></a></li>
 					  <li class="layui-nav-item">
-					    <a href="javascript:;" data-url="../user/goUpdateStudentInfo.do" data-id='5' data-text="个人信息">${stu.username }</a>
+					    <a href="javascript:;"  data-url="../user/goUpdateStudentInfo.do" data-id='5' data-text="个人信息">${stu.username }</a>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:if(confirm('您是否要退出系统?')){location='../user/loginOut.do'};">退出</a></li>
 					</ul>

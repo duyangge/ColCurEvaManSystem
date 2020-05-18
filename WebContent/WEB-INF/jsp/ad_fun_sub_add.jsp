@@ -129,6 +129,8 @@ layui.use(['form'], function() {
 	//监听提交
 	form.on('submit(formDemo)', function(data) {
 		layer.msg(JSON.stringify(data.field));
+		var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
 		return true;
 	});
 });

@@ -116,6 +116,8 @@
 					var repasswd = document.getElementById('repasswd').value;
 			       var tel=document.getElementById('tel').value;
 			       var mail=document.getElementById('mail').value;
+			       var index = parent.layer.getFrameIndex(window.name);
+                   parent.layer.close(index);
 			       if( isPoneAvailable(tel) &&  isEmailAvailable(mail)&&checkpasswd(passwd,repasswd)){
 			    	   return true;
 			       }else {

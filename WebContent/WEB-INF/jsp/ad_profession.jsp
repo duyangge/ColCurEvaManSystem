@@ -72,7 +72,7 @@
 								<tr>
 									<td><input type="checkbox" name="" lay-skin="primary" data-id="1"></td>
 									<td class="hidden-xs">${pro.professionId }</td>
-									<td class="hidden-xs"><a href="javaScript:;" class="layui-btn layui-btn-mini layui-btn-normal cla_edit-btn" data-id="${pro.professionId }"  data-text="学院班级管理" data-url="../class/getClassByProfession.do">${pro.professionName }</a></td>
+									<td class="hidden-xs"><a href="javaScript:;" class="layui-btn layui-btn-mini layui-btn-normal pro_cla_edit-btn" data-id="${pro.professionId }"  data-text="学院班级管理" data-url="../class/getClassByProfession.do">${pro.professionName }</a></td>
 									<td><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${pro.professionInfo }</textarea></td>
 									<td>${pro.createdUser }</td>
 									<th>${pro.modifiedUser }</th>

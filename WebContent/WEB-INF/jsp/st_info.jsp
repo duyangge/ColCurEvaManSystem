@@ -7,13 +7,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>学生个人中心</title>
-		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>学生个人中心</title>
+<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
-
 <body>
 <div class="layui-tab page-content-wrap">
 		  <ul class="layui-tab-title">
@@ -95,7 +94,7 @@
 		    </div>
 		    
 		    <div class="layui-tab-item">
-		    	<form class="layui-form" v style="width: 90%;padding-top: 20px;" action="../user/updateStudentPassWord.do" method="post">
+		    	<form class="layui-form" v  style="width: 90%;padding-top: 20px;" action="../user/updateStudentPassWord.do" method="post">
 		    	 <input type="hidden" name="studentId" value="${stu.studentId  }">
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">用户名：</label>
@@ -131,9 +130,11 @@
 				  </div>
 				</form>
 		    </div>
+		    
 		  </div>
+		  
 		</div>
-	
+
 	</body>
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>

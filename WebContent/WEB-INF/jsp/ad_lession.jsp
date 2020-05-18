@@ -13,9 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
 		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
-<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
-	<body>
+<body>
 		<div class="wrap-container clearfix">
 				<div class="column-content-detail">
 				<!-- form表单，将搜索按钮变为提交按按钮 -->
@@ -30,14 +28,17 @@
 							</div>
 							
 							<div class="layui-inline">
-							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
+								<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
 							</div>
-								<div class="layui-inline" style="width:90px;">
+							<div class="layui-inline" style="width:90px;">
 						          <select name="pageSize"  id="pageSize" lay-filter="status">
 						            <c:forEach begin="5" end="20" varStatus="status" step="5">
 						                   <option value="${status.current}" <c:if test="${status.current eq pageSize }"> selected="selected"</c:if> >${status.current}条/页</option>
 						            </c:forEach>
 						          </select>
+							</div>
+							<div class="layui-inline">
+								 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">发布评价</button> 
 							</div>
 						</div>
 					</form>
@@ -109,8 +110,30 @@
 					 </c:if>
 				</div>
 		</div>
-			</body>
-  							<script type="text/javascript">
+</body>
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+/*  var markor = "${updateMarkor}";
+if(markor != null && markor != ''){
+    var iframeObj = window.frameElemen;
+    alert("iframeObj:"+iframeObj);
+    if(iframeObj){
+   	 iframeObj.src="../lession/lessionAdmin.do";
+    }
+} */
+ 
+//提交表单
+layui.use(['form'], function() {
+	var form = layui.form();
+	//监听提交
+	form.on('submit(formDemo)', function(data) {
+		JSON.stringify(data.field);
+        return true;
+	});
+});
+
+//提交成功后，添加和编辑，关闭弹出，刷新本iframe
 	var obj = document.getElementById("pageSize");
 	var index = obj.selectedIndex;
 	var pageSize = obj.options[index].value;

@@ -10,9 +10,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		$ = layui.jquery,
 		dialog = layui.dialog;
 	//获取当前iframe的name值
-	var iframeObj = $(window.frameElement).attr('name');
-	
-	//var check
+	var iframeObj = $(window.frameElement).attr('name');	
 	
 	//全选
 	form.on('checkbox(allChoose)', function(data) {
@@ -38,71 +36,59 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	//渲染表单
 	form.render();	
 	
-	//列表跳转
-	
-	//添加学生\、教师、学院、班级、课程，(可公用)
-/*	 $('#table-list,.tool-btn').on('click', '.add-btn', function() {
-		var url=$(this).attr('data-url');
-		window.location.href=url;
-		return false;
-	})*/
-	
+	//弹窗显示
 	//添加学生
 	$('#table-list,.tool-btn').on('click', '.stu_go-btn', function() {
 		var url=$(this).attr('data-url');
-		window.location.href=url;
+		parent.page("新增学生", url, iframeObj, w = "700px", h = "620px");
 		return false;
+	})
+	
+	//管理员编辑学生
+	 $('#table-list,.tool-btn').on('click', '.stu_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		parent.page("学生信息编辑", url+"?studentId="+id, iframeObj, w = "700px", h = "620px");
+		//window.location.href=url+"?studentId="+id;
+		return true;
 	})
 
 	//添加教师
 	$('#table-list,.tool-btn').on('click', '.tea_go-btn', function() {
 		var url=$(this).attr('data-url');
-		window.location.href=url;
+		parent.page("新增教师", url, iframeObj, w = "700px", h = "600px");
 		return false;
 	})
+	
+	//管理员编辑教师
+	$('#table-list,.tool-btn').on('click', '.tea_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		parent.page("编辑教师信息", url+"?id="+id, iframeObj, w = "700px", h = "600px");
+		//window.location.href=url+"?id="+id;
+		return false;
+	})	
 	
 	//添加学院
 	$('#table-list,.tool-btn').on('click', '.pro_go-btn', function() {
 		var url=$(this).attr('data-url');
-		window.location.href=url;
+		parent.page("新增二级学院", url, iframeObj, w = "700px", h = "300px");
+		return false;
+	})
+	
+	//管理员编辑学院
+	$('#table-list,.tool-btn').on('click', '.pro_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		parent.page("编辑二级学院信息", url+"?id="+id, iframeObj, w = "700px", h = "300px");
+		//window.location.href=url+"?id="+id;
 		return false;
 	})
 	
 	//添加班级
 	$('#table-list,.tool-btn').on('click', '.cla_go-btn', function() {
 		var url=$(this).attr('data-url');
-		window.location.href=url;
-		return false;
-	})
-	
-	//添加课程
-	$('#table-list,.tool-btn').on('click', '.les_go-btn', function() {
-		var url=$(this).attr('data-url');
-		window.location.href=url;
-		return false;
-	})
-
-	//管理员编辑学生
-	 $('#table-list,.tool-btn').on('click', '.stu_edit-btn', function() {
-		var url=$(this).attr('data-url');
-		var id = $(this).attr('data-id');
-		window.location.href=url+"?studentId="+id;
-		return false;
-	})	
-	
-	//管理员编辑教师
-	$('#table-list,.tool-btn').on('click', '.tea_edit-btn', function() {
-		var url=$(this).attr('data-url');
-		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
-		return false;
-	})	
-	
-	//管理员编辑学院
-	$('#table-list,.tool-btn').on('click', '.pro_edit-btn', function() {
-		var url=$(this).attr('data-url');
-		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
+		parent.page("新增班级", url, iframeObj, w = "700px", h = "420px");
 		return false;
 	})
 	
@@ -110,23 +96,59 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	$('#table-list,.tool-btn').on('click', '.cla_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
+		parent.page("编辑班级信息", url+"?id="+id, iframeObj, w = "700px", h = "420px");
+		//window.location.href=url+"?id="+id;
 		return false;
 	})	
 	
-	//教师具体查看课程评价
-	$('#table-list,.tool-btn').on('click', '.tea_see_eva_edit-btn', function() {
+	//管理员点击学院出现所有班级
+	$('#table-list,.tool-btn').on('click', '.pro_cla_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
 		window.location.href=url+"?id="+id;
 		return false;
 	})	
+	
+	//管理员点击学院出现所有班级
+	$('#table-list,.tool-btn').on('click', '.cla_stu_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		window.location.href=url+"?id="+id;
+		return false;
+	})	
+	
+	//添加课程
+	$('#table-list,.tool-btn').on('click', '.les_go-btn', function() {
+		var url=$(this).attr('data-url');
+		parent.page("新增课程", url, iframeObj, w = "700px", h = "420px");
+		return false;
+	})
+	
+	//管理员编辑课程
+	$('#table-list,.tool-btn').on('click', '.les_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		//window.location.href=url+"?id="+id;
+		parent.page("编辑课程信息", url+"?id="+id, iframeObj, w = "700px", h = "420px");
+		return false;
+	})	
+		
+	//教师具体查看课程评价
+	$('#table-list,.tool-btn').on('click', '.tea_see_eva_edit-btn', function() {
+		var url=$(this).attr('data-url');
+		var id = $(this).attr('data-id');
+		parent.page("查看课程评价", url+"?id="+id, iframeObj, w = "700px", h = "600px");
+		//window.location.href=url+"?id="+id;
+		return false;
+	})	
+	
 	
 	//学生具体查看课程评价
 	$('#table-list,.tool-btn').on('click', '.stu_see_eva_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
+		parent.page("查看课程评价", url+"?id="+id, iframeObj, w = "700px", h = "600px");
+		//window.location.href=url+"?id="+id;
 		return false;
 	})	
 	
@@ -134,33 +156,17 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	$('#table-list,.tool-btn').on('click', '.role_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
+		parent.page("编辑角色信息", url+"?id="+id, iframeObj, w = "700px", h = "420px");
+		//window.location.href=url+"?id="+id;
 		return false;
 	})	
+	
 	//管理员编辑角色权限
 	$('#table-list,.tool-btn').on('click', '.role_fun_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
-		return false;
-	})	
-	
-	
-	
-/*	//编辑信息(学院,教师,班级,学生具体查看课程评价,教师具体查看课程评价)，（可通用）
-	$('#table-list,.tool-btn').on('click', 'edit-btn', function() {
-		var url=$(this).attr('data-url');
-		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
-		return true;
-	})	
-	*/
-	
-	//管理员编辑课程
-	$('#table-list,.tool-btn').on('click', '.les_edit-btn', function() {
-		var url=$(this).attr('data-url');
-		var id = $(this).attr('data-id');
-		window.location.href=url+"?id="+id;
+		parent.page("编辑角色权限", url+"?id="+id, iframeObj, w = "700px", h = "420px");
+		//window.location.href=url+"?id="+id;
 		return false;
 	})	
 	
@@ -168,10 +174,13 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		$('#table-list,.tool-btn').on('click', '.edit-fun-btn', function() {
 			var tableName=$(this).attr('data-table');
 			var id = $(this).attr('data-id');
+			var url = $(this).attr('data-url');
 			if(tableName == "parentFun"){
-				window.location.href="../fun/goEditParentFunPage.do?id="+id;
+				parent.page("编辑菜单权限", url+"?id="+id, iframeObj, w = "700px", h = "420px");
+				//window.location.href="../fun/goEditParentFunPage.do?id="+id;
 			}else{
-				window.location.href="../fun/goEditSubFunPage.do?id="+id;
+				parent.page("编辑菜单权限", url+"?id="+id, iframeObj, w = "700px", h = "420px");
+				//window.location.href="../fun/goEditSubFunPage.do?id="+id;
 			}
 			return false;
 		})	
@@ -181,7 +190,8 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	$('#table-list,.tool-btn').on('click', '.eva_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
-		window.location.href=url+"?lessionId="+id;
+		parent.page("新增课程评价", url+"?id="+id, iframeObj, w = "700px", h = "600px");
+		//window.location.href=url+"?lessionId="+id;
 		return true;
 	})	
 	
@@ -189,7 +199,8 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	$('#table-list,.tool-btn').on('click', '.see_eva_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
-		window.location.href=url+"?lessionId="+id;
+		parent.page("查看课程评价", url+"?lessionId="+id, iframeObj, w = "700px", h = "600px");
+		//window.location.href=url+"?lessionId="+id;
 		return true;
 	})	
 	
@@ -199,7 +210,8 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	$('#table-list,.tool-btn').on('click', '.see_les_edit-btn', function() {
 		var url=$(this).attr('data-url');
 		var id = $(this).attr('data-id');
-		window.location.href=url+"?lessionId="+id;
+		parent.page("查看课程信息", url+"?lessionId="+id, iframeObj, w = "700px", h = "420px");
+		//window.location.href=url+"?lessionId="+id;
 		return true;
 	})	
 	
@@ -275,23 +287,23 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	
 	
 	
+		//顶部添加
+		/*	$('.addBtn').click(function() {
+				var url=$(this).attr('data-url');
+				alert("1");
+				//将iframeObj传递给父级窗口,执行操作完成刷新
+				parent.page("添加学生", url, iframeObj, w = "700px", h = "620px");
+				//window.location.href=url;
+				return true;
+
+			}).mouseenter(function() {
+				dialog.tips('添加', '.addBtn');
+
+			})*/
 	
 	
+
 	
-	//顶部添加
-/*	$('.addBtn').click(function() {
-		var url=$(this).attr('data-url');
-		//将iframeObj传递给父级窗口,执行操作完成刷新
-		parent.page("添加学生", url, iframeObj, w = "700px", h = "620px");
-		//window.location.href=url;
-		return true;
-
-	}).mouseenter(function() {
-
-		dialog.tips('添加', '.addBtn');
-
-	})
-	*/
 	//顶部排序
 /*	$('.listOrderBtn').click(function() {
 		var url=$(this).attr('data-url');
@@ -318,7 +330,7 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 		//将iframeObj传递给父级窗口
 		parent.page("菜单添加", url, iframeObj, w = "700px", h = "620px");
 		//window.location.href=url;
-		return false;
+		return true;
 	})*/
 	
 	
@@ -361,18 +373,6 @@ layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog',   'element
 	})*/
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 });
 
 
@@ -391,7 +391,7 @@ function page(title, url, obj, w, h) {
 		title = false;
 	};
 	if(url == null || url == '') {
-		url = "404.html";
+		url = "error.jsp";
 	};
 	if(w == null || w == '') {
 		w = '700px';
@@ -407,7 +407,10 @@ function page(title, url, obj, w, h) {
 			title: title,
 			area: [320, h],
 			fixed: false, //不固定
-			content: url
+			content: url,
+			end: function () {
+				window.frames[iframeObjName].location.reload();
+			}
 		});
 		layer.full(index);
 	} else {
@@ -416,7 +419,10 @@ function page(title, url, obj, w, h) {
 			title: title,
 			area: [w, h],
 			fixed: false, //不固定
-			content: url
+			content: url,
+			end: function () {
+				window.frames[iframeObjName].location.reload();
+			}
 		});
 	}
 }
@@ -431,6 +437,5 @@ function refresh() {
 	} else {
 		window.location.reload();
 	}
-
 	layer.closeAll();
 }

@@ -29,7 +29,7 @@
 							</div>
 							
 							<div class="layui-inline">
-							<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
+								<input type="submit" class="layui-btn layui-btn-normal" value="搜索">
 							</div>
 							<div class="layui-inline" style="width:190px;">
 								<select name="professionId" lay-verify="required" id="profession_id">	
@@ -82,7 +82,7 @@
 									<tr>
 									<td><input type="checkbox" name="classId" lay-skin="primary" data-id="1" value="${cla.classId }"></td>
 									<td class="hidden-xs">${cla.classId }</td>
-									<td ><a href="javaScript:;" class="layui-btn layui-btn-mini layui-btn-normal cla_edit-btn" data-id="${cla.classId }"  data-text="班级学生管理" data-url="../user/getStudentsByClass.do">${cla.className }</a></td>
+									<td ><a href="javaScript:;" class="layui-btn layui-btn-mini layui-btn-normal cla_stu_edit-btn" data-id="${cla.classId }"  data-text="班级学生管理" data-url="../user/getStudentsByClass.do">${cla.className }</a></td>
 									<td ><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${cla.professionName }</textarea></td>
 									<td >${cla.studentNum }</td>
 									<td ><textarea readonly="readonly" style="background:transparent;border:none; resize:none;">${cla.classInfo }</textarea></td>

@@ -13,20 +13,6 @@
 	<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
 	<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
-<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-<script>
-//提交表单
-layui.use(['form'], function() {
-	var form = layui.form();
-	form.render();
-	//监听提交
-	form.on('submit(formDemo)', function(data) {
-		layer.msg(JSON.stringify(data.field));
-		alert("json:"+JSON.stringify(data.field));
-		return true;
-	});
-});
-</script>
 	<body>
 		<div class="wrap-container">
 			<form class="layui-form" style="width: 90%;padding-top: 20px;" action="../class/addClass.do" method="post">
@@ -68,4 +54,19 @@ layui.use(['form'], function() {
 		</div>
 
 	</body>
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script>
+//提交表单
+layui.use(['form'], function() {
+	var form = layui.form();
+	form.render();
+	//监听提交
+	form.on('submit(formDemo)', function(data) {
+		layer.msg(JSON.stringify(data.field));
+		var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+		return true;
+	});
+});
+</script>
 </html>

@@ -7,11 +7,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>个人中心</title>
-		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../css/admin.css" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>个人中心</title>
+<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+<link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
 <body>
 <div class="layui-tab page-content-wrap">
@@ -22,12 +22,11 @@
 		  <div class="layui-tab-content">
 		    <div class="layui-tab-item layui-show">
 		    	<form enctype="multipart/form-data" class="layui-form"  style="width: 90%;padding-top: 20px;" action="../user/updateAdminInfo.do" method="post">
-		    	
+		    	  <input type="hidden" name="id" value="${tea.teacherId }">
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">ID：</label>
 				    <div class="layui-input-block">
 				      <input type="text" name="teacherId" disabled autocomplete="off" class="layui-input layui-disabled" value="${tea.teacherId }">
-				      <input type="hidden" name="id" value="${tea.teacherId }">
 				    </div>
 				  </div>
 				  
@@ -87,10 +86,10 @@
 				      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminInfo">立即提交</button>
 				    </div>
 				  </div>
-				  
 				</form>
 		    </div>
 		    
+		    <!--密码修改  -->
 		    <div class="layui-tab-item">
 		    	<form class="layui-form" v style="width: 90%;padding-top: 20px;" action="../user/updateAdminPassWord.do" method="post">
 		    	<input type="hidden" name="teacherId" value="${tea.teacherId }">
@@ -148,7 +147,7 @@ layui.use(['form','element'], function(){
   var element = layui.element();
   form.render();
   //监听信息提交
-  form.on('submit(adminInfo)', function(data){
+    form.on('submit(adminInfo)', function(data){
     JSON.stringify(data.field);
     var tel=document.getElementById('tel').value;
     var mail=document.getElementById('mail').value;
@@ -163,10 +162,12 @@ layui.use(['form','element'], function(){
     JSON.stringify(data.field);
     var passwd = document.getElementById('passwd').value;
 	var repasswd = document.getElementById('repasswd').value;
-    if(checkpasswd(passwd,repasswd))
-        return true;
-    else 
+    if(checkpasswd(passwd,repasswd)){
+    	return true;
+    }else{
     	return false;
+    } 
+    	
   });
 });
 

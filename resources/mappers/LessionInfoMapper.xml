@@ -7,6 +7,7 @@
     <id column="lession_id" jdbcType="INTEGER" property="lessionId" />
     <result column="lession_name" jdbcType="VARCHAR" property="lessionName" />
     <result column="lession_img" jdbcType="VARCHAR" property="lessionImg" />
+    <result column="lession_status" jdbcType="VARCHAR" property="lessionStatus" />
     <result column="lession_info" jdbcType="VARCHAR" property="lessionInfo" />
     <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
@@ -31,7 +32,7 @@
   
   
   <sql id="Base_Column_List">
-    lession_id, lession_name, lession_img, lession_info, created_user, created_time, 
+    lession_id, lession_name, lession_img,lession_status, lession_info, created_user, created_time, 
     modified_user, modified_time
   </sql>
   <!--按主键查询  -->
@@ -70,11 +71,11 @@
     <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="lessionId">
           SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into lession_tb (lession_id, lession_name, lession_img, 
+    insert into lession_tb (lession_id, lession_name, lession_img, lession_status, 
       lession_info, created_user, created_time, 
       modified_user, modified_time)
     values (#{lessionId,jdbcType=INTEGER}, #{lessionName,jdbcType=VARCHAR}, #{lessionImg,jdbcType=VARCHAR}, 
-      #{lessionInfo,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{lessionStatus,jdbcType=VARCHAR}, #{lessionInfo,jdbcType=VARCHAR}, #{createdUser,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{modifiedUser,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP})
   </insert>
   
@@ -92,6 +93,9 @@
       </if>
       <if test="lessionImg != null">
         lession_img,
+      </if>
+       <if test="lessionStatus != null">
+        lession_status,
       </if>
       <if test="lessionInfo != null">
         lession_info,
@@ -119,6 +123,9 @@
       <if test="lessionImg != null">
         #{lessionImg,jdbcType=VARCHAR},
       </if>
+       <if test="lessionStatus != null">
+        #{lessionStatus,jdbcType=VARCHAR},
+      </if>
       <if test="lessionInfo != null">
         #{lessionInfo,jdbcType=VARCHAR},
       </if>
@@ -145,6 +152,9 @@
       <if test="lessionImg != null">
         lession_img = #{lessionImg,jdbcType=VARCHAR},
       </if>
+       <if test="lessionStatus != null">
+        lession_status = #{lessionStatus,jdbcType=VARCHAR},
+      </if>
       <if test="lessionInfo != null">
         lession_info = #{lessionInfo,jdbcType=VARCHAR},
       </if>
@@ -167,6 +177,7 @@
     update lession_tb
     set lession_name = #{lessionName,jdbcType=VARCHAR},
       lession_img = #{lessionImg,jdbcType=VARCHAR},
+       lession_status = #{lessionStatus,jdbcType=VARCHAR},
       lession_info = #{lessionInfo,jdbcType=VARCHAR},
       created_user = #{createdUser,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},

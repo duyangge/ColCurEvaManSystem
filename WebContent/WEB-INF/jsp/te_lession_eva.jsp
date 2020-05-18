@@ -33,7 +33,7 @@
 							</div>
 							<div class="layui-inline">
 						          <select name="classId"   lay-filter="status">
-						           <option value="" selected="selected" style="width:80px;">班级</option>
+						           <option value="" selected="selected" style="width:80px;">所教班级</option>
 							            <c:forEach items="${claList }" varStatus="status" var="cla">
 							                   <option value="${cla.classId}" <c:if test="${cla.classId == classId }"> selected="selected"</c:if> >${cla.className}</option>
 							            </c:forEach>

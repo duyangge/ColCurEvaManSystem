@@ -99,8 +99,8 @@
 									</td>
 									<td>
 										<div class="layui-inline">
-											<button class="layui-btn layui-btn-mini layui-btn-normal  edit-fun-btn" data-id="${fun.funId }" data-table="${fun.tableName }"  ><i class="layui-icon">&#xe642;</i></button>
-											<button class="layui-btn layui-btn-mini layui-btn-danger del-fun-btn" data-id="${fun.funId }" data-table="${fun.tableName }"><i class="layui-icon">&#xe640;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-normal  edit-fun-btn" data-id="${fun.funId }" data-table="${fun.tableName }" data-url="../fun/goEditParentFunPage.do" ><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-danger del-fun-btn" data-id="${fun.funId }" data-table="${fun.tableName }" data-url="../fun/goEditParentFunPage.do" ><i class="layui-icon">&#xe640;</i></button>
 										</div>
 									</td>
 								</tr>

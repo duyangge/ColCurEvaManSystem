@@ -15,6 +15,8 @@ public class LessionInfo {
     private Integer lessionId;
 
     private String lessionName;
+    
+    private String lessionStatus;
 
     private String lessionImg;
 
@@ -29,6 +31,15 @@ public class LessionInfo {
     private Date modifiedTime;
     
     private List<ClassInfo> classInfoList;//课程和班级多对多
+    
+
+	public String getLessionStatus() {
+		return lessionStatus;
+	}
+
+	public void setLessionStatus(String lessionStatus) {
+		this.lessionStatus = lessionStatus;
+	}
 
 	public List<ClassInfo> getClassInfoList() {
 		return classInfoList;

@@ -68,11 +68,11 @@
 						</div>
 					</div>
 					
-					<div class="layui-form-item">
+				<!-- 	<div class="layui-form-item">
 						<div class="layui-input-block">
 							<button class="layui-btn layui-btn-normal" onclick="javaScript:history.go(-1);" >返回上一页</button>
 						</div>
-					</div>
+					</div> -->
 				</form>
 		</div>
 

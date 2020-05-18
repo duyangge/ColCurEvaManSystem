@@ -70,7 +70,7 @@
 									<td class="hidden-xs" >${les.professionName }</td>
 									<td>
 										<div class="layui-inline">
-										<button class="layui-btn layui-btn-mini layui-btn-normal eva_edit-btn" data-id="${les.lessionId}" data-url="../classSub/goSubLessionEva.do"><i class="layui-icon">&#xe642;</i></button>
+											<button class="layui-btn layui-btn-mini layui-btn-normal eva_edit-btn" data-id="${les.lessionId}" data-url="../classSub/goSubLessionEva.do"><i class="layui-icon">&#xe642;</i></button>
 										</div>
 									</td>
 								</tr>

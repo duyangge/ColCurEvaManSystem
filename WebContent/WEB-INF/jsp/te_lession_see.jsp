@@ -33,24 +33,13 @@
 					</div>
 					
 					
-					<div class="layui-form-item">
+					<!-- <div class="layui-form-item">
 						<div class="layui-input-block">
 							<button class="layui-btn layui-btn-normal" onclick="javaScirpt:window.history.go(-2);">返回上一页</button>
 						</div>
-					</div>
+					</div> -->
 				</form>
 		</div>
 	</body>
-  <script type="text/javascript">
-      function back() {
-      //window.frames['iframe'].history.back();
-        //alert("13");
-  		//window.location.href="../lession/findLessionByTeacher.do";
-  		//window.history.back();
-  		//window.location.href=document.referrer;
-  		window.history.back();
-  	    //alert("1");
-      }
-  </script>
   <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 </html>

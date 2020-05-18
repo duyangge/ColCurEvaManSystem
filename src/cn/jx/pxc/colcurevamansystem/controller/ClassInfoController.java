@@ -256,6 +256,7 @@ public class ClassInfoController {
 			claList = new ArrayList<ClassInfoCustom>();
 			ClassInfoCustom cla = classInfoService.selectById(param);
 			claList.add(cla);
+			//model.addAttribute("updateMarkor", "updateMarkor");//添加修改课程
 		}else {
 			try {
 				claList = classInfoService.selectClaCusByNameList(beanQueryVo);

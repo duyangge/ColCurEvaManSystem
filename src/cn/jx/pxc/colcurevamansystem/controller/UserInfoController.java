@@ -308,6 +308,9 @@ public class UserInfoController {
 				head_image.transferTo(newFile);
 				tea.setHeadImage(newFileName);;//将图片名称写入数据库中
 			}
+			//密码加密
+			//String enCodePassword = CodeUtil.getMD5Encoding(tea.getPassword());
+			//tea.setPassword(enCodePassword);
 			teacherInfoService.updateByPrimaryKeySelective(tea);//由于更新后，tea.id变成影响行数		
 		    //修改基本信息后，返回基本信息页面
 			TeacherInfo teacherInfo = teacherInfoService.selectByPrimaryKey(id);
@@ -327,6 +330,9 @@ public class UserInfoController {
 	@RequestMapping("/updateAdminPassWord.do")
 	public String updateAdminPassWord(Model model,TeacherInfo tea) {
 		try {
+			//密码加密
+			String enCodePassword = CodeUtil.getMD5Encoding(tea.getPassword());
+			tea.setPassword(enCodePassword);
 			teacherInfoService.updateByPrimaryKeySelective(tea);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -343,6 +349,9 @@ public class UserInfoController {
 	@RequestMapping("/updateStudentPassWord.do")
 	public String updateStudentPassWord(Model model,StudentInfo stu) {
 		try {
+			//密码加密
+			String enCodePassword = CodeUtil.getMD5Encoding(stu.getPassword());
+			stu.setPassword(enCodePassword);
 			studentInfoService.updateByPrimaryKeySelective(stu);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -389,7 +398,10 @@ public class UserInfoController {
 				//将内存中的数据写入磁盘
 				head_image.transferTo(newFile);
 				stu.setHeadImage(newFileName);;//将图片名称写入数据库中
-			}			
+			}	
+				//密码加密
+				String enCodePassword = CodeUtil.getMD5Encoding(stu.getPassword());
+				stu.setPassword(enCodePassword);
 			    studentInfoService.updateByPrimaryKeySelective(stu);//由于更新后，tea.id变成影响行数		
 				StudentInfoCustom stuCus = studentInfoService.selectCustomByKey(stu.getStudentId());
 				model.addAttribute("stu", stuCus);
@@ -592,14 +604,7 @@ public class UserInfoController {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	/**添加学生：
 	 * 添加学生后，自动通过主键显示查询
@@ -884,12 +889,15 @@ public class UserInfoController {
 				head_image.transferTo(newFile);
 				tea.setHeadImage(newFileName);;//将图片名称写入数据库中
 			}
+			//密码加密
+			//String enCodePassword = CodeUtil.getMD5Encoding(tea.getPassword());
+			//tea.setPassword(enCodePassword);
 			teacherInfoService.updateByPrimaryKeySelective(tea);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		model.addAttribute("roadParent", "roadParent");
-		return "forward:teacherAdmin.do?param"+tea.getTeacherId();
+		return "forward:teacherAdmin.do?param="+tea.getTeacherId();
 	}
 	
 	/**删除教师

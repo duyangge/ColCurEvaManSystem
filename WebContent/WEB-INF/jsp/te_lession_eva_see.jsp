@@ -67,11 +67,11 @@
 							<textarea name="subInfo" placeholder="请输入50字以内的内容" readonly="readonly" class="layui-textarea">${lesTemp.subInfo }</textarea>
 						</div>
 					</div>
-					<div class="layui-form-item">
+					<!-- <div class="layui-form-item">
 						<div class="layui-input-block">
-							<button class="layui-btn layui-btn-normal" onclick="javaScript:history.go(-1);" >返回上一页</button>
+							<button class="layui-btn layui-btn-normal" onclick="javaScript:window.opener=null;window.close();" >关闭</button>
 						</div>
-					</div>
+					</div> -->
 				</form>
 		</div>
 

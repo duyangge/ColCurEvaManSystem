@@ -1867,27 +1867,27 @@ a cite {
 .layui-tab-more {
 	padding-right: 30px;
 	height: auto;
-	white-space: normal
+	white-space: normal;
 }
 
 .layui-tab-more li.layui-this:after {
 	border-bottom-color: #e2e2e2;
-	border-radius: 2px
+	border-radius: 2px;
 }
 
 .layui-tab-more .layui-tab-bar .layui-icon {
 	top: -2px;
 	top: 3px\9;
 	-webkit-transform: rotate(180deg);
-	transform: rotate(180deg)
+	transform: rotate(180deg);
 }
 
 :root .layui-tab-more .layui-tab-bar .layui-icon {
-	top: -2px\0/IE9
+	top: -2px\0/IE9;
 }
 
 .layui-tab-content {
-	padding: 10px
+	padding: 10px;
 }
 
 .layui-tab-title li .layui-tab-close {
@@ -1896,28 +1896,28 @@ a cite {
 	top: 1px;
 	color: #c2c2c2;
 	transition: all .2s;
-	-webkit-transition: all .2s
+	-webkit-transition: all .2s;
 }
 
 .layui-tab-title li .layui-tab-close:hover {
 	border-radius: 2px;
 	background-color: #FF5722;
-	color: #fff
+	color: #fff;
 }
 
 .layui-tab-brief>.layui-tab-title .layui-this {
-	color: #009688
+	color: #009688;
 }
 
 .layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after
 	{
 	border: none;
 	border-radius: 0;
-	border-bottom: 3px solid #5FB878
+	border-bottom: 3px solid #5FB878;
 }
 
 .layui-tab-brief[overflow]>.layui-tab-title .layui-this:after {
-	top: -1px
+	top: -1px;
 }
 
 .layui-tab-card {

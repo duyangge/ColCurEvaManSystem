@@ -14,7 +14,13 @@
 <link rel="stylesheet" type="text/css" href="../css/admin.css" />
 </head>
 <body>
-		<div class="wrap-container">
+	<div class="layui-tab page-content-wrap">
+	  <ul class="layui-tab-title">
+	    <li class="layui-this">修改资料</li>
+	    <li>修改密码</li>
+	  </ul>
+	  <div class="layui-tab-content">
+		  <div class="layui-tab-item layui-show">
 			<form enctype="multipart/form-data"  class="layui-form" style="width: 90%;padding-top: 20px;" action="../user/updateStudent.do" method="post">
 					<input type="hidden" value="${stu.studentId}" name="studentId">
 					<div class="layui-form-item">
@@ -39,8 +45,6 @@
 						</div>
                         
 					</div>
-
-
 					<div class="layui-form-item">
 						<label class="layui-form-label">账号：</label>
 						<div class="layui-input-block">
@@ -82,22 +86,7 @@
 						</div>
 						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="mailmes"></span>
 
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">密码：</label>
-						<div class="layui-input-block">
-							<input type="password" id="passwd" name="password"  value="${stu.password }" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-						</div>
-						<span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
-
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">确认密码：</label>
-						<div class="layui-input-block">
-							<input type="password" id="repasswd" name="repassword" value="${stu.password }" required lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
-						</div>
-
-					</div>
+					</div>					
 					<div class="layui-form-item">
 						<label class="layui-form-label">状态：</label>
 						<div class="layui-input-block">
@@ -109,50 +98,98 @@
 					<div class="layui-form-item">
 						<div class="layui-input-block">
 							 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button> 
-							<button type="reset" class="layui-btn layui-btn-primary">重置</button> 
+							 <button type="reset" class="layui-btn layui-btn-primary">重置</button> 
 						</div>
 					</div>
 				</form>
+		    </div>
+		    
+		    <div class="layui-tab-item">
+		    	<form class="layui-form" v  style="width: 90%;padding-top: 20px;" action="../user/updateStudentPassWord.do" method="post">
+		    	 <input type="hidden" name="studentId" value="${stu.studentId  }">
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">用户名：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled" value="${stu.username }">
+				    </div>
+				  </div>
+				  
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">旧密码：</label>
+				    <div class="layui-input-block">
+				      <input type="password" name="oldpassword" value="${stu.password}" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">新密码：</label>
+				    <div class="layui-input-block">
+				      <input type="password" id="passwd" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				    </div>
+				    <span style="font:10px '微软雅黑';color: red;margin-left: 50%" id="passwdmes"></span>
+				    
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">重复密码：</label>
+				    <div class="layui-input-block">
+				      <input type="password" id="repasswd" name="repassword" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminPassword">立即提交</button>
+				    </div>
+				  </div>
+				</form>
+		    </div>
+		  </div>
 		</div>
 	</body>
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/admin.js" type="text/javascript" charset="utf-8"></script>
 <script>
-//跳转页面的同时就加载
-$(document).ready(function() {
-	 var options=$("#profession_id option:selected");
-     var value=options.data("id");   //得到学院id
-	 $.ajax({
-			async:false,
-			type:"post",
-			url:"../user/changeClass.do",
-			dataType: "json",
-			data:{id:value}, //二级产品类别的父ID
-			success:function(data){
-				$("#class_id").empty();
-				$("#class_id").append("<option value= '' data-id=''>请选择所属班级</option>");
-				var id = "${stu.classId}";
-				for(var i=0;i<data.length;i++){
-					if(id == data[i].classId ){
-						$("#class_id").append("<option value='"+data[i].classId+"'  selected='selected' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
-					}else{
-						$("#class_id").append("<option value='"+data[i].classId+"'  data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
-					}
-				}
-				form.render();
-			},
-			error:function(err){
-	        	alert("失败");
-	      	}
-    });//ajax
-	
-	
-});
+
+
 //选中一级产品类别后，获取并刷新二级产品类别列表	    
 //提交表单
-layui.use(['form'], function() {
+layui.use(['form','element'], function(){
 	var form = layui.form();
+	var element = layui.element();
+	form.render();
+	
+	//跳转页面的同时就加载
+	$(document).ready(function() {
+		 var options=$("#profession_id option:selected");
+	     var value=options.data("id");   //得到学院id
+		 $.ajax({
+				async:false,
+				type:"post",
+				url:"../user/changeClass.do",
+				dataType: "json",
+				data:{id:value}, //二级产品类别的父ID
+				success:function(data){
+					$("#class_id").empty();
+					$("#class_id").append("<option value= '' data-id=''>请选择所属班级</option>");
+					var id = "${stu.classId}";
+					for(var i=0;i<data.length;i++){
+						if(id == data[i].classId ){
+							$("#class_id").append("<option value='"+data[i].classId+"'  selected='selected' data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+						}else{
+							$("#class_id").append("<option value='"+data[i].classId+"'  data-id='"+data[i].classId+"'>"+data[i].className+"</option>");
+						}
+					}
+					form.render();
+				},
+				error:function(err){
+		        	alert("失败");
+		      	}
+	    });//ajax
+		
+		
+	});
+	
+	
+	
 	//监听下拉列表提交
 	form.on('select(profession)', function(data) {
 		     var options=$("#profession_id option:selected");
@@ -185,20 +222,35 @@ layui.use(['form'], function() {
 	
 	//监听提交
 	form.on('submit(formDemo)', function(data) {
-		JSON.stringify(data.field);
-		       	var passwd = document.getElementById('passwd').value;
-				var repasswd = document.getElementById('repasswd').value;
-		       var tel=document.getElementById('tel').value;
-		       var mail=document.getElementById('mail').value;
-		       if( isPoneAvailable(tel) &&  isEmailAvailable(mail)&&checkpasswd(passwd,repasswd)){
-		    	   return true;
-		       }else {
-		        	return false;
-		        }
-	})
+	   JSON.stringify(data.field);
+       var tel=document.getElementById('tel').value;
+       var mail=document.getElementById('mail').value;
+       if( isPoneAvailable(tel) &&  isEmailAvailable(mail)){
+    	   var index = parent.layer.getFrameIndex(window.name);
+           parent.layer.close(index);
+    	   return true;
+       }else {
+        	return false;
+        }
+	});
+	
+	  //监听密码提交
+	   form.on('submit(adminPassword)', function(data){
+	    JSON.stringify(data.field);
+	    var passwd = document.getElementById('passwd').value;
+		var repasswd = document.getElementById('repasswd').value;
+	    if(checkpasswd(passwd,repasswd)){
+	    	var index = parent.layer.getFrameIndex(window.name);
+	        parent.layer.close(index);
+	    	return true;
+	    } else{
+	    	return false;
+	    } 
+	    	
+	  });
 	
 	
-})
+});
 		
 </script>	
 </html>
